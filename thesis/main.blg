@@ -1,0 +1,58 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: content/framework/title.aux
+A level-1 auxiliary file: content/framework/abstract.aux
+A level-1 auxiliary file: content/framework/abbreviations.aux
+A level-1 auxiliary file: content/chapters/0_introduction.aux
+A level-1 auxiliary file: content/chapters/1_basics.aux
+A level-1 auxiliary file: content/chapters/2-7_custom_chapter.aux
+A level-1 auxiliary file: content/chapters/8_prospect.aux
+A level-1 auxiliary file: content/chapters/9_conclusion.aux
+The style file: plain.bst
+A level-1 auxiliary file: content/framework/affirmation.aux
+Database file #1: bibtex.bib
+Warning--empty booktitle in Algaba2019HandbookOT
+Warning--can't use both author and editor fields in Shapley+1953+307+318
+You've used 7 entries,
+            2118 wiz_defined-function locations,
+            560 strings with 6051 characters,
+and the built_in function-call counts, 2693 in all, are:
+= -- 249
+> -- 141
+< -- 3
++ -- 55
+- -- 46
+* -- 184
+:= -- 439
+add.period$ -- 23
+call.type$ -- 7
+change.case$ -- 39
+chr.to.int$ -- 0
+cite$ -- 9
+duplicate$ -- 104
+empty$ -- 215
+format.name$ -- 46
+if$ -- 576
+int.to.chr$ -- 0
+int.to.str$ -- 7
+missing$ -- 8
+newline$ -- 38
+num.names$ -- 18
+pop$ -- 56
+preamble$ -- 1
+purify$ -- 33
+quote$ -- 0
+skip$ -- 77
+stack$ -- 0
+substring$ -- 148
+swap$ -- 31
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 24
+warning$ -- 2
+while$ -- 23
+width$ -- 8
+write$ -- 80
+(There were 2 warnings)

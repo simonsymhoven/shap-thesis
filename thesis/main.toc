@@ -1,0 +1,33 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {chapter}{Abstract}{i}{chapter*.1}%
+\contentsline {chapter}{Inhaltsverzeichnis}{iii}{section*.2}%
+\contentsline {chapter}{Abbildungsverzeichnis}{v}{section*.3}%
+\contentsline {chapter}{Tabellenverzeichnis}{vii}{section*.4}%
+\contentsline {chapter}{Quellcodeverzeichnis}{ix}{section*.5}%
+\contentsline {chapter}{Abkürzungsverzeichnis}{xi}{chapter*.7}%
+\contentsline {chapter}{\numberline {1}Einleitung}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Hintergrund}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Kooperative Spieltheorie}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Formale Definition}{3}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Eigenschaften}{4}{section.2.3}%
+\contentsline {paragraph}{\nonumberline Pareto-Effizienz}{4}{paragraph*.9}%
+\contentsline {paragraph}{\nonumberline Symmetrie}{4}{paragraph*.11}%
+\contentsline {paragraph}{\nonumberline Null-Spieler-Eigenschaft}{5}{paragraph*.13}%
+\contentsline {paragraph}{\nonumberline Additivität}{5}{paragraph*.15}%
+\contentsline {chapter}{\numberline {3}Machine Learning und Shapley Values}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Erwartete Auszahlung des Models}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Axiome}{7}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Approximierung der Shapley Values}{7}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Causal Shapley Values}{7}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Praktische Anwendung}{9}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Vorstellung der Datensätze}{9}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Datensatz 1}{9}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Datensatz 2}{9}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Einleitung Python Paket SHAP}{9}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Model}{9}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Ausblick}{11}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Fazit}{13}{chapter.6}%
+\contentsline {chapter}{Literaturverzeichnis}{15}{section*.16}%
+\contentsline {chapter}{Eidesstattliche Erklärung}{17}{chapter*.18}%
+\contentsline {chapter}{Anhänge}{19}{section*.19}%
+\contentsline {chapter}{Anhang \numberline {A}Quellcode}{19}{appendix.a.A}%
