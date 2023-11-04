@@ -4,3 +4,5 @@ scikit-learn
 numpy
 shap
 tabulate
+seaborn
+ipywidgets
