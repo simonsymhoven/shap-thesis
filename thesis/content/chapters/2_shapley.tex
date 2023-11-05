@@ -2,8 +2,8 @@
 
 \section{Beispiel: Designwettbewerb}
 
-Angenommen, drei Teilnehmer, Anna, Ben und Carla, haben als Team kooperiert und den ersten Platz bei einem Designwettbewerb belegt\footnote{In Anlehung an Beispiel aus Kapitel 4 \glqq{}Who's going to pay for that taxi?\grqq{}\cite[S.17-20]{Molnar_2023}}. 
-Dieser Erfolg führt zu einem Gesamtgewinn von 1000 \euro. Das Preisgeld für den zweiten Platz beträgt 750 \euro und 500 \euro für den dritten Platz.
+Angenommen, drei Teilnehmer, Anna, Ben und Carla, haben als Team kooperiert und den ersten Platz bei einem Designwettbewerb belegt\footnote{In Anlehung an Beispiel aus Kapitel 4 \glqq{}Who's going to pay for that taxi?\grqq{}\cite[S.17-20]{Molnar_2023}.}. 
+Dieser Erfolg führt zu einem Gesamtgewinn von 1000 \euro. Das Preisgeld für den zweiten Platz beträgt 750 \euro{} und 500 \euro{} für den dritten Platz.
 Die Herausforderung besteht nun darin, den Gewinn auf eine Weise zu verteilen, die den individuellen Beitrag jedes Teilnehmers 
 zur Erzielung des ersten Platzes gerecht widerspiegelt.
 
@@ -79,7 +79,7 @@ Nachdem die marginalen Beiträge jedes Teilnehmers für die verschiedenen Koalit
 ist der nächste Schritt, die Shapley-Werte zu bestimmen, welche eine faire Aufteilung des Gesamtgewinns 
 erlauben. Hierzu wird jede mögliche Reihenfolge (Permutation) betrachtet, in der die Spieler der 
 Koalition beitreten könnten. Jede dieser Permutationen liefert unterschiedliche marginale Beiträge 
-für die Spieler, je nach der Reihenfolge ihres Beitritts.
+für die Spieler, je nach der Reihenfolge ihres Beitritts \cite[S. 307ff]{Shapley+1953+307+318}.
 
 Im Falle dieses Beispiels mit Anna, Ben und Carla bedeutet dies, dass alle möglichen Reihenfolgen 
 berücksichtigt werden müssen, in denen sie zum ersten Platz beigetragen haben könnten. 
@@ -120,6 +120,15 @@ und Carla:
 \[
   \frac{1}{6} ( \underbrace{2 \cdot 0 \text{\euro}}_{\text{C $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot (-250) \text{\euro}}_{\text{C $\rightarrow$ $\{B$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A, B$\}}} ) \approx 83,34 \text{\euro}  
 \]
+
+
+Auf Basis der gewichteten durchschnittlichen marginalen Beiträge lässt sich feststellen, 
+dass Anna und Ben jeweils einen Shapley-Wert von ungefähr 458,34 \euro{} erhalten, 
+während Carla einen Shapley-Wert von etwa 83,34 \euro{} zugewiesen bekommt. 
+Diese Werte spiegeln den fairen Anteil jedes Teilnehmers an der Gesamtprämie wider, 
+basierend auf ihrem individuellen Beitrag zum Erfolg des Teams. Mit dieser konkreten Anwendung der Shapley-Werte 
+auf ein alltagsnahes Beispiel wird nun die zugrunde liegende Theorie und die formale Definition 
+der Shapley-Werte, die diese Berechnungen ermöglichen, detaillierter betrachtet.
 
 \section{Formale Definition}
 
