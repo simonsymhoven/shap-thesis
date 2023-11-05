@@ -1,5 +1,11 @@
 \chapter{Theorie der Shapley-Werte}
 
+In diesem Kapitel werden die Shapley-Werte als Instrument zur gerechten Aufteilung von Gewinnen in 
+kooperativen Spielen vorgestellt. Durch die Verwendung eines praktischen Beispiels – der Aufteilung 
+eines Preisgeldes aus einem Designwettbewerb unter den Gewinnern – wird zunächst eine intuitive Einführung 
+in das Konzept gegeben. Anschließend wird die formale Definition der Shapley-Werte erläutert, um die 
+theoretischen Grundlagen für ihre Berechnung und Anwendung zu legen.
+
 \section{Beispiel: Designwettbewerb}
 
 Angenommen, drei Teilnehmer, Anna, Ben und Carla, haben als Team kooperiert und den ersten Platz bei einem Designwettbewerb belegt\footnote{In Anlehung an Beispiel aus Kapitel 4 \glqq{}Who's going to pay for that taxi?\grqq{}\cite[S.17-20]{Molnar_2023}.}. 
@@ -46,11 +52,6 @@ In diesem Beispiel mit Anna, Ben und Carla, die an einem Designwettbewerb teilne
 Anna zur Koalition von $\{$Ben$\}$ der zusätzliche Wert, den sie einbringt, wenn sie sich Ben anschließt, 
 ausgehend von Bens individuellem Gewinn.
 
-Die Tabelle \ref{tab:shapley_marginal} illustriert den Gewinn jeder möglichen Koalition ohne den 
-betrachteten Spieler und den neuen Gesamtgewinn, sobald dieser Spieler der Koalition beitritt. 
-Der marginale Beitrag jedes Spielers wird dann als die Differenz zwischen diesen beiden Werten 
-berechnet und gibt Aufschluss über den individuellen Wertbeitrag zum gemeinschaftlichen Erfolg.
-
 \begin{table}[H]
   \footnotesize
   \begin{tabularx}{\textwidth}{XXrrr}
@@ -74,6 +75,11 @@ berechnet und gibt Aufschluss über den individuellen Wertbeitrag zum gemeinscha
   \caption{Marginalbeiträge der einzelnen Teilnehmer zu den möglichen Koalitionen.}
   \label{tab:shapley_marginal}
 \end{table}
+
+Die Tabelle \ref{tab:shapley_marginal} illustriert den Gewinn jeder möglichen Koalition ohne den 
+betrachteten Spieler und den neuen Gesamtgewinn, sobald dieser Spieler der Koalition beitritt. 
+Der marginale Beitrag jedes Spielers wird dann als die Differenz zwischen diesen beiden Werten 
+berechnet und gibt Aufschluss über den individuellen Wertbeitrag zum gemeinschaftlichen Erfolg.
 
 Nachdem die marginalen Beiträge jedes Teilnehmers für die verschiedenen Koalitionen festgestellt wurden, 
 ist der nächste Schritt, die Shapley-Werte zu bestimmen, welche eine faire Aufteilung des Gesamtgewinns 
@@ -156,7 +162,12 @@ Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der
 \varphi_i (\mathcal{N}, v) = \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}} \underbrace{\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}}_{\text{Gewicht}} \underbrace{v(\mathcal{S} \cup \{i\}) - v(\mathcal{S})}_{\substack{\text{marginaler Beitrag von} \\ \text{Spieler $i$ zur Koalition $\mathcal{S}$}}}.
 \end{equation*}
 
+TODO: Erklärung!
+
+
 \section{Axiome}
+
+TODO: Erklärung und referenz auf Beispiel oben.
 
 \paragraph{Pareto-Effizienz}
 
