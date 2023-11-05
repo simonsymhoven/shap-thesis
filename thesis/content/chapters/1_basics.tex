@@ -1,85 +1,41 @@
-\chapter{Hintergrund}
+\chapter{Historischer Kontext und Begriffsdefinitionen}
 
 
-\section{Kooperative Spieltheorie}
 
-Der Ursprung der Shapley Values liegt in der kooperativen Spieltheorie, einem fundamentalen Zweig der Spieltheorie. Dieser Bereich beschäftigt sich mit der Analyse von Situationen, in denen Akteure zusammenarbeiten, um gemeinsame Ziele zu erreichen. Zentrales Anliegen ist dabei die gerechte Verteilung der entstehenden Gewinne unter den Akteuren. Ein Schlüsselkonzept dieser Theorie ist die sogenannte "Charakteristische Funktion", welche die Bewertung der Gewinnverteilung einer Koalition von Akteuren ermöglicht.
+\section{Die Genese der Shapley-Werte in der kooperativen Spieltheorie}
 
-Die Shapley Values, entwickelt von Lloyd Shapley in den 1950er Jahren, bieten einen methodischen Ansatz, um den individuellen Beitrag eines jeden Akteurs zur kooperativen Zusammenarbeit gerecht zu bewerten. Dies geschieht durch die Durchschnittsbewertung der Beiträge über sämtliche mögliche Koalitionen hinweg. Diese Methode erweist sich als äußerst nützlich, um eine gerechte und rationale Verteilung von Gewinnen in vielfältigen Szenarien zu ermöglichen, sei es in wirtschaftlichen Verhandlungen oder der Aufteilung von Ressourcen.
+Der Ursprung der Shapley-Werte liegt in der kooperativen Spieltheorie, einem fundamentalen Zweig der Spieltheorie. 
+Dieser Bereich beschäftigt sich mit der Analyse von Situationen, in denen Akteure zusammenarbeiten, um gemeinsame Ziele zu erreichen. 
+Zentrales Anliegen ist dabei die gerechte Verteilung der entstehenden Gewinne unter den Akteuren. Ein Schlüsselkonzept dieser Theorie 
+ist die sogenannte \glqq{}Charakteristische Funktion\grqq{}, welche die Bewertung der Gewinnverteilung einer Koalition von Akteuren ermöglicht.
 
-Das Verständnis der kooperativen Spieltheorie und ihrer Anwendung in Form der Shapley Values ermöglicht es, dieses theoretische Konzept auf den Bereich des maschinellen Lernens zu übertragen. In dieser Arbeit werden wir den Übergang von abstrakten Spieltheorie-Konzepten zu konkreten Anwendungen in der Welt der datengetriebenen Modelle erforschen.
+Die Shapley-Werte, entwickelt von Lloyd Shapley in den 1950er Jahren, bieten einen methodischen Ansatz, um den individuellen Beitrag 
+eines jeden Akteurs zur kooperativen Zusammenarbeit gerecht zu bewerten. Dies geschieht durch die Durchschnittsbewertung der Beiträge 
+über sämtliche mögliche Koalitionen hinweg. Diese Methode erweist sich als äußerst nützlich, um eine gerechte und rationale Verteilung 
+von Gewinnen in vielfältigen Szenarien zu ermöglichen, sei es in wirtschaftlichen Verhandlungen oder der Aufteilung von Ressourcen.
 
-Zur Erreichung dieses Ziels werden in den kommenden Abschnitten nicht nur die formalen Definitionen und Eigenschaften der Shapley Values erläutert, sondern auch ihre Adaption und Anwendung auf Machine Learning-Modelle in Betracht gezogen. Die Anwendbarkeit wird durch die praktische Anwendung auf einen realen Datensatz verdeutlicht.
+Das Verständnis der kooperativen Spieltheorie und ihrer Anwendung in Form der Shapley-Werte ermöglicht es, dieses theoretische Konzept 
+auf den Bereich des maschinellen Lernens zu übertragen. In dieser Arbeit wird der Übergang von abstrakten Spieltheorie-Konzepten 
+zu konkreten Anwendungen in der Welt der datengetriebenen Modelle erforscht.
 
-\section{Formale Definition}
+Zur Erreichung dieses Ziels werden in den kommenden Abschnitten nicht nur die formalen Definitionen und Eigenschaften der Shapley-Werte 
+erläutert, sondern auch ihre Adaption und Anwendung auf Machine Learning-Modelle in Betracht gezogen. Die Anwendbarkeit wird durch die 
+praktische Anwendung auf einen realen Datensatz verdeutlicht.
 
-Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\mathcal{N}|$ Elementen. Sei $v$ die \textbf{Koalitionsfunktion}, die jeder Teilmenge von $\mathcal{N}$ eine reele Zahl zuweist und insbesondere der leeren Koalition den Wert $0$ gibt. 
 
-\[
-\begin{array}{rcccl}
-  v &:  &\mathcal P(\mathcal{N}) &\longrightarrow &\mathbb{R}\\
-  &: &v(\emptyset) &\mapsto &0\\
-\end{array}
-\]
+\section{Shapley-Werte, \acs{SHAP}, \acs{SHAP}-Werte und \textsf{shap}}
 
-Eine nicht leere Teilmenge der Spieler $\mathcal{S} \subseteq \mathcal{N}$ heißt Koalition. $\mathcal{N}$ selbst bezichnet die große Koalition. Den Ausdruck $v(\mathcal{S})$ nennt man den Wert der Koalition $\mathcal{S}$.
-Der Shapley-Wert ordnet nun jedem Spieler aus $\mathcal{N}$ eine Auszahlung für das Spiel $v$ zu.
+Zur Verdeutlichung und Abgrenzung der verschiedenen, jedoch verwandten Begrifflichkeiten, die im Kontext dieser Arbeit Verwendung finden, 
+ist eine kurze Einordnung essenziell.
 
-Der marginale Beitag eines Spieler $i \in N$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
+Beginnend mit den Shapley-Werten, entstammt dieser Begriff der kooperativen Spieltheorie und beschreibt eine Methode, 
+um den fairen Beitrag eines Spielers zu der Gesamtauszahlung eines kooperativen Spiels zu bestimmen. 
 
-\begin{equation*}
-v(\mathcal{S} \cup \{i\}) - v(\mathcal{S}).
-\end{equation*}
+\acf{SHAP} ist ein Interpretationsframework, das die Shapley-Werte in den Bereich des maschinellen Lernens überträgt. 
+Der Begriff wurde Lundberg und Lee erstmals eingeführt \cite[S. 1]{NIPS2017_8a20a862}.
 
-Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der marginalen Beiträge zu allen möglichen Koalitionen:
+Die \acs{SHAP}-Werte sind dann die konkreten quantitativen Beiträge der einzelnen Merkmale zu einer bestimmten Vorhersage, 
+berechnet basierend auf dem \acs{SHAP}-Framework.
 
-\begin{equation*}
-\varphi_i (\mathcal{N}, v) = \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}} \underbrace{\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}}_{\text{Gewicht}} \underbrace{v(\mathcal{S} \cup \{i\}) - v(\mathcal{S})}_{\substack{\text{marginaler Beitrag von} \\ \text{Spieler $i$ zur Koalition $\mathcal{S}$}}}.
-\end{equation*}
-
-\section{Eigenschaften}
-
-\paragraph{Pareto-Effizienz}
-
-Der Wert der großen Koalition wird an die Spieler verteilt:
-
-\begin{equation*}
-\sum_{i \in \mathcal{N}} \varphi_i (\mathcal{N}, v) = v(\mathcal{N}).
-\end{equation*}
-
-\paragraph{Symmetrie}
-
-Zwei Spieler $i$ und $j$, die die gleichen marginalen Beiträgen zu jeder Koalition haben,
-
-\begin{equation*}
-v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\})
-\end{equation*}
-
-erhalten das Gleiche:
-
-\begin{equation*}
-\varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v).
-\end{equation*}
-
-\paragraph{Null-Spieler-Eigenschaft}
-
-Ein Spieler der zu jeder Koalition nichts bzw. den Wert seiner Einer-Koalition beiträgt, erhält null bzw. den Wert seiner Einer-Koalition:
-
-\begin{equation*}
-\varphi_i (\mathcal{N}, v) = 0,
-\end{equation*}
-
-bzw.
-
-\begin{equation*}
-\varphi_i (\mathcal{N}, v) = v(\{i\}).
-\end{equation*}
-
-\paragraph{Additivität}
-
-Wenn das Spiel in zwei unabhängige Spiele zerlegt werden kann, dann ist die Auszahlung jedes Spielers im zusammengesetzten Spiel die Summe der Auszahlungen in den aufgeteilten Spielen:
-
-\begin{equation*}
-\varphi_i (\mathcal{N}, v + w) = \varphi_i (\mathcal{N}, v) + \varphi_i (\mathcal{N}, w).
-\end{equation*}
-
+Das Python-Paket \textsf{shap} schließlich ist eine Implementierung, die es praktikabel macht, \acs{SHAP}-Werte in der Anwendung zu berechnen 
+und zu visualisieren. Es stellt eine reiche Auswahl an Werkzeugen zur Verfügung, um diese Werte und ihre Auswirkungen zu interpretieren.

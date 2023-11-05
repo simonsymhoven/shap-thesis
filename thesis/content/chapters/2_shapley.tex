@@ -1,7 +1,194 @@
-\chapter{Machine Learning und Shapley Values}
+\chapter{Theorie der Shapley-Werte}
 
+\section{Beispiel: Designwettbewerb}
 
-\section{Erwartete Auszahlung des Models}
+Angenommen, drei Teilnehmer, Anna, Ben und Carla, haben als Team kooperiert und den ersten Platz bei einem Designwettbewerb belegt\footnote{In Anlehung an Beispiel aus Kapitel 4 \glqq{}Who's going to pay for that taxi?\grqq{}\cite[S.17-20]{Molnar_2023}}. 
+Dieser Erfolg führt zu einem Gesamtgewinn von 1000 \euro. Das Preisgeld für den zweiten Platz beträgt 750 \euro und 500 \euro für den dritten Platz.
+Die Herausforderung besteht nun darin, den Gewinn auf eine Weise zu verteilen, die den individuellen Beitrag jedes Teilnehmers 
+zur Erzielung des ersten Platzes gerecht widerspiegelt.
+
+Die Situation wird komplizierter, wenn man bedenkt, dass jeder Teilnehmer unterschiedlich zu dem Erfolg 
+beigetragen hat und ihre individuellen Leistungen auch zu verschiedenen Ausgängen geführt hätten, 
+wenn sie alleine oder in anderen Teilkonstellationen angetreten wären.
+
+Um eine faire Aufteilung des Preisgeldes zu erreichen, betrachten wir die hypothetischen Gewinne, 
+die Anna, Ben und Carla erzielt hätten, wenn sie in unterschiedlichen Konstellationen am Wettbewerb teilgenommen hätten.
+Tabelle \ref{tab:shapley_example} zeigt die gegegbene Gewinnverteilung der verschiedenen Koalitionen. Die Koalition $\emptyset$ entspricht
+dabei der leeren Koalition -- der Nichtteilnahme an dem Wettbewerb.
+
+\begin{table}[H]
+  \footnotesize
+  \begin{tabularx}{\textwidth}{Xrr}
+  \toprule
+  Koalition & Gewinn & Bemerkung \\
+  \midrule
+  $\emptyset$ & 0 \euro & Keine Teilnahme \\
+  $\{$Anna$\}$ & 500 \euro & 3. Platz als Einzelteilnehmerin \\
+  $\{$Ben$\}$ & 750 \euro & 2. Platz als Einzelteilnehmer \\
+  $\{$Carla$\}$ & 0 \euro & Kein Gewinn als Einzelteilnehmerin \\
+  $\{$Anna, Ben$\}$ & 750 \euro & 2. Platz als Team ohne Carla \\
+  $\{$Anna, Carla$\}$ & 750 \euro & 2. Platz als Team ohne Ben \\
+  $\{$Ben, Carla$\}$ & 500 \euro & 3. Platz als Team ohne Anna \\
+  $\{$Anna, Ben, Carla$\}$ & 1000 \euro & 1. Platz als Gesamtteam \\
+  \bottomrule
+  \end{tabularx}
+  \caption{Potenzielle Gewinne für verschiedene Teilnehmerkonstellationen im Designwettbewerb.}
+  \label{tab:shapley_example}
+\end{table}
+
+Zur Berechnung der Shapley-Werte ist es erforderlich, den marginalen Beitrag jedes Spielers zu erfassen.
+Marginalbeiträge in der Spieltheorie, und speziell im Kontext der Shapley-Werte, sind die zusätzlichen Beiträge, 
+die ein Spieler (Teilnehmer) zum Gesamtgewinn einer Koalition beiträgt, wenn er dieser beitritt. 
+Die Berechnung des marginalen Beitrags eines Teilnehmers erfolgt, indem man den Wert der Koalition ohne diesen Teilnehmer 
+vom Wert der Koalition mit dem Teilnehmer subtrahiert \cite[S. 18]{Molnar_2023}.
+
+In diesem Beispiel mit Anna, Ben und Carla, die an einem Designwettbewerb teilnehmen, ist der marginale Beitrag von 
+Anna zur Koalition von $\{$Ben$\}$ der zusätzliche Wert, den sie einbringt, wenn sie sich Ben anschließt, 
+ausgehend von Bens individuellem Gewinn.
+
+Die Tabelle \ref{tab:shapley_marginal} illustriert den Gewinn jeder möglichen Koalition ohne den 
+betrachteten Spieler und den neuen Gesamtgewinn, sobald dieser Spieler der Koalition beitritt. 
+Der marginale Beitrag jedes Spielers wird dann als die Differenz zwischen diesen beiden Werten 
+berechnet und gibt Aufschluss über den individuellen Wertbeitrag zum gemeinschaftlichen Erfolg.
+
+\begin{table}[H]
+  \footnotesize
+  \begin{tabularx}{\textwidth}{XXrrr}
+  \toprule
+  Teilnehmer & Zur Koalition & Gewinn vorher & Gewinn nachher & Marginalbeitrag \\
+  \midrule
+  Anna & $\emptyset$ & 0 \euro & 500 \euro & 500 \euro \\
+  Anna & $\{$Ben$\}$ & 750 \euro & 750 \euro & 0 \euro \\
+  Anna & $\{$Carla$\}$ & 0 \euro & 750 \euro & 750 \euro \\
+  Anna & $\{$Ben, Carla$\}$ & 500 \euro & 1000 \euro & 500 \euro\\
+  Ben & $\emptyset$ & 0 \euro & 750 \euro & 750 \euro \\
+  Ben & $\{$Anna$\}$ & 500 \euro & 750 \euro & 250 \euro\\
+  Ben & $\{$Carla$\}$ & 0 \euro & 500 \euro & 500 \euro\\
+  Ben & $\{$Anna, Carla$\}$ & 750 \euro &  1000 \euro & 250 \euro\\
+  Carla & $\emptyset$ & 0 \euro & 0 \euro & 0 \euro \\
+  Carla & $\{$Anna$\}$ & 500 \euro & 750 \euro & 250 \euro \\
+  Carla & $\{$Ben$\}$ & 750 \euro & 500 \euro & -250 \euro \\
+  Carla & $\{$Anna, Ben$\}$ & 750 \euro & 1000 \euro & 250 \euro \\
+  \bottomrule
+  \end{tabularx}
+  \caption{Marginalbeiträge der einzelnen Teilnehmer zu den möglichen Koalitionen.}
+  \label{tab:shapley_marginal}
+\end{table}
+
+Nachdem die marginalen Beiträge jedes Teilnehmers für die verschiedenen Koalitionen festgestellt wurden, 
+ist der nächste Schritt, die Shapley-Werte zu bestimmen, welche eine faire Aufteilung des Gesamtgewinns 
+erlauben. Hierzu wird jede mögliche Reihenfolge (Permutation) betrachtet, in der die Spieler der 
+Koalition beitreten könnten. Jede dieser Permutationen liefert unterschiedliche marginale Beiträge 
+für die Spieler, je nach der Reihenfolge ihres Beitritts.
+
+Im Falle dieses Beispiels mit Anna, Ben und Carla bedeutet dies, dass alle möglichen Reihenfolgen 
+berücksichtigt werden müssen, in denen sie zum ersten Platz beigetragen haben könnten. 
+Die Shapley-Werte werden dann als Durchschnitt der marginalen Beiträge über alle Permutationen berechnet. 
+Dies gewährleistet, dass jeder Spieler einen Anteil des Preisgeldes erhält, der seinem durchschnittlichen 
+Beitrag zum Erfolg entspricht.
+
+Bei drei Teilnehmern exisitieren $3! = 3 \cdot 2 \cdot 1 = 6$ Permutationen:
+
+\begin{enumerate}[itemsep=0pt, parsep=0pt]
+  \item Anna, Ben, Carla
+  \item Anna, Carla, Ben
+  \item Ben, Anna, Carla
+  \item Carla, Anna, Ben
+  \item Ben, Carla, Anna
+  \item Carla, Ben, Anna
+\end{enumerate}
+
+Jede Permutation entspricht einer Koalitionsbildung. Anna wird in zwei Koalitionsbildungen (1. und 2.) einer leeren Koalition hinzugefügt.
+In weiteren zwei Koalitionsbildungen (5. und 6.) wird Anna der bestehenden Koalition aus Ben und Carla hinzugefügt. 
+In den beiden übrigen Koalitionsbildungen wird Anna einmal der Koaliton bestehend aus Ben (3.) und einmal der Koalition bestehend aus Carla (4.)
+hinzugefügt. 
+
+Daraus lassen sich nun die gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
+
+\[
+  \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,34 \text{\euro}  
+\]
+
+Analog gilt das für Ben:
+
+\[
+  \frac{1}{6} ( \underbrace{2 \cdot 750 \text{\euro}}_{\text{B $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot 500 \text{\euro}}_{\text{B $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A, C$\}}} ) \approx 458,34 \text{\euro}  
+\]
+
+und Carla:
+
+\[
+  \frac{1}{6} ( \underbrace{2 \cdot 0 \text{\euro}}_{\text{C $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot (-250) \text{\euro}}_{\text{C $\rightarrow$ $\{B$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A, B$\}}} ) \approx 83,34 \text{\euro}  
+\]
+
+\section{Formale Definition}
+
+Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\mathcal{N}|$ Elementen. Sei $v$ die \textbf{Koalitionsfunktion}, die jeder Teilmenge von $\mathcal{N}$ eine reele Zahl zuweist und insbesondere der leeren Koalition den Wert $0$ gibt. 
+
+\[
+\begin{array}{rcccl}
+  v &:  &\mathcal P(\mathcal{N}) &\longrightarrow &\mathbb{R}\\
+  &: &v(\emptyset) &\mapsto &0\\
+\end{array}
+\]
+
+Eine nicht leere Teilmenge der Spieler $\mathcal{S} \subseteq \mathcal{N}$ heißt Koalition. $\mathcal{N}$ selbst bezichnet die große Koalition. Den Ausdruck $v(\mathcal{S})$ nennt man den Wert der Koalition $\mathcal{S}$.
+Der Shapley-Wert ordnet nun jedem Spieler aus $\mathcal{N}$ eine Auszahlung für das Spiel $v$ zu.
+
+Der marginale Beitag eines Spieler $i \in N$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
+
+\begin{equation*}
+v(\mathcal{S} \cup \{i\}) - v(\mathcal{S}).
+\end{equation*}
+
+Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der marginalen Beiträge zu allen möglichen Koalitionen:
+
+\begin{equation*}
+\varphi_i (\mathcal{N}, v) = \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}} \underbrace{\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}}_{\text{Gewicht}} \underbrace{v(\mathcal{S} \cup \{i\}) - v(\mathcal{S})}_{\substack{\text{marginaler Beitrag von} \\ \text{Spieler $i$ zur Koalition $\mathcal{S}$}}}.
+\end{equation*}
+
 \section{Axiome}
-\section{Approximierung der Shapley Values}
-\section{Causal Shapley Values}
+
+\paragraph{Pareto-Effizienz}
+
+Der Wert der großen Koalition wird an die Spieler verteilt:
+
+\begin{equation*}
+\sum_{i \in \mathcal{N}} \varphi_i (\mathcal{N}, v) = v(\mathcal{N}).
+\end{equation*}
+
+\paragraph{Symmetrie}
+
+Zwei Spieler $i$ und $j$, die die gleichen marginalen Beiträgen zu jeder Koalition haben,
+
+\begin{equation*}
+v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\})
+\end{equation*}
+
+erhalten das Gleiche:
+
+\begin{equation*}
+\varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v).
+\end{equation*}
+
+\paragraph{Null-Spieler-Eigenschaft}
+
+Ein Spieler der zu jeder Koalition nichts bzw. den Wert seiner Einer-Koalition beiträgt, erhält null bzw. den Wert seiner Einer-Koalition:
+
+\begin{equation*}
+\varphi_i (\mathcal{N}, v) = 0,
+\end{equation*}
+
+bzw.
+
+\begin{equation*}
+\varphi_i (\mathcal{N}, v) = v(\{i\}).
+\end{equation*}
+
+\paragraph{Additivität}
+
+Wenn das Spiel in zwei unabhängige Spiele zerlegt werden kann, dann ist die Auszahlung jedes Spielers im zusammengesetzten Spiel die Summe der Auszahlungen in den aufgeteilten Spielen:
+
+\begin{equation*}
+\varphi_i (\mathcal{N}, v + w) = \varphi_i (\mathcal{N}, v) + \varphi_i (\mathcal{N}, w).
+\end{equation*}

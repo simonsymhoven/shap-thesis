@@ -25,8 +25,8 @@
 \newcommand{\docInstitut}{INSTITUT}
 
 % Dokumentdaten
-\newcommand{\docTitle}{Interpretation linearer Modelle mit SHAP}
-\newcommand{\docUntertitle}{Interpretation of linear models with SHAP}
+\newcommand{\docTitle}{Interpretation of linear models with SHAP}
+\newcommand{\docUntertitle}{Interpretation linearer Modelle mit SHAP}
 % Arten der Arbeit: Bachelorthesis, Masterthesis, Seminararbeit, Diplomarbeit
 \newcommand{\docArtDerArbeit}{Master-Thesis}
 %Studiengaenge: Allgemeine Informatik Bachelor, Computer Networking Bachelor,
@@ -226,12 +226,14 @@
 
 % Unterdrueckung von vertikalen Linien
 \usepackage{booktabs}
-
+\usepackage{eurosym}
 %Multi row für spezifische zellen
 \usepackage{multirow}
+\usepackage{enumitem}
 
 %Additional table package
 \usepackage{tabu}
+\usepackage{tabularx}
 
 % ##################################################
 % Listings (Quellcode)
@@ -287,7 +289,7 @@
 
 %Calc packet für berechnungen
 \usepackage{calc}
-
+\usepackage{float}
 %Appendix paket, setzen der flags für das TOC
 \usepackage[toc,title,titletoc]{appendix} 
 
@@ -365,3 +367,7 @@
 % ####################################################
 
 \newcommand{\source}[1]{\caption*{Quelle: {#1}} }
+
+
+\usepackage[intoc]{nomencl}
+\makenomenclature

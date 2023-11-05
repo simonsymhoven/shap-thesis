@@ -1,0 +1,99 @@
+\chapter{Praktische Anwendung von \acs{SHAP} auf lineare Modelle}
+
+In diesem Kapitel wird der Einsatz des \acs{SHAP}-Frameworks zur Interpretation linearer Modelle im 
+Kontext des maschinellen Lernens untersucht. Lineare Modelle, gekennzeichnet durch ihre Transparenz 
+und einfache Struktur, bilden oft die Basis für das Verständnis komplexerer Algorithmen. 
+Dennoch bleibt die Herausforderung bestehen, die Beiträge individueller Merkmale zur Modellvorhersage zu 
+quantifizieren und zu interpretieren.
+
+Die Anwendung von \acs{SHAP}-Werten ermöglicht es, diesen Herausforderungen zu begegnen und Einblicke in 
+die Modellvorhersagen zu gewähren, die über traditionelle Methoden hinausgehen. 
+Dieses Kapitel führt in die Grundlagen des \textsf{shap}-Pakets ein, demonstriert dessen Anwendung auf einen 
+spezifischen Datensatz und diskutiert die Berechnung sowie Interpretation der resultierenden \acs{SHAP}-Werte. 
+Die daraus gewonnenen Erkenntnisse leisten einen Beitrag zur Erklärbarkeit von Vorhersagemodellen und 
+unterstützen somit die wissenschaftliche Diskussion um die Verantwortlichkeit und Nachvollziehbarkeit 
+in der maschinellen Lernforschung.
+
+\section{Lineare Modelle als analytische Grundlage}
+
+In linearen Regressionsmodellen wird die Zielgröße als eine gewichtete Kombination der Eingangsmerkmale bestimmt. 
+Die einfache lineare Struktur dieser Modelle erleichtert das Verständnis der Beziehungen zwischen den Eingangsdaten 
+und den Vorhersagen. 
+
+Die Einsatzmöglichkeiten linearer Modelle erstrecken sich darauf, wie eine abhängige Variable, oft als $y$ bezeichnet, 
+mit einem oder mehreren Merkmalen, die als $x$ repräsentiert werden, zusammenhängt. Die Beziehungen, die in diesen Modellen 
+gelernt werden, folgen einer linearen Gleichung und können für jede einzelne Beobachtung $i$ wie folgt spezifiziert werden:
+
+\[
+    y_i = \beta_0 + \beta_1 x_1 + \ldots + \beta_p x_p + \epsilon,
+\]
+
+wobei das Ergebnis, das von einem linearen Modell für eine gegebene Beobachtung vorhergesagt wird, sich als Summe der mit 
+Gewichten versehenen Merkmale $p$ ergibt.
+
+Diese Gewichte oder Koeffizienten $\beta_j$ spiegeln den Einfluss jedes Merkmals auf die Vorhersage wider. 
+Der erste Wert dieser Reihe, $\beta_0$, wird als Achsenabschnitt oder y-Achsenabschnitt bezeichnet; er wird der Summe hinzugefügt, 
+ohne dass er mit einem Merkmal multipliziert wird. Der Fehlerterm $\epsilon$ repräsentiert die Abweichung zwischen der Vorhersage des Modells 
+und dem tatsächlichen Wert, also das, was das Modell nicht erklären kann. 
+Es wird angenommen, dass diese Fehler einer normalen Verteilung folgen, was bedeutet, dass Fehler sowohl in positiver als 
+auch in negativer Richtung auftreten können, mit einer höheren Wahrscheinlichkeit für kleinere Fehler und einer 
+geringeren Wahrscheinlichkeit für große Fehler \cite[S. 37]{Molnar_2022}.
+
+In einem linearen Modell stellt der Achsenabschnitt die Basislinie dar, an der die Auswirkungen aller 
+anderen Merkmale gemessen werden. Dieser Wert gibt an, was das Modell für die Zielvariable vorhersagen 
+würde, wenn alle anderen Merkmale nicht vorhanden wären – der Ausgangspunkt der Vorhersage 
+für einen Datensatz, in dem alle anderen Variablen auf null gesetzt sind. 
+Es ist wichtig zu erwähnen, dass der Achsenabschnitt für sich genommen nicht immer eine praktische 
+Bedeutung hat, da es selten vorkommt, dass alle Variablen tatsächlich den Wert null annehmen. 
+Die wahre Aussagekraft des Achsenabschnitts tritt zutage, wenn die Daten so standardisiert wurden, 
+dass ihre Mittelwerte bei null und die Standardabweichung bei eins liegen. Unter diesen Umständen repräsentiert der Achsenabschnitt 
+die erwartete Zielvariable für einen hypothetischen Fall, in dem alle Merkmale ihren Durchschnittswert 
+aufweisen.
+
+Bei der Betrachtung einzelner Merkmale innerhalb des Modells sagt das Gewicht $\beta_j$ eines Merkmals, 
+um wie viel sich die Zielvariable $y$ ändert, wenn das Merkmal $x_j$ um eine Einheit erhöht wird – und zwar unter 
+der Annahme, dass alle anderen Merkmale unverändert bleiben. 
+Dies ermöglicht es, den isolierten Effekt eines jeden Merkmals auf die Vorhersage zu verstehen \cite[S. 39]{Molnar_2022}.
+
+TODO: Fehlermaße erklären? 
+
+\section{Einführung in das \textsf{shap} Python-Paket}
+
+Das Python-Paket \textsf{shap} ist eine Open-Source-Bibliothek, die es Nutzern ermöglicht, 
+die Auswirkungen von Merkmalen auf Vorhersagen von maschinellen Lernmodellen zu interpretieren und zu visualisieren. 
+Entwickelt wurde die Bibliothek ursprünglich von Scott Lundberg und weiteren Mitwirkenden im Rahmen der Forschungsarbeit 
+an der University of Washington \cite{NIPS2017_8a20a862}. Das Paket basiert auf dem Konzept der Shapley-Werte aus der kooperativen Spieltheorie 
+und überträgt diese auf den Kontext des maschinellen Lernens, um als Tool für die Interpretierbarkeit und Erklärbarkeit 
+von Modellvorhersagen zu dienen \cite{shap_docs}.
+
+Die Kernfunktion des \textsf{shap}-Pakets ist die Berechnung von \acs{SHAP}-Werten, welche die Auswirkung der 
+Einzelmerkmale auf die Modellvorhersage quantifizieren. Jeder \acs{SHAP}-Wert ist ein Maß dafür, wie viel jedes Merkmal 
+zur Vorhersage beigetragen hat, im Vergleich zu einer durchschnittlichen Vorhersage über den gesamten Datensatz. 
+Diese Werte sind besonders wertvoll, weil sie ein Maß für die Bedeutung jedes Merkmals liefern, 
+das sowohl lokal (für einzelne Vorhersagen) als auch global (über das gesamte Modell) interpretiert werden kann.
+
+Mit \textsf{shap} können Benutzer die Vorhersagen einer Vielzahl von Modellen interpretieren, 
+von linearen Modellen bis hin zu komplexen Konstrukten wie tiefe neuronale Netzwerke. 
+Die Bibliothek bietet eine vielseitige Auswahl an Visualisierungsoptionen, darunter Beeswarm-Plots, Dependence-Plots und 
+Summary-Plots, die es ermöglichen, die \acs{SHAP}-Werte intuitiv zu verstehen.
+Diese Visualisierungen erleichtern es, Muster und Beiträge einzelner Merkmale zu erkennen, 
+was nicht nur wertvolle Einblicke in die Leistung des Modells bietet, sondern auch zu faireren und transparenteren 
+Modellentscheidungen führen kann. 
+
+Das \textsf{shap}-Paket ist auf GitHub gehostet \cite{github_shap}, die Dokumentation ist über GitHub Pages verfügbar \cite{shap_docs}.
+
+\section{Anwendung: Datensatzname}
+
+TODO: Einleitung in den Datensatz
+
+\subsection{Entwicklung und Anpassung eines linearen Regressionsmodells}
+
+TODO: Modell fitten
+
+\subsection{Berechnung von \acs{SHAP}-Werten}
+
+TODO: Berechnung der \acs{SHAP}-Werte.
+
+\subsection{Interpretation}
+
+TODO: Analyse der Ergebnisse, Interpretation von \acs{SHAP}-Werten, Vergleich der Koeffizienten mit den \acs{SHAP-Werten}.
