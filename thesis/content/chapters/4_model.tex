@@ -20,24 +20,31 @@ In linearen Regressionsmodellen wird die Zielgröße als eine gewichtete Kombina
 Die einfache lineare Struktur dieser Modelle erleichtert das Verständnis der Beziehungen zwischen den Eingangsdaten 
 und den Vorhersagen. 
 
-Die Einsatzmöglichkeiten linearer Modelle erstrecken sich darauf, wie eine abhängige Variable, oft als $y$ bezeichnet, 
-mit einem oder mehreren Merkmalen, die als $x$ repräsentiert werden, zusammenhängt. Die Beziehungen, die in diesen Modellen 
-gelernt werden, folgen einer linearen Gleichung und können für jede einzelne Beobachtung $i$ wie folgt spezifiziert werden:
+Lineare Modelle sind ein grundlegendes Werkzeug in der statistischen Modellierung und dienen dazu, das Verhältnis zwischen 
+einer abhängigen Variablen, die üblicherweise mit $y$ bezeichnet wird, 
+und einem oder mehreren Prädiktoren, den unabhängigen Variablen $x$, zu erfassen. 
+Diese Beziehungen werden mittels linearer Gleichungen dargestellt, die für jede 
+einzelne Beobachtung $i$ im Datensatz folgendermaßen formuliert werden können:
 
 \[
-    y_i = \beta_0 + \beta_1 x_1 + \ldots + \beta_p x_p + \epsilon,
+    y_i = \beta_0 + \sum_{j=1}^{p} \beta_j x_{ij} + \epsilon_i,
 \]
 
 wobei das Ergebnis, das von einem linearen Modell für eine gegebene Beobachtung vorhergesagt wird, sich als Summe der mit 
 Gewichten versehenen Merkmale $p$ ergibt.
 
-Diese Gewichte oder Koeffizienten $\beta_j$ spiegeln den Einfluss jedes Merkmals auf die Vorhersage wider. 
-Der erste Wert dieser Reihe, $\beta_0$, wird als Achsenabschnitt oder y-Achsenabschnitt bezeichnet; er wird der Summe hinzugefügt, 
-ohne dass er mit einem Merkmal multipliziert wird. Der Fehlerterm $\epsilon$ repräsentiert die Abweichung zwischen der Vorhersage des Modells 
-und dem tatsächlichen Wert, also das, was das Modell nicht erklären kann. 
-Es wird angenommen, dass diese Fehler einer normalen Verteilung folgen, was bedeutet, dass Fehler sowohl in positiver als 
-auch in negativer Richtung auftreten können, mit einer höheren Wahrscheinlichkeit für kleinere Fehler und einer 
-geringeren Wahrscheinlichkeit für große Fehler \cite[S. 37]{Molnar_2022}.
+Hierbei stellt $y_i$ den beobachteten Wert der abhängigen Variablen für die Beobachtungseinheit
+$i$ dar. Der Term $\beta_0$ ist der Achsenabschnitt oder y-Achsenabschnitt des Modells, 
+welcher den erwarteten Wert von $y$ darstellt, wenn alle unabhängigen Variablen $x$ null sind. 
+Die Summe $\sum_{j=1}^{p} \beta_j x_{ij}$ berechnet sich aus den Produkten der Koeffizienten 
+$\beta_j$ und den Werten der unabhängigen Variablen $x_{ij}$ für jede Beobachtungseinheit $i$ 
+und jeden Prädiktor $j$, wobei die Koeffizienten $\beta_j$ den geschätzten Einfluss der 
+entsprechenden unabhängigen Variablen auf die abhängige Variable beschreiben.
+
+Der Fehlerterm $\epsilon_i$ steht für die Residuen, also die Differenzen zwischen den beobachteten 
+und durch das Modell geschätzten Werten von $y_i$. Es wird angenommen, dass diese Fehler normalverteilt sind, 
+was bedeutet, dass Abweichungen in beiden Richtungen um den Mittelwert (hier Null) 
+mit abnehmender Wahrscheinlichkeit für größere Fehler auftreten \cite[S. 37]{Molnar_2022}.
 
 In einem linearen Modell stellt der Achsenabschnitt die Basislinie dar, an der die Auswirkungen aller 
 anderen Merkmale gemessen werden. Dieser Wert gibt an, was das Modell für die Zielvariable vorhersagen 

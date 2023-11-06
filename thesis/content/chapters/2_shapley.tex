@@ -111,9 +111,10 @@ hinzugefügt.
 
 Daraus lassen sich nun die gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
 
-\[
+\begin{equation}
   \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,34 \text{\euro}  
-\]
+\label{eq:marginal_anna}
+\end{equation}
 
 Analog gilt das für Ben:
 
@@ -138,7 +139,7 @@ der Shapley-Werte, die diese Berechnungen ermöglichen, detaillierter betrachtet
 
 \section{Formale Definition}
 
-Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\mathcal{N}|$ Elementen. Sei $v$ die \textbf{Koalitionsfunktion}, die jeder Teilmenge von $\mathcal{N}$ eine reele Zahl zuweist und insbesondere der leeren Koalition den Wert $0$ gibt. 
+Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\mathcal{N}|$ Elementen. Sei $v$ die Koalitionsfunktion, die jeder Teilmenge von $\mathcal{N}$ eine reele Zahl zuweist und insbesondere der leeren Koalition den Wert $0$ gibt. 
 
 \[
 \begin{array}{rcccl}
@@ -150,11 +151,16 @@ Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\math
 Eine nicht leere Teilmenge der Spieler $\mathcal{S} \subseteq \mathcal{N}$ heißt Koalition. $\mathcal{N}$ selbst bezichnet die große Koalition. Den Ausdruck $v(\mathcal{S})$ nennt man den Wert der Koalition $\mathcal{S}$.
 Der Shapley-Wert ordnet nun jedem Spieler aus $\mathcal{N}$ eine Auszahlung für das Spiel $v$ zu.
 
-Der marginale Beitag eines Spieler $i \in N$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
+Der marginale Beitag eines Spieler $i \in \mathcal{N}$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
 
 \begin{equation*}
 v(\mathcal{S} \cup \{i\}) - v(\mathcal{S}).
 \end{equation*}
+
+
+Sei $i = \text{Anna}$ und $\mathcal{S} = \{\text{Ben}\}$, dann ist $v(\mathcal{\{\text{Ben}\}} \cup \{\text{Anna}\}) - v(\mathcal{\{\text{Ben}\}})$ das
+zusätzliche Preisgeld, welches gewonnen wird, wenn Anna der Koalition mit Ben beitritt. 
+
 
 Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der marginalen Beiträge zu allen möglichen Koalitionen:
 
@@ -162,12 +168,42 @@ Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der
 \varphi_i (\mathcal{N}, v) = \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}} \underbrace{\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}}_{\text{Gewicht}} \underbrace{v(\mathcal{S} \cup \{i\}) - v(\mathcal{S})}_{\substack{\text{marginaler Beitrag von} \\ \text{Spieler $i$ zur Koalition $\mathcal{S}$}}}.
 \end{equation*}
 
-TODO: Erklärung!
+Die Summationsnotation \(\sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}}\) erfasst die marginalen Beiträge, 
+die der Spieler \( i \) zu allen Koalitionen leistet, die diesen noch nicht einschließen. Die Verwendung von 
+\(\mathcal{N} \setminus \{i\}\) stellt sicher, dass Spieler \( i \) nur für jene Koalitionen berücksichtigt wird, 
+zu denen er noch beitragen kann. Im Falle von Anna etwa, beziehen sich die Berechnungen auf die Koalitionen bestehend 
+aus der der leeren Koalition \(\emptyset\), aus \(\{\text{Ben}\}\), \(\{\text{Carla}\}\), oder beiden 
+zusammen \(\{\text{Ben, Carla}\}\) (vgl. Berechnung \ref{eq:marginal_anna}).
+
+Die Formel \(\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}\) in der Shapley-Wert-Berechnung 
+reflektiert den Gewichtungsfaktor für die marginalen Beiträge eines Spielers. Hierbei gibt \(|\mathcal{S}|!\) die Permutationen 
+der Spieler innerhalb der Koalition \(\mathcal{S}\) an, während \((n - 1 - |\mathcal{S}|)!\) die Anordnungen der 
+außenstehenden Spieler repräsentiert, nachdem der betrachtete Spieler beigetreten ist. 
+Der Bruchteil \(\frac{1}{n!}\) normalisiert diesen Wert über alle möglichen Koalitionszusammensetzungen, 
+wodurch die Wahrscheinlichkeit der Bildung einer spezifischen Koalition ausgedrückt wird.
+
+Betrachten wir Anna als den Spieler $i$ und die Koalition \(\mathcal{S} = \{\text{Ben, Carla}\}\). 
+Die Formel \(\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}\) berechnet den Gewichtungsfaktor 
+für Annas marginalen Beitrag zur Koalition \(\mathcal{S}\). In diesem Fall ist \(|\mathcal{S}| = 2\) und \(n = 3\). 
+Somit ergibt sich \(|\mathcal{S}|! = 2!\) und \(n - 1 - |\mathcal{S}| = 0!\), da nach dem Beitritt von 
+Anna keine weiteren Spieler übrig sind. Der Normalisierungsfaktor ist \(n! = 3! = 6\). Daraus folgt:
+
+\[
+\frac{2! \cdot 0!}{3!} = \frac{2 \cdot 1}{6} = \frac{1}{3}.
+\]
+
+Dies bedeutet, dass unter allen möglichen Permutationen der Spielerreihenfolge, Annas Beitritt zu der Koalition \{Ben, Carla\} 
+genau ein Drittel der Zeit am Ende geschieht. Somit wird ihr marginaler Beitrag mit diesem Faktor gewichtet, 
+um den Shapley-Wert zu berechnen (vgl. Berechnung \ref{eq:marginal_anna}) \cite[S. 21f]{Molnar_2023}.
 
 
 \section{Axiome}
 
-TODO: Erklärung und referenz auf Beispiel oben.
+Nachdem die Berechnung des Shapley-Werts für das Beispiel konkretisiert wurde, ist es nun von Bedeutung, die zugrundeliegenden Axiome zu betrachten, 
+welche die theoretische Rechtfertigung für die Methode liefern. Der Shapley-Wert wird nicht nur durch seine Berechnungsmethode, 
+sondern auch durch eine Reihe von Axiomen charakterisiert, die seine Fairness und Kohärenz im Kontext kooperativer Spiele sicherstellen. 
+Diese Axiome sind wesentliche Bestandteile, die die Einzigartigkeit und die wünschenswerten Eigenschaften des Shapley-Werts als 
+Lösungskonzept definieren \cite[S. 22]{Molnar_2023}.
 
 \paragraph{Pareto-Effizienz}
 
