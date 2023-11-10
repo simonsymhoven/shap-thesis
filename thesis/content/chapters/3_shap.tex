@@ -140,18 +140,18 @@ Daten und der Formel \ref{eq:shap-eq} berechnet:
 \end{align}
 
 wobei $p = |\mathcal{N}| = 3$ die Anzahl der Merkmale ist und $X_C$ die Menge der Merkmale 
-außerhalb der Koalition $\mathcal{S}$ repräsentiert. Die Integrale repräsentieren den erwarteten 
-Output des Modells über die Verteilung der nicht in der Koalition enthaltenen Merkmale.
+außerhalb der Koalition $\mathcal{S}$ repräsentiert. Die Integrale repräsentieren die erwartete 
+Vorhersage des Modells über die Verteilung der nicht in der Koalition enthaltenen Merkmale.
 
 In linearen Modellen, unter der Prämisse, dass die Merkmale unabhängig voneinander und gleichverteilt sind, 
 ist es möglich, die Berechnung der SHAP-Werte zu vereinfachen. Anstelle der komplexen Integration 
-über die Verteilungen aller Merkmale, kann der Fokus auf die Unterschiede in den Modelloutputs gelegt werden, 
+über die Verteilungen aller Merkmale, kann der Fokus auf die Unterschiede in den Modellvorhersagen gelegt werden, 
 die sich aus dem Hinzufügen oder Entfernen einzelner Merkmale ergeben. 
 Hierbei wird anstelle der spezifischen Werte der nicht in der betrachteten Koalition enthaltenen Merkmale 
 Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
 die Modellvorhersage auf eine direktere und rechnerisch weniger aufwendige Weise zu erfassen.
 Diese Vereinfachung ist für lineare Modelle angemessen, da die Auswirkungen jedes Merkmals 
-auf den Output des Modells additiv und unabhängig sind. Bei komplexeren, 
+auf die Vorhersage des Modells additiv und unabhängig sind. Bei komplexeren, 
 nichtlinearen Modellen ist eine detailliertere Berechnung erforderlich, 
 die oft auf numerischen Methoden oder Annäherungen basiert, mehr dazu in Kapitel \ref{sec:estimators}.
 
