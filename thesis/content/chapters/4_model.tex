@@ -1,15 +1,15 @@
-\chapter{Praktische Anwendung von \acs{SHAP} auf lineare Modelle}
+\chapter{Praktische Anwendung von SHAP auf lineare Modelle}
 
-In diesem Kapitel wird der Einsatz des \acs{SHAP}-Frameworks zur Interpretation linearer Modelle im 
+In diesem Kapitel wird der Einsatz des SHAP-Frameworks zur Interpretation linearer Modelle im 
 Kontext des maschinellen Lernens untersucht. Lineare Modelle, gekennzeichnet durch ihre Transparenz 
 und einfache Struktur, bilden oft die Basis für das Verständnis komplexerer Algorithmen. 
 Dennoch bleibt die Herausforderung bestehen, die Beiträge individueller Merkmale zur Modellvorhersage zu 
 quantifizieren und zu interpretieren.
 
-Die Anwendung von \acs{SHAP}-Werten ermöglicht es, diesen Herausforderungen zu begegnen und Einblicke in 
+Die Anwendung von SHAP-Werten ermöglicht es, diesen Herausforderungen zu begegnen und Einblicke in 
 die Modellvorhersagen zu gewähren, die über traditionelle Methoden hinausgehen. 
 Dieses Kapitel führt in die Grundlagen des \textsf{shap}-Pakets ein, demonstriert dessen Anwendung auf einen 
-spezifischen Datensatz und diskutiert die Berechnung sowie Interpretation der resultierenden \acs{SHAP}-Werte. 
+spezifischen Datensatz und diskutiert die Berechnung sowie Interpretation der resultierenden SHAP-Werte. 
 Die daraus gewonnenen Erkenntnisse leisten einen Beitrag zur Erklärbarkeit von Vorhersagemodellen und 
 unterstützen somit die wissenschaftliche Diskussion um die Verantwortlichkeit und Nachvollziehbarkeit 
 in der maschinellen Lernforschung.
@@ -86,8 +86,8 @@ an der University of Washington \cite{NIPS2017_8a20a862}. Das Paket basiert auf 
 und überträgt diese auf den Kontext des maschinellen Lernens, um als Tool für die Interpretierbarkeit und Erklärbarkeit 
 von Modellvorhersagen zu dienen \cite{shap_docs}.
 
-Die Kernfunktion des \textsf{shap}-Pakets ist die Berechnung von \acs{SHAP}-Werten, welche die Auswirkung der 
-Einzelmerkmale auf die Modellvorhersage quantifizieren. Jeder \acs{SHAP}-Wert ist ein Maß dafür, wie viel jedes Merkmal 
+Die Kernfunktion des \textsf{shap}-Pakets ist die Berechnung von SHAP-Werten, welche die Auswirkung der 
+Einzelmerkmale auf die Modellvorhersage quantifizieren. Jeder SHAP-Wert ist ein Maß dafür, wie viel jedes Merkmal 
 zur Vorhersage beigetragen hat, im Vergleich zu einer durchschnittlichen Vorhersage über den gesamten Datensatz. 
 Diese Werte sind besonders wertvoll, weil sie ein Maß für die Bedeutung jedes Merkmals liefern, 
 das sowohl lokal (für einzelne Vorhersagen) als auch global (über das gesamte Modell) interpretiert werden kann.
@@ -95,7 +95,7 @@ das sowohl lokal (für einzelne Vorhersagen) als auch global (über das gesamte 
 Mit \textsf{shap} können Benutzer die Vorhersagen einer Vielzahl von Modellen interpretieren, 
 von linearen Modellen bis hin zu komplexen Konstrukten wie tiefe neuronale Netzwerke. 
 Die Bibliothek bietet eine vielseitige Auswahl an Visualisierungsoptionen, darunter Beeswarm-Plots, Dependence-Plots und 
-Summary-Plots, die es ermöglichen, die \acs{SHAP}-Werte intuitiv zu verstehen.
+Summary-Plots, die es ermöglichen, die SHAP-Werte intuitiv zu verstehen.
 Diese Visualisierungen erleichtern es, Muster und Beiträge einzelner Merkmale zu erkennen, 
 was nicht nur wertvolle Einblicke in die Leistung des Modells bietet, sondern auch zu faireren und transparenteren 
 Modellentscheidungen führen kann. 

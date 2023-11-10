@@ -1,10 +1,10 @@
-\chapter{Von Shapley-Werten zu \acs{SHAP}: Brückenschlag zur Modellinterpretation}
+\chapter{Von Shapley-Werten zu SHAP: Brückenschlag zur Modellinterpretation}
 
 Im Rahmen der kooperativen Spieltheorie ermöglichen die Shapley-Werte eine faire Verteilung des kollektiv 
 erwirtschafteten Nutzens auf die beteiligten Akteure. Diese Methodik findet eine analoge Anwendung 
-in der Welt des maschinellen Lernens, um die Beiträge einzelner Merkmale (Features) zur Vorhersageleistung 
+in der Welt des maschinellen Lernens, um die Beiträge einzelner Merkmale zur Vorhersageleistung 
 eines Modells zu bewerten. Hier wird die Terminologie der Shapley-Werte in den Kontext von Machine Learning 
-Modellen übertragen, wobei jedes Feature als \glqq{}Spieler\grqq{} betrachtet wird, dessen Beitrag zur 
+Modellen übertragen, wobei jedes Merkmal als \glqq{}Spieler\grqq{} betrachtet wird, dessen Beitrag zur 
 \glqq{}Auszahlung\grqq{} – der Vorhersage des Modells – evaluiert werden soll. 
 
 \begin{table}[H]
@@ -13,15 +13,15 @@ Modellen übertragen, wobei jedes Feature als \glqq{}Spieler\grqq{} betrachtet w
     \toprule
     Terminologie Konzept & Terminologie Machine Learning & Ausdruck \\
     \midrule
-    Spieler & Feature Index & $j$ \\
-    Anzahl aller Spieler & Anzahl aller Features & $p$ \\
-    Große Koalition & Menge aller Features & $\mathcal{N} = \{1, \ldots, p\}$\\
-    Koalition & Menge von Features & $\mathcal{S} \subseteq \mathcal{N}$ \\
-    Größe der Koalition & Anzahl der Features der Koalition $\mathcal{S}$ & $|\mathcal{S}|$\\
-    Spieler, die nicht in der Koalition sind & Features, die nicht in der Koalition sind & $C: C = \mathcal{N} \setminus \mathcal{S}$ \\
+    Spieler & Merkmal Index & $j$ \\
+    Anzahl aller Spieler & Anzahl aller Merkmale & $p$ \\
+    Große Koalition & Menge aller Merkmale & $\mathcal{N} = \{1, \ldots, p\}$\\
+    Koalition & Menge von Merkmalen & $\mathcal{S} \subseteq \mathcal{N}$ \\
+    Größe der Koalition & Anzahl der Merkmale in der Koalition $\mathcal{S}$ & $|\mathcal{S}|$\\
+    Spieler, die nicht in der Koalition sind & Merkmale, die nicht in der Koalition enthalten sind & $C: C = \mathcal{N} \setminus \mathcal{S}$ \\
     Koalitionsfunktion & Vorhersage für Merkmalswerte in der Koalition $\mathcal{S}$ abzüglich der Vorhersage im Mittel & $v_{f, x^{(i)}}(\mathcal{S}$)\\
     Auszahlung & Vorhersage für eine Beobachtung $x^{(i)}$ abzüglich der Vorhersage im Mittel & $f(x^{(i)}) -  \mathbb{E}(f(X))$\\
-    Shapley-Wert & Beitrag von Feature $j$ zur Auszahlung des Modells für eine Beobachtung $x^{(i)}$& $\varphi_j^{(i)}(\mathcal{N}, f)$\\
+    Shapley-Wert & Beitrag des Merkmals $j$ zur Auszahlung des Modells für eine Beobachtung $x^{(i)}$& $\varphi_j^{(i)}(\mathcal{N}, f)$\\
     \bottomrule
     \end{tabularx}
     \caption{Terminologie der originären Shapley-Werte im Kontext des maschinellen Lernens \cite[S. 26]{Molnar_2023}.}
@@ -34,10 +34,14 @@ Die Koalitionsfunktion $v_{f, x^{(i)}}(\mathcal{S})$ für ein gegebenes Model $f
     v_{f, x^{(i)}}(\mathcal{S}) = \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} - \mathbb{E}(f(X))
 \end{align}
 
-\cite[S. 221, S. 27]{Molnar_2022, Molnar_2023}.
+Diese Funktion berechnet den erwarteten Wert der Vorhersage des Modells $f$, wenn nur eine Teilmenge $\mathcal{S}$ der 
+Merkmale genutzt wird, um die Vorhersage für die spezifische Beobachtung $x^{(i)}$ zu treffen. 
+Das Integral $\int_{\mathbb{R}}$ repräsentiert die Berechnung dieses erwarteten Wertes über alle möglichen Werte der Merkmale, 
+die nicht in $\mathcal{S}$ enthalten sind ($X_C$), gewichtet durch deren Wahrscheinlichkeitsverteilung $\mathbb{P}_{X_{C}}$. 
+Die Differenz zum Erwartungswert der Vorhersagen über alle Merkmale $\mathbb{E}(f(X))$ zeigt, 
+wie viel die spezifische Menge an Merkmalen $\mathcal{S}$ zur Vorhersage beiträgt \cite[S. 221, S. 27]{Molnar_2022, Molnar_2023}.
 
-Der marginale Beitrag eines Features $j$ zu einer Koalition $\mathcal{S}$ ist dann:
-
+Der marginale Beitrag eines Merkmals $j$ zu einer Koalition $\mathcal{S}$ ist dann:
 
 \begin{align}
     v_{f, x^{(i)}}(\mathcal{S} \cup \{j\}) - v_{f, x^{(i)}}(\mathcal{S}) &= \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} - \mathbb{E}(f(X)) \\ \notag
@@ -46,15 +50,161 @@ Der marginale Beitrag eines Features $j$ zu einer Koalition $\mathcal{S}$ ist da
     &\quad - \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}}
 \end{align}
 
-\cite[S. 29]{Molnar_2023}.
+Diese Gleichung beschreibt, wie sich der erwartete Wert der Vorhersage ändert, wenn das Merkmal $j$ zu der Menge der Merkmale $\mathcal{S}$ hinzugefügt wird \cite[S. 29]{Molnar_2023}.
 
-Der Beitrag $\varphi_j^{(i)}(\mathcal{N}, f)$ eines Features $j$ für eine Beobachtung $x^{(i)}$ für die Vorhersage $f(x^{(i)})$ ist gegeben als:
-
+Der Beitrag $\varphi_j^{(i)}(\mathcal{N}, f)$ eines Merkmals $j$ für eine Beobachtung $x^{(i)}$ für die Vorhersage $f(x^{(i)})$ ist gegeben als:
 
 \begin{align}
+    \label{eq:shap-eq}
     \varphi^{(i)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!} \\ \notag
     &\quad \cdot \left( \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} -
     \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} \right) 
 \end{align}
 
-\cite[S. 29, 30]{Molnar_2023}.
+Diese Formel ist die zentrale Berechnung der SHAP-Werte im maschinellen Lernen. 
+Sie summiert den gewichteten, marginalen Beitrag des Merkmals $j$ über alle möglichen Kombinationen der anderen Merkmale. 
+Die Gewichtung berücksichtigt die Anzahl der Merkmale in der Koalition $\mathcal{S}$ und die Anzahl der verbleibenden Merkmale, 
+die noch hinzugefügt werden könnten. Dies ergibt den durchschnittlichen Beitrag des Merkmals $j$ zur Vorhersage für die 
+Beobachtung $x^{(i)}$ \cite[S. 29, 30]{Molnar_2023}.
+
+Die Integration in der SHAP-Formel ist ein zentraler Schritt, um den erwarteten Beitrag jedes Merkmals unter 
+Berücksichtigung der gesamten Verteilung der Daten zu ermitteln. 
+In diesem Ansatz werden die Merkmale als Zufallsvariablen behandelt, und die Integration erfolgt über 
+die Wahrscheinlichkeitsverteilungen dieser Zufallsvariablen. Durch das Berechnen der erwarteten Vorhersagewerte mit 
+und ohne des jeweiligen Merkmals, unter Einbeziehung der Verteilung aller anderen Merkmale, 
+ermöglicht SHAP eine präzise und umfassende Einschätzung des Einflusses jedes einzelnen Merkmals. 
+Dieser Prozess der Marginalisierung, bei dem man über die Wahrscheinlichkeitsverteilungen der Merkmale integriert, 
+erlaubt es, den Beitrag eines jeden Merkmals zu isolieren und unabhängig von der spezifischen Zusammensetzung 
+der anderen Merkmale zu bewerten. Dies führt zu einer fairen und ganzheitlichen Bewertung der Beiträge aller Merkmale 
+zur Vorhersage des Modells \cite[S. 28]{Molnar_2023}.
+
+\section{Berechnung der SHAP-Werte unter Berücksichtigung der zugrundeliegenden Verteilung}
+
+Ein einfaches Beispiel soll helfen, die Anwendung von SHAP-Werten im 
+Kontext maschinellen Lernens zu illustrieren\footnote{In Anlehung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. Betrachtet wird ein fiktiver 
+Immobilien-Datensatz mit drei Merkmalen: Größe des Hauses in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
+und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtungen in diesem Datensatz:
+
+\begin{table}[H]
+    \footnotesize
+    \begin{tabularx}{\textwidth}{Xrrr}
+    \toprule
+     & $x_1$: Größe (in $m^2$) &  $x_2$: Anzahl Zimmer &  $x_3$: Entfernung zum Zentrum (in km) \\
+    \midrule
+    $x^{(1)}$ & 100 & 3 & 5 \\
+    $x^{(2)}$ & 150 & 4 & 10 \\
+    \bottomrule
+    \end{tabularx}
+    \caption{Merkmale von Beobachtungen in einem Immobilien-Datensatz.}
+    \label{tab:example}
+\end{table}
+
+Angenommen das Modell $f(x^{(i)})$ prognostiziert den Preis eines Hauses in Euro als eine lineare Kombination der Merkmale:
+
+\begin{equation}
+    f(x^{(i)}) = 5x_1^{(i)} + 20x_2^{(i)} - 2x_3^{(i)}.
+\end{equation}
+
+Die Vorhersagen für die beiden Beobachtungen lauten dann:
+
+\begin{align}
+    f(x^{(1)}) &= 5x_1^{(1)} + 20x_2^{(1)} - 2x_3^{(1)} \\ \notag
+        &= 5 \cdot 100 + 20 \cdot 3 - 2 \cdot 5 \\ \notag
+        &= 550 \text{\euro} 
+\end{align}
+
+und 
+
+\begin{align}
+    f(x^{(2)}) &= 5x_1^{(2)} + 20x_2^{(2)} - 2x_3^{(2)} \\ \notag
+        &= 5 \cdot 150 + 20 \cdot 4 - 2 \cdot 10 \\ \notag
+        &= 810 \text{\euro}. 
+\end{align}
+
+Die erwartete Auszahlung des Modells $\mathbb{E}(f(X))$ wird berechnet als:
+\begin{align}
+    \mathbb{E}(f(X)) &= 5 \cdot \mathbb{E}(X_1) + 20 \cdot \mathbb{E}(X_2) - 2 \cdot \mathbb{E}(X_3) \\ \notag
+                     &= 5 \cdot 125 + 20 \cdot 3,5 - 2 \cdot 7,5 \\ \notag
+                     &= 680 \,\text{\euro}
+\end{align}
+
+Sei $\mathcal{N} = \{1, 2, 3\}$ die Menge aller Merkmale und die Beobachtung $x^{(1)} = [100, 3, 5]$. 
+Der SHAP-Wert für jedes Merkmal $j \in \mathcal{N}$ wird unter Berücksichtigung der Verteilung der 
+Daten und der Formel \ref{eq:shap-eq} berechnet:
+
+\begin{align}
+    \label{eq:shap-formular}
+    \varphi^{(1)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!} \\ \notag
+    &\quad \cdot \left( \int_{\mathbb{R}} f(x^{(1)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} -
+    \int_{\mathbb{R}} f(x^{(1)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} \right) 
+\end{align}
+
+wobei $p = |\mathcal{N}| = 3$ die Anzahl der Merkmale ist und $X_C$ die Menge der Merkmale 
+außerhalb der Koalition $\mathcal{S}$ repräsentiert. Die Integrale repräsentieren den erwarteten 
+Output des Modells über die Verteilung der nicht in der Koalition enthaltenen Merkmale.
+
+In linearen Modellen, unter der Prämisse, dass die Merkmale unabhängig voneinander und gleichverteilt sind, 
+ist es möglich, die Berechnung der SHAP-Werte zu vereinfachen. Anstelle der komplexen Integration 
+über die Verteilungen aller Merkmale, kann der Fokus auf die Unterschiede in den Modelloutputs gelegt werden, 
+die sich aus dem Hinzufügen oder Entfernen einzelner Merkmale ergeben. 
+Hierbei wird anstelle der spezifischen Werte der nicht in der betrachteten Koalition enthaltenen Merkmale 
+Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
+die Modellvorhersage auf eine direktere und rechnerisch weniger aufwendige Weise zu erfassen.
+Diese Vereinfachung ist für lineare Modelle angemessen, da die Auswirkungen jedes Merkmals 
+auf den Output des Modells additiv und unabhängig sind. Bei komplexeren, 
+nichtlinearen Modellen ist eine detailliertere Berechnung erforderlich, 
+die oft auf numerischen Methoden oder Annäherungen basiert, mehr dazu in Kapitel \ref{sec:estimators}.
+
+Der Beitrag durch das Hinzufügen des Merkmals $x_1$ zur bestehenden Koalition $\mathcal{S} = \{x_2\}$ wird
+nach Formel \ref{eq:shap-formular} berechnet als:
+
+\begin{align}
+    \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1! \cdot (3 - 1 - 1)!}{3!} \\ \notag
+        &\quad \cdot \int f([x_1, x_2 , X_3]) d\mathbb{P}(X_3) - \int f([X_1, x_2, X_3]) d\mathbb{P}(X_1, X_3)
+\end{align}
+
+Da \( X_1 \) und \( X_3 \) unabhängig und gleichmäßig verteilt sind, ersetzen wir \( X_2 \) und \( X_3 \) durch ihre Erwartungswerte:
+
+\begin{align}
+    \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1}{6} \Big(f([x_1, x_2, \mathbb{E}(X_3)]) - f([\mathbb{E}(X_1), x_2, \mathbb{E}(X_3)])\Big) \\ \notag
+        &= \frac{1}{6} \Big( f([100, 3, 7.5]) - f([125, 3, 7.5]) \Big) \\ \notag
+        &= \frac{1}{6} \Big( (5 \cdot 100 + 20 \cdot 3 - 2 \cdot 7,5) - (5 \cdot 125 + 20 \cdot 3 - 2 \cdot 7,5) \Big) \\ \notag
+        &= \frac{1}{6} (545 - 670) \\ \notag
+        &= \frac{1}{6} (-125)
+\end{align}
+ 
+Die in Tabelle \ref{tab:shapley_marginal_features} dargestellten Kombinationen illustrieren die marginalen Beiträge und SHAP-Werte 
+für jedes Merkmal in jeder möglichen Koalition von Merkmalen, bezogen auf die Beobachtung $x^{(1)}$. 
+Diese Analyse ist ebenso auf die Beobachtung $x^{(2)}$ anwendbar und erfordert eine analoge Vorgehensweise.
+
+\begin{table}[H]
+    \footnotesize
+    \begin{tabularx}{\textwidth}{XXrrrrr}
+    \toprule
+    $x_{j}$ & $\mathcal{S}$ & $v_{f, x^{(i)}}(\mathcal{S})$ & $v_{f, x^{(i)}}(\mathcal{S} \cup \{j\})$ & $v_{f, x^{(i)}}(\mathcal{S} \cup \{j\}) - v_{f, x^{(i)}}(\mathcal{S})$ & Gewicht & $\varphi_{j}^{(1)}(\mathcal{S}, f)$\\
+    \midrule
+    $x_1$ & $\emptyset$ & 680 & 555 & -125 & $\frac{1}{3}$ & -41,67 \\
+    $x_1$ & $\{x_2\}$ & 670 & 545 & -125 & $\frac{1}{6}$ & -20.83 \\
+    $x_1$ & $\{x_3\}$ & 685 & 560 & -125 & $\frac{1}{6}$ & -20.83 \\
+    $x_1$ & $\{x_2, x_3\}$ & 675 & 550 & -125 & $\frac{1}{3}$ & -41,67 \\
+    $x_2$ & $\emptyset$ & 680 & 670 & -10 & $\frac{1}{3}$ & -3,33 \\
+    $x_2$ & $\{x_1\}$ & 555 & 545 & -10 & $\frac{1}{6}$ & -1,67 \\
+    $x_2$ & $\{x_3\}$ & 685 & 675 & -10 & $\frac{1}{6}$ & -1,67 \\
+    $x_2$ & $\{x_1, x_3\}$ & 560 & 550 & -10 & $\frac{1}{3}$ & -3,33 \\
+    $x_3$ & $\emptyset$ & 680 & 685 & 5 & $\frac{1}{3}$ & 1,67 \\
+    $x_3$ & $\{x_1\}$ & 555 & 560 & 5 & $\frac{1}{6}$ & 0,83 \\
+    $x_3$ & $\{x_2\}$ & 670 & 675 & 5 & $\frac{1}{6}$ & 0,83 \\
+    $x_3$ & $\{x_1, x_2\}$ & 545 & 550 & 5 & $\frac{1}{3}$ & 1,67 \\
+    \bottomrule
+    \end{tabularx}
+    \caption{Marginalbeiträge der einzelnen Merkmale zu den möglichen Koalitionen für die Beobachtung $x^{(1)}$.}
+    \label{tab:shapley_marginal_features}
+\end{table}
+
+
+
+
+\section{Axiome}
+
+\section{SHAP Estimators}
+\label{sec:estimators}
