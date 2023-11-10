@@ -6,7 +6,7 @@ eines Preisgeldes aus einem Designwettbewerb unter den Gewinnern – wird zunäc
 in das Konzept gegeben. Anschließend wird die formale Definition der Shapley-Werte erläutert, um die 
 theoretischen Grundlagen für ihre Berechnung und Anwendung zu legen.
 
-\section{Beispiel: Designwettbewerb}
+\section{Wie lässt sich der Gewinn gerecht aufteilen?}
 
 Angenommen, drei Teilnehmer, Anna, Ben und Carla, haben als Team kooperiert und den ersten Platz bei einem Designwettbewerb belegt\footnote{In Anlehung an Beispiel aus Kapitel 4 \glqq{}Who's going to pay for that taxi?\grqq{}\cite[S.17-20]{Molnar_2023}.}. 
 Dieser Erfolg führt zu einem Gesamtgewinn von 1000 \euro. Das Preisgeld für den zweiten Platz beträgt 750 \euro{} und 500 \euro{} für den dritten Platz.
@@ -109,7 +109,7 @@ In weiteren zwei Koalitionsbildungen (5. und 6.) wird Anna der bestehenden Koali
 In den beiden übrigen Koalitionsbildungen wird Anna einmal der Koaliton bestehend aus Ben (3.) und einmal der Koalition bestehend aus Carla (4.)
 hinzugefügt. 
 
-Daraus lassen sich nun die gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
+Daraus lässt sich nun der Shapley-Wert mit den gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
 
 \begin{equation}
   \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,34 \text{\euro}  
@@ -118,15 +118,17 @@ Daraus lassen sich nun die gewichteten durchschnittlichen marginalen Beiträge f
 
 Analog gilt das für Ben:
 
-\[
+\begin{equation}
   \frac{1}{6} ( \underbrace{2 \cdot 750 \text{\euro}}_{\text{B $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot 500 \text{\euro}}_{\text{B $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A, C$\}}} ) \approx 458,34 \text{\euro}  
-\]
+  \label{eq:marginal_ben}
+\end{equation}
 
 und Carla:
 
-\[
+\begin{equation}
   \frac{1}{6} ( \underbrace{2 \cdot 0 \text{\euro}}_{\text{C $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot (-250) \text{\euro}}_{\text{C $\rightarrow$ $\{B$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A, B$\}}} ) \approx 83,34 \text{\euro}  
-\]
+  \label{eq:marginal_carla}
+\end{equation}
 
 
 Auf Basis der gewichteten durchschnittlichen marginalen Beiträge lässt sich feststellen, 
@@ -153,9 +155,10 @@ Der Shapley-Wert ordnet nun jedem Spieler aus $\mathcal{N}$ eine Auszahlung für
 
 Der marginale Beitag eines Spieler $i \in \mathcal{N}$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
 
-\begin{equation*}
+\begin{equation}
 v(\mathcal{S} \cup \{i\}) - v(\mathcal{S}).
-\end{equation*}
+\label{eq:marignal}
+\end{equation}
 
 
 Sei $i = \text{Anna}$ und $\mathcal{S} = \{\text{Ben}\}$, dann ist $v(\mathcal{\{\text{Ben}\}} \cup \{\text{Anna}\}) - v(\mathcal{\{\text{Ben}\}})$ das
@@ -164,9 +167,9 @@ zusätzliche Preisgeld, welches gewonnen wird, wenn Anna der Koalition mit Ben b
 
 Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der marginalen Beiträge zu allen möglichen Koalitionen:
 
-\begin{equation*}
+\begin{equation}
 \varphi_i (\mathcal{N}, v) = \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}} \underbrace{\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}}_{\text{Gewicht}} \underbrace{v(\mathcal{S} \cup \{i\}) - v(\mathcal{S})}_{\substack{\text{marginaler Beitrag von} \\ \text{Spieler $i$ zur Koalition $\mathcal{S}$}}}.
-\end{equation*}
+\end{equation}
 
 Die Summationsnotation \(\sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}}\) erfasst die marginalen Beiträge, 
 die der Spieler \( i \) zu allen Koalitionen leistet, die diesen noch nicht einschließen. Die Verwendung von 
@@ -188,9 +191,9 @@ für Annas marginalen Beitrag zur Koalition \(\mathcal{S}\). In diesem Fall ist 
 Somit ergibt sich \(|\mathcal{S}|! = 2!\) und \(n - 1 - |\mathcal{S}| = 0!\), da nach dem Beitritt von 
 Anna keine weiteren Spieler übrig sind. Der Normalisierungsfaktor ist \(n! = 3! = 6\). Daraus folgt:
 
-\[
+\begin{equation}
 \frac{2! \cdot 0!}{3!} = \frac{2 \cdot 1}{6} = \frac{1}{3}.
-\]
+\end{equation}
 
 Dies bedeutet, dass unter allen möglichen Permutationen der Spielerreihenfolge, Annas Beitritt zu der Koalition \{Ben, Carla\} 
 genau ein Drittel der Zeit am Ende geschieht. Somit wird ihr marginaler Beitrag mit diesem Faktor gewichtet, 
@@ -202,49 +205,79 @@ um den Shapley-Wert zu berechnen (vgl. Berechnung \ref{eq:marginal_anna}) \cite[
 Nachdem die Berechnung des Shapley-Werts für das Beispiel konkretisiert wurde, ist es nun von Bedeutung, die zugrundeliegenden Axiome zu betrachten, 
 welche die theoretische Rechtfertigung für die Methode liefern. Der Shapley-Wert wird nicht nur durch seine Berechnungsmethode, 
 sondern auch durch eine Reihe von Axiomen charakterisiert, die seine Fairness und Kohärenz im Kontext kooperativer Spiele sicherstellen. 
-Diese Axiome sind wesentliche Bestandteile, die die Einzigartigkeit und die wünschenswerten Eigenschaften des Shapley-Werts als 
-Lösungskonzept definieren \cite[S. 22]{Molnar_2023}.
+Lloyd Shapley leitete den Shapley-Wert ursprünglich aus diesen Axiomen ab und bewies, 
+dass dieser der einzige ist, der den Axiomen genügt\footnote{Eine detaillierte Darstellung dieser Axiome und des Beweises 
+ihrer Einzigartigkeit findet sich in Shapleys Originalarbeit, deren umfassende Behandlung jedoch den Rahmen dieser Arbeit überschreiten würde \cite[S. 307-318]{Shapley+1953+307+318}.}. 
+Diese Axiome sind wesentliche Bestandteile, die die Einzigartigkeit und die wünschenswerten Eigenschaften des Shapley-Werts als Lösungskonzept definieren \cite[S. 22]{Molnar_2023}. 
 
-\paragraph{Pareto-Effizienz}
+\paragraph{Effizienz}
 
 Der Wert der großen Koalition wird an die Spieler verteilt:
 
-\begin{equation*}
+\begin{equation}
 \sum_{i \in \mathcal{N}} \varphi_i (\mathcal{N}, v) = v(\mathcal{N}).
-\end{equation*}
+\end{equation}
+
+Dies bedeutet, dass die Summe der Shapley-Werte aller Spieler dem Gesamtwert entspricht, 
+den die Koalition aller Spieler zusammen erreichen kann. Der Gesamtwert, den die große Koalition $\mathcal{N}$, 
+bestehend aus Anna, Ben und Carla, generiert, wird komplett unter den Spielern aufgeteilt \cite[S. 22]{Molnar_2023}. 
+Unter Vernachlässigung minimaler Rundungsdifferenzen entspricht die Summe der Shapley-Werte, 
+berechnet in den Gleichungen \ref{eq:marginal_anna}, \ref{eq:marginal_ben} und \ref{eq:marginal_carla}, 
+dem kollektiven Ertrag der großen Koalition:
+
+\begin{equation}
+  458,34 \text{\euro} + 458,34 \text{\euro} + 83,32 \text{\euro} \approx 1000 \text{\euro} 
+\end{equation}
+
 
 \paragraph{Symmetrie}
 
 Zwei Spieler $i$ und $j$, die die gleichen marginalen Beiträgen zu jeder Koalition haben,
 
-\begin{equation*}
-v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\})
-\end{equation*}
+\begin{equation}
+v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i, j\}
+\end{equation}
 
 erhalten das Gleiche:
 
-\begin{equation*}
-\varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v).
-\end{equation*}
+\begin{equation}
+\varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v),
+\end{equation}
 
-\paragraph{Null-Spieler-Eigenschaft}
+\cite[S. 22]{Molnar_2023}. Obwohl Anna und Ben den gleichen Shapley-Wert erhalten, ist dies nicht auf das Symmetrieaxiom zurückzuführen, 
+da ihre marginalen Beiträge zu den Koalitionen variieren. Zum Beispiel leistet Anna keinen Beitrag zur Koalition, 
+wenn Ben bereits Teil davon ist, während Ben einen positiven Beitrag leistet, 
+wenn Anna bereits zur Koalition gehört (vgl. Tabelle \ref{tab:shapley_marginal}). Dies zeigt, dass die Gleichheit ihrer Shapley-Werte ein Ergebnis der 
+spezifischen Zahlenkonstellation in diesem Szenario ist und nicht aus der symmetrischen Interaktion 
+zwischen den beiden Spielern resultiert.
 
-Ein Spieler der zu jeder Koalition nichts bzw. den Wert seiner Einer-Koalition beiträgt, erhält null bzw. den Wert seiner Einer-Koalition:
+\paragraph{Null-Spieler-Eigenschaft (Dummy-Spieler-Eigenschaft)}
 
-\begin{equation*}
-\varphi_i (\mathcal{N}, v) = 0,
-\end{equation*}
+Ein Spieler $i$ der zu jeder Koalition nichts beiträgt:
 
-bzw.
+\begin{equation}
+  v(\mathcal{S} \cup \{i\}) =  v(\mathcal{S}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i\},
+\end{equation}
 
-\begin{equation*}
-\varphi_i (\mathcal{N}, v) = v(\{i\}).
-\end{equation*}
+erhält den Wert null:
+
+\begin{equation}
+  \varphi_i (\mathcal{N}, v) = 0,
+  \end{equation}
+
+\cite[S. 22]{Molnar_2023}. Dies stell sicher, dass ein Spieler, der keinen Beitrag leistet, auch nicht belohnt wird. 
 
 \paragraph{Additivität}
 
 Wenn das Spiel in zwei unabhängige Spiele zerlegt werden kann, dann ist die Auszahlung jedes Spielers im zusammengesetzten Spiel die Summe der Auszahlungen in den aufgeteilten Spielen:
 
-\begin{equation*}
+\begin{equation}
 \varphi_i (\mathcal{N}, v + w) = \varphi_i (\mathcal{N}, v) + \varphi_i (\mathcal{N}, w).
-\end{equation*}
+\end{equation}
+
+\cite[S. 22, 23]{Molnar_2023}. Wenn Anna, Ben und Carla neben dem ersten Wettbewerb an einem zweiten, unabhängigen Wettbewerb teilnehmen, 
+besagt das Additivitätsaxiom, dass die Shapley-Werte jedes Spielers aus beiden Wettbewerben einfach die Summe ihrer individuellen 
+Shapley-Werte aus jedem einzelnen Wettbewerb sind. Dies impliziert, dass die faire Aufteilung der Gewinne aus beiden Wettbewerben 
+konsistent bleibt, indem die aus dem ersten Wettbewerb abgeleiteten Prinzipien auf den zweiten Wettbewerb übertragen und 
+dann addiert werden.
+

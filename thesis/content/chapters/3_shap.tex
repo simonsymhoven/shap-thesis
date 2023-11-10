@@ -1,6 +1,60 @@
 \chapter{Von Shapley-Werten zu \acs{SHAP}: Brückenschlag zur Modellinterpretation}
 
-\section{Erwartete Auszahlung des Models}
-\section{Axiome}
-\section{Approximierung der Shapley Values}
-\section{\ac{SHAP}-Estimators}
+Im Rahmen der kooperativen Spieltheorie ermöglichen die Shapley-Werte eine faire Verteilung des kollektiv 
+erwirtschafteten Nutzens auf die beteiligten Akteure. Diese Methodik findet eine analoge Anwendung 
+in der Welt des maschinellen Lernens, um die Beiträge einzelner Merkmale (Features) zur Vorhersageleistung 
+eines Modells zu bewerten. Hier wird die Terminologie der Shapley-Werte in den Kontext von Machine Learning 
+Modellen übertragen, wobei jedes Feature als \glqq{}Spieler\grqq{} betrachtet wird, dessen Beitrag zur 
+\glqq{}Auszahlung\grqq{} – der Vorhersage des Modells – evaluiert werden soll. 
+
+\begin{table}[H]
+    \footnotesize
+    \begin{tabularx}{\textwidth}{XXX}
+    \toprule
+    Terminologie Konzept & Terminologie Machine Learning & Ausdruck \\
+    \midrule
+    Spieler & Feature Index & $j$ \\
+    Anzahl aller Spieler & Anzahl aller Features & $p$ \\
+    Große Koalition & Menge aller Features & $\mathcal{N} = \{1, \ldots, p\}$\\
+    Koalition & Menge von Features & $\mathcal{S} \subseteq \mathcal{N}$ \\
+    Größe der Koalition & Anzahl der Features der Koalition $\mathcal{S}$ & $|\mathcal{S}|$\\
+    Spieler, die nicht in der Koalition sind & Features, die nicht in der Koalition sind & $C: C = \mathcal{N} \setminus \mathcal{S}$ \\
+    Koalitionsfunktion & Vorhersage für Merkmalswerte in der Koalition $\mathcal{S}$ abzüglich der Vorhersage im Mittel & $v_{f, x^{(i)}}(\mathcal{S}$)\\
+    Auszahlung & Vorhersage für eine Beobachtung $x^{(i)}$ abzüglich der Vorhersage im Mittel & $f(x^{(i)}) -  \mathbb{E}(f(X))$\\
+    Shapley-Wert & Beitrag von Feature $j$ zur Auszahlung des Modells für eine Beobachtung $x^{(i)}$& $\varphi_j^{(i)}(\mathcal{N}, f)$\\
+    \bottomrule
+    \end{tabularx}
+    \caption{Terminologie der originären Shapley-Werte im Kontext des maschinellen Lernens \cite[S. 26]{Molnar_2023}.}
+    \label{tab:shapley_terms}
+\end{table}
+
+Die Koalitionsfunktion $v_{f, x^{(i)}}(\mathcal{S})$ für ein gegebenes Model $f$ und eine Beobachtung $x^{(i)}$ ist definiert als:
+
+\begin{align}
+    v_{f, x^{(i)}}(\mathcal{S}) = \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} - \mathbb{E}(f(X))
+\end{align}
+
+\cite[S. 221, S. 27]{Molnar_2022, Molnar_2023}.
+
+Der marginale Beitrag eines Features $j$ zu einer Koalition $\mathcal{S}$ ist dann:
+
+
+\begin{align}
+    v_{f, x^{(i)}}(\mathcal{S} \cup \{j\}) - v_{f, x^{(i)}}(\mathcal{S}) &= \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} - \mathbb{E}(f(X)) \\ \notag
+    &\quad - \left( \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} - \mathbb{E}(f(X)) \right) \\ \notag
+    &= \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} \\ \notag
+    &\quad - \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}}
+\end{align}
+
+\cite[S. 29]{Molnar_2023}.
+
+Der Beitrag $\varphi_j^{(i)}(\mathcal{N}, f)$ eines Features $j$ für eine Beobachtung $x^{(i)}$ für die Vorhersage $f(x^{(i)})$ ist gegeben als:
+
+
+\begin{align}
+    \varphi^{(i)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!} \\ \notag
+    &\quad \cdot \left( \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} -
+    \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} \right) 
+\end{align}
+
+\cite[S. 29, 30]{Molnar_2023}.

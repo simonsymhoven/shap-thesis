@@ -21,28 +21,28 @@ Die einfache lineare Struktur dieser Modelle erleichtert das Verständnis der Be
 und den Vorhersagen. 
 
 Lineare Modelle sind ein grundlegendes Werkzeug in der statistischen Modellierung und dienen dazu, das Verhältnis zwischen 
-einer abhängigen Variablen, die üblicherweise mit $y$ bezeichnet wird, 
-und einem oder mehreren Prädiktoren, den unabhängigen Variablen $x$, zu erfassen. 
+einer abhängigen Variablen, die üblicherweise mit $y^{(i)}$ bezeichnet wird, 
+und einem oder mehreren Prädiktoren, den unabhängigen Variablen $x_i$, zu erfassen. 
 Diese Beziehungen werden mittels linearer Gleichungen dargestellt, die für jede 
 einzelne Beobachtung $i$ im Datensatz folgendermaßen formuliert werden können:
 
-\[
-    y_i = \beta_0 + \sum_{j=1}^{p} \beta_j x_{ij} + \epsilon_i,
-\]
+\begin{equation}
+    y^{(i)} = \beta_0 + \sum_{j=1}^{p} \beta_j x^{(i)}_j + \epsilon^{(i)},
+\end{equation}
 
 wobei das Ergebnis, das von einem linearen Modell für eine gegebene Beobachtung vorhergesagt wird, sich als Summe der mit 
-Gewichten versehenen Merkmale $p$ ergibt.
+Gewichten $\beta_j$ versehenen Merkmale $p$ ergibt.
 
-Hierbei stellt $y_i$ den beobachteten Wert der abhängigen Variablen für die Beobachtungseinheit
+Hierbei stellt $y^{(i)}$ den beobachteten Wert der abhängigen Variablen für die Beobachtungseinheit
 $i$ dar. Der Term $\beta_0$ ist der Achsenabschnitt oder y-Achsenabschnitt des Modells, 
 welcher den erwarteten Wert von $y$ darstellt, wenn alle unabhängigen Variablen $x$ null sind. 
-Die Summe $\sum_{j=1}^{p} \beta_j x_{ij}$ berechnet sich aus den Produkten der Koeffizienten 
-$\beta_j$ und den Werten der unabhängigen Variablen $x_{ij}$ für jede Beobachtungseinheit $i$ 
+Die Summe $\sum_{j=1}^{p} \beta_j x^{(i)}_j$ berechnet sich aus den Produkten der Koeffizienten 
+$\beta_j$ und den Werten der unabhängigen Variablen $x^{(i)}_j$ für jede Beobachtungseinheit $i$ 
 und jeden Prädiktor $j$, wobei die Koeffizienten $\beta_j$ den geschätzten Einfluss der 
 entsprechenden unabhängigen Variablen auf die abhängige Variable beschreiben.
 
-Der Fehlerterm $\epsilon_i$ steht für die Residuen, also die Differenzen zwischen den beobachteten 
-und durch das Modell geschätzten Werten von $y_i$. Es wird angenommen, dass diese Fehler normalverteilt sind, 
+Der Fehlerterm $\epsilon^{(i)}$ steht für die Residuen, also die Differenzen zwischen den beobachteten 
+und durch das Modell geschätzten Werten von $y^{(i)}$. Es wird angenommen, dass diese Fehler normalverteilt sind, 
 was bedeutet, dass Abweichungen in beiden Richtungen um den Mittelwert (hier Null) 
 mit abnehmender Wahrscheinlichkeit für größere Fehler auftreten \cite[S. 37]{Molnar_2022}.
 
@@ -58,15 +58,28 @@ die erwartete Zielvariable für einen hypothetischen Fall, in dem alle Merkmale 
 aufweisen.
 
 Bei der Betrachtung einzelner Merkmale innerhalb des Modells sagt das Gewicht $\beta_j$ eines Merkmals, 
-um wie viel sich die Zielvariable $y$ ändert, wenn das Merkmal $x_j$ um eine Einheit erhöht wird – und zwar unter 
+um wie viel sich die Zielvariable $y^{(i)}$ ändert, wenn das Merkmal $x^{(i)}_j$ um eine Einheit erhöht wird – und zwar unter 
 der Annahme, dass alle anderen Merkmale unverändert bleiben. 
 Dies ermöglicht es, den isolierten Effekt eines jeden Merkmals auf die Vorhersage zu verstehen \cite[S. 39]{Molnar_2022}.
 
-TODO: Fehlermaße erklären? 
+Die optimalen Gewichte, oder Koeffizienten, eines linearen Regressionsmodells werden üblicherweise durch ein Verfahren bestimmt, 
+das als Methode der kleinsten Quadrate (engl. \textit{Ordinary Least Squares}, OLS) bekannt ist. 
+Diese Methode sucht die Koeffizienten \( \beta_0, \ldots, \beta_p \), welche die Summe der quadrierten 
+Differenzen zwischen den beobachteten Werten der Zielvariablen \( y^{(i)} \) und den von dem Modell 
+vorhergesagten Werten minimieren:
+
+\begin{equation}
+    \hat{\beta} = \arg \underset{\beta_0, \ldots, \beta_p}{\min} \ \sum_{i=1}^{n} \left( y^{(i)} - \left( \beta_0 + \sum_{j=1}^{p} \beta_j x_j^{(i)}\right)\right)^2.
+\end{equation}
+
+Das Ergebnis der Minimierung, \( \hat{\beta} \) stellt den Vektor der geschätzten Koeffizienten dar \cite[S. 37]{Molnar_2022}. 
+In der vorliegenden Arbeit wird das Python-Paket \textsf{scikit-learn}\footnote{\url{https://scikit-learn.org}} verwendet, um die lineare Regression durchzuführen und die Koeffizienten 
+\( \hat{\beta} \) zu bestimmen. 
+
 
 \section{Einführung in das \textsf{shap} Python-Paket}
 
-Das Python-Paket \textsf{shap} ist eine Open-Source-Bibliothek, die es Nutzern ermöglicht, 
+Das Python-Paket \textsf{shap}\footnote{\url{https://shap.readthedocs.io}} ist eine Open-Source-Bibliothek, die es Nutzern ermöglicht, 
 die Auswirkungen von Merkmalen auf Vorhersagen von maschinellen Lernmodellen zu interpretieren und zu visualisieren. 
 Entwickelt wurde die Bibliothek ursprünglich von Scott Lundberg und weiteren Mitwirkenden im Rahmen der Forschungsarbeit 
 an der University of Washington \cite{NIPS2017_8a20a862}. Das Paket basiert auf dem Konzept der Shapley-Werte aus der kooperativen Spieltheorie 
@@ -87,20 +100,10 @@ Diese Visualisierungen erleichtern es, Muster und Beiträge einzelner Merkmale z
 was nicht nur wertvolle Einblicke in die Leistung des Modells bietet, sondern auch zu faireren und transparenteren 
 Modellentscheidungen führen kann. 
 
-Das \textsf{shap}-Paket ist auf GitHub gehostet \cite{github_shap}, die Dokumentation ist über GitHub Pages verfügbar \cite{shap_docs}.
-
-\section{Anwendung: Datensatzname}
+\section{Einführung in den Datensatz}
 
 TODO: Einleitung in den Datensatz
 
-\subsection{Entwicklung und Anpassung eines linearen Regressionsmodells}
+\section{Modellierung der linearen Regression}
 
 TODO: Modell fitten
-
-\subsection{Berechnung von \acs{SHAP}-Werten}
-
-TODO: Berechnung der \acs{SHAP}-Werte.
-
-\subsection{Interpretation}
-
-TODO: Analyse der Ergebnisse, Interpretation von \acs{SHAP}-Werten, Vergleich der Koeffizienten mit den \acs{SHAP-Werten}.
