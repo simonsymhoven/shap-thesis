@@ -8,7 +8,7 @@ theoretischen Grundlagen für ihre Berechnung und Anwendung zu legen.
 
 \section{Wie lässt sich der Gewinn gerecht aufteilen?}
 
-Angenommen, drei Teilnehmer, Anna, Ben und Carla, haben als Team kooperiert und den ersten Platz bei einem Designwettbewerb belegt\footnote{In Anlehung an das Beispiel aus Kapitel 4.1 \glqq{}Who's going to pay for that taxi?\grqq{} \cite[S.17-20]{Molnar_2023}.}. 
+Angenommen, drei Teilnehmer, Anna, Ben und Carla, haben als Team kooperiert und den ersten Platz bei einem Designwettbewerb belegt\footnote{In Anlehnung an das Beispiel aus Kapitel 4.1 \glqq{}Who's going to pay for that taxi?\grqq{} \cite[S.17-20]{Molnar_2023}.}. 
 Dieser Erfolg führt zu einem Gesamtgewinn von 1000 \euro. Das Preisgeld für den zweiten Platz beträgt 750 \euro{} und 500 \euro{} für den dritten Platz.
 Die Herausforderung besteht nun darin, den Gewinn auf eine Weise zu verteilen, die den individuellen Beitrag jedes Teilnehmers 
 zur Erzielung des ersten Platzes gerecht widerspiegelt.
@@ -201,6 +201,7 @@ um den Shapley-Wert zu berechnen (vgl. Berechnung \ref{eq:marginal_anna}) \cite[
 
 
 \section{Axiome}
+\label{sec:axiome-shapley}
 
 Nachdem die Berechnung des Shapley-Werts für das Beispiel konkretisiert wurde, ist es nun von Bedeutung, die zugrundeliegenden Axiome zu betrachten, 
 welche die theoretische Rechtfertigung für die Methode liefern. Der Shapley-Wert wird nicht nur durch seine Berechnungsmethode, 
@@ -241,10 +242,10 @@ v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\}), \; \forall\, \mathcal{S} 
 erhalten das Gleiche:
 
 \begin{equation}
-\varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v),
+\varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v).
 \end{equation}
 
-\cite[S. 22]{Molnar_2023}. Obwohl Anna und Ben den gleichen Shapley-Wert erhalten, ist dies nicht auf das Symmetrieaxiom zurückzuführen, 
+Obwohl Anna und Ben den gleichen Shapley-Wert erhalten, ist dies nicht auf das Symmetrieaxiom zurückzuführen, 
 da ihre marginalen Beiträge zu den Koalitionen variieren. Zum Beispiel leistet Anna keinen Beitrag zur Koalition, 
 wenn Ben bereits Teil davon ist, während Ben einen positiven Beitrag leistet, 
 wenn Anna bereits zur Koalition gehört (vgl. Tabelle \ref{tab:shapley_marginal}). Dies zeigt, dass die Gleichheit ihrer Shapley-Werte ein Ergebnis der 
@@ -262,10 +263,10 @@ Ein Spieler $i$ der zu jeder Koalition nichts beiträgt:
 erhält den Wert null:
 
 \begin{equation}
-  \varphi_i (\mathcal{N}, v) = 0,
+  \varphi_i (\mathcal{N}, v) = 0.
   \end{equation}
 
-\cite[S. 22]{Molnar_2023}. Dies stell sicher, dass ein Spieler, der keinen Beitrag leistet, auch nicht belohnt wird. 
+Dies stell sicher, dass ein Spieler, der keinen Beitrag leistet, auch nicht belohnt wird. 
 
 \paragraph{Additivität}
 
@@ -275,9 +276,9 @@ Wenn das Spiel in zwei unabhängige Spiele zerlegt werden kann, dann ist die Aus
 \varphi_i (\mathcal{N}, v + w) = \varphi_i (\mathcal{N}, v) + \varphi_i (\mathcal{N}, w).
 \end{equation}
 
-\cite[S. 22, 23]{Molnar_2023}. Wenn Anna, Ben und Carla neben dem ersten Wettbewerb an einem zweiten, unabhängigen Wettbewerb teilnehmen, 
+Wenn Anna, Ben und Carla neben dem ersten Wettbewerb an einem zweiten, unabhängigen Wettbewerb teilnehmen, 
 besagt das Additivitätsaxiom, dass die Shapley-Werte jedes Spielers aus beiden Wettbewerben einfach die Summe ihrer individuellen 
 Shapley-Werte aus jedem einzelnen Wettbewerb sind. Dies impliziert, dass die faire Aufteilung der Gewinne aus beiden Wettbewerben 
 konsistent bleibt, indem die aus dem ersten Wettbewerb abgeleiteten Prinzipien auf den zweiten Wettbewerb übertragen und 
-dann addiert werden.
+dann addiert werden \cite[S. 5573, S.22f]{ijcai2022p778, Molnar_2022}.
 

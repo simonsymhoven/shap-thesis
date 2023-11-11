@@ -35,7 +35,7 @@ Die Koalitionsfunktion $v_{f, x^{(i)}}(\mathcal{S})$ für ein gegebenes Model $f
 \end{align}
 
 Diese Funktion berechnet den erwarteten Wert der Vorhersage des Modells $f$, wenn nur eine Teilmenge $\mathcal{S}$ der 
-Merkmale genutzt wird, um die Vorhersage für die spezifische Beobachtung $x^{(i)}$ zu treffen. 
+Merkmale genutzt wird, um die Vorhersage für die spezifische Beobachtung $x^{(i)} \in \mathbb{R}^{p}$ zu treffen. 
 Das Integral $\int_{\mathbb{R}}$ repräsentiert die Berechnung dieses erwarteten Wertes über alle möglichen Werte der Merkmale, 
 die nicht in $\mathcal{S}$ enthalten sind ($X_C$), gewichtet durch deren Wahrscheinlichkeitsverteilung $\mathbb{P}_{X_{C}}$. 
 Die Differenz zum Erwartungswert der Vorhersagen über alle Merkmale $\mathbb{E}(f(X))$ zeigt, 
@@ -52,7 +52,7 @@ Der marginale Beitrag eines Merkmals $j$ zu einer Koalition $\mathcal{S}$ ist da
 
 Diese Gleichung beschreibt, wie sich der erwartete Wert der Vorhersage ändert, wenn das Merkmal $j$ zu der Menge der Merkmale $\mathcal{S}$ hinzugefügt wird \cite[S. 29]{Molnar_2023}.
 
-Der Beitrag $\varphi_j^{(i)}(\mathcal{N}, f)$ eines Merkmals $j$ für eine Beobachtung $x^{(i)}$ für die Vorhersage $f(x^{(i)})$ ist gegeben als:
+Der Beitrag $\varphi_j^{(i)}(\mathcal{N}, f)$ eines Merkmals $j$ für eine Beobachtung $x^{(i)} \in \mathbb{R}^{p}$ für die Vorhersage $f(x^{(i)})$ ist gegeben als:
 
 \begin{align}
     \label{eq:shap-eq}
@@ -79,9 +79,10 @@ der anderen Merkmale zu bewerten. Dies führt zu einer fairen und ganzheitlichen
 zur Vorhersage des Modells \cite[S. 28]{Molnar_2023}.
 
 \section{Berechnung der SHAP-Werte unter Berücksichtigung der zugrundeliegenden Verteilung}
+\label{sec:example}
 
 Ein einfaches Beispiel soll helfen, die Anwendung von SHAP-Werten im 
-Kontext maschinellen Lernens zu illustrieren\footnote{In Anlehung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. Betrachtet wird ein fiktiver 
+Kontext maschinellen Lernens zu illustrieren\footnote{In Anlehnung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. Betrachtet wird ein fiktiver 
 Immobilien-Datensatz mit drei Merkmalen: Größe des Hauses in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
 und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtungen in diesem Datensatz:
 
@@ -108,9 +109,10 @@ Angenommen das Modell $f(x^{(i)})$ prognostiziert den Preis eines Hauses in Euro
 Die Vorhersagen für die beiden Beobachtungen lauten dann:
 
 \begin{align}
+    \label{eq:fx1}
     f(x^{(1)}) &= 5x_1^{(1)} + 20x_2^{(1)} - 2x_3^{(1)} \\ \notag
         &= 5 \cdot 100 + 20 \cdot 3 - 2 \cdot 5 \\ \notag
-        &= 550 \text{\euro} 
+        &= 550\,\text{\euro} 
 \end{align}
 
 und 
@@ -118,11 +120,12 @@ und
 \begin{align}
     f(x^{(2)}) &= 5x_1^{(2)} + 20x_2^{(2)} - 2x_3^{(2)} \\ \notag
         &= 5 \cdot 150 + 20 \cdot 4 - 2 \cdot 10 \\ \notag
-        &= 810 \text{\euro}. 
+        &= 810\,\text{\euro}. 
 \end{align}
 
 Die erwartete Auszahlung des Modells $\mathbb{E}(f(X))$ wird berechnet als:
 \begin{align}
+    \label{eq:efx}
     \mathbb{E}(f(X)) &= 5 \cdot \mathbb{E}(X_1) + 20 \cdot \mathbb{E}(X_2) - 2 \cdot \mathbb{E}(X_3) \\ \notag
                      &= 5 \cdot 125 + 20 \cdot 3,5 - 2 \cdot 7,5 \\ \notag
                      &= 680 \,\text{\euro}
@@ -160,14 +163,14 @@ nach Formel \ref{eq:shap-formular} berechnet als:
 
 \begin{align}
     \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1! \cdot (3 - 1 - 1)!}{3!} \\ \notag
-        &\quad \cdot \int f([x_1, x_2 , X_3]) d\mathbb{P}(X_3) - \int f([X_1, x_2, X_3]) d\mathbb{P}(X_1, X_3)
+        &\quad \cdot \int f(x_1, x_2 , X_3) d\mathbb{P}(X_3) - \int f(X_1, x_2, X_3) d\mathbb{P}(X_1, X_3)
 \end{align}
 
 Da \( X_1 \) und \( X_3 \) unabhängig und gleichmäßig verteilt sind, ersetzen wir \( X_2 \) und \( X_3 \) durch ihre Erwartungswerte:
 
 \begin{align}
-    \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1}{6} \Big(f([x_1, x_2, \mathbb{E}(X_3)]) - f([\mathbb{E}(X_1), x_2, \mathbb{E}(X_3)])\Big) \\ \notag
-        &= \frac{1}{6} \Big( f([100, 3, 7.5]) - f([125, 3, 7.5]) \Big) \\ \notag
+    \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1}{6} \Big(f(x_1, x_2, \mathbb{E}(X_3)) - f(\mathbb{E}(X_1), x_2, \mathbb{E}(X_3))\Big) \\ \notag
+        &= \frac{1}{6} \Big( f(100, 3, 7.5) - f(125, 3, 7.5) \Big) \\ \notag
         &= \frac{1}{6} \Big( (5 \cdot 100 + 20 \cdot 3 - 2 \cdot 7,5) - (5 \cdot 125 + 20 \cdot 3 - 2 \cdot 7,5) \Big) \\ \notag
         &= \frac{1}{6} (545 - 670) \\ \notag
         &= \frac{1}{6} (-125)
@@ -202,9 +205,35 @@ Diese Analyse ist ebenso auf die Beobachtung $x^{(2)}$ anwendbar und erfordert e
 \end{table}
 
 
-
-
 \section{Axiome}
+
+Die in Tabelle \ref{tab:shapley_marginal_features} präsentierten Ergebnisse bieten eine Grundlage, 
+um die Konformität der SHAP-Werte mit den etablierten Axiomen der Shapley-Werte, wie sie im vorherigen 
+Kapitel \ref{sec:axiome-shapley} diskutiert wurden, zu beurteilen. Die Axiome der SHAP-Werte stellen 
+eine adaptierte und kontextualisierte Anwendung dieser Prinzipien auf die Interpretation von Modellvorhersagen dar \cite{NIPS2017_8a20a862}.
+
+
+\paragraph{Effizienz}
+
+Das Effizienzaxiom besagt, dass die Summe der SHAP-Werte aller Features für eine gegebene Beobachtung $x^{(i)}$ 
+gleich der Differenz zwischen dem Modelloutput für diese Beobachtung $f(x^{(i)})$ 
+und dem durchschnittlichen Modellvorhersage $\mathbb{E}(f(X))$ sein muss:
+
+\begin{align}
+    \sum_{j=1}^{p}\varphi_j^{(i)}(\mathcal{N}, f) = f(x^{(i)}) - \mathbb{E}(f(X)),
+\end{align}
+
+\cite[S. 221]{Molnar_2022}. Für die Beobachtung $x^{(1)}$ aus Kapitel \ref{sec:example} und den Berechnungen 
+für $f(x^{(1)})$ (Gleichung \ref{eq:fx1}), sowie $\mathbb{E}(f(X))$ (Gleichung \ref{eq:efx}) ergibt sich:
+
+\begin{align}
+    \sum_{j=1}^{3}\varphi_j^{(1)}(\mathcal{N}, f) &=  -130 \\ \notag
+    f(x^{(1)}) - \mathbb{E}(f(X)) &= 550 - 680 = -130,   
+\end{align}
+
+womit das Effizienzaxiom erfüllt ist. Das beduetet, dass die Differenz der Vohersage 
+einer konkreten Beobachtung zur durchschnittlichen 
+Modellvorhersage auf alle Merkmale verteilt ist.
 
 \section{SHAP Estimators}
 \label{sec:estimators}
