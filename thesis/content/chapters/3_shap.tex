@@ -64,7 +64,7 @@ Der Beitrag $\varphi_j^{(i)}(\mathcal{N}, f)$ eines Merkmals $j$ für eine Beoba
 Diese Formel ist die zentrale Berechnung der SHAP-Werte im maschinellen Lernen. 
 Sie summiert den gewichteten, marginalen Beitrag des Merkmals $j$ über alle möglichen Kombinationen der anderen Merkmale. 
 Die Gewichtung berücksichtigt die Anzahl der Merkmale in der Koalition $\mathcal{S}$ und die Anzahl der verbleibenden Merkmale, 
-die noch hinzugefügt werden könnten. Dies ergibt den durchschnittlichen Beitrag des Merkmals $j$ zur Vorhersage für die 
+die noch hinzugefügt werden können. Dies ergibt den durchschnittlichen Beitrag des Merkmals $j$ zur Vorhersage für die 
 Beobachtung $x^{(i)}$ \cite[S. 29, 30]{Molnar_2023}.
 
 Die Integration in der SHAP-Formel ist ein zentraler Schritt, um den erwarteten Beitrag jedes Merkmals unter 
@@ -82,7 +82,7 @@ zur Vorhersage des Modells \cite[S. 28]{Molnar_2023}.
 \label{sec:example}
 
 Ein einfaches Beispiel soll helfen, die Anwendung von SHAP-Werten im 
-Kontext maschinellen Lernens zu illustrieren\footnote{In Anlehnung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. Betrachtet wird ein fiktiver 
+Kontext des maschinellen Lernens zu illustrieren\footnote{In Anlehnung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. Betrachtet wird ein fiktiver 
 Immobilien-Datensatz mit drei Merkmalen: Größe des Hauses in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
 und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtungen in diesem Datensatz:
 
@@ -128,8 +128,15 @@ Die erwartete Auszahlung des Modells $\mathbb{E}(f(X))$ wird berechnet als:
     \label{eq:efx}
     \mathbb{E}(f(X)) &= 5 \cdot \mathbb{E}(X_1) + 20 \cdot \mathbb{E}(X_2) - 2 \cdot \mathbb{E}(X_3) \\ \notag
                      &= 5 \cdot 125 + 20 \cdot 3,5 - 2 \cdot 7,5 \\ \notag
-                     &= 680 \,\text{\euro}
+                     &= 680 \,\text{\euro},
 \end{align}
+
+mit 
+
+\begin{align}
+    \label{eq:e}
+    \mathbb{E}(X_j) = \frac{1}{n} \sum_{i=1}^{n} x_j^{(i)}.
+\end{align}     
 
 Sei $\mathcal{N} = \{1, 2, 3\}$ die Menge aller Merkmale und die Beobachtung $x^{(1)} = [100, 3, 5]$. 
 Der SHAP-Wert für jedes Merkmal $j \in \mathcal{N}$ wird unter Berücksichtigung der Verteilung der 
@@ -166,7 +173,7 @@ nach Formel \ref{eq:shap-formular} berechnet als:
         &\quad \cdot \int f(x_1, x_2 , X_3) d\mathbb{P}(X_3) - \int f(X_1, x_2, X_3) d\mathbb{P}(X_1, X_3)
 \end{align}
 
-Da \( X_1 \) und \( X_3 \) unabhängig und gleichmäßig verteilt sind, ersetzen wir \( X_2 \) und \( X_3 \) durch ihre Erwartungswerte:
+Da \( X_1 \) und \( X_3 \) unabhängig und gleichmäßig verteilt sind, können \( X_2 \) und \( X_3 \) durch ihre Erwartungswerte (Gleichung \ref{eq:e}) ersetzt werden:
 
 \begin{align}
     \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1}{6} \Big(f(x_1, x_2, \mathbb{E}(X_3)) - f(\mathbb{E}(X_1), x_2, \mathbb{E}(X_3))\Big) \\ \notag
@@ -208,16 +215,17 @@ Diese Analyse ist ebenso auf die Beobachtung $x^{(2)}$ anwendbar und erfordert e
 \section{Axiome}
 
 Die in Tabelle \ref{tab:shapley_marginal_features} präsentierten Ergebnisse bieten eine Grundlage, 
-um die Konformität der SHAP-Werte mit den etablierten Axiomen der Shapley-Werte, wie sie im vorherigen 
+um die Konformität der SHAP-Werte mit den etablierten Axiomen der Shapley-Werte, wie sie im 
 Kapitel \ref{sec:axiome-shapley} diskutiert wurden, zu beurteilen. Die Axiome der SHAP-Werte stellen 
-eine adaptierte und kontextualisierte Anwendung dieser Prinzipien auf die Interpretation von Modellvorhersagen dar \cite{NIPS2017_8a20a862}.
+eine adaptierte und kontextualisierte Anwendung dieser Prinzipien auf die Interpretation von 
+Modellvorhersagen dar \cite{NIPS2017_8a20a862}.
 
 
 \paragraph{Effizienz}
 
 Das Effizienzaxiom besagt, dass die Summe der SHAP-Werte aller Features für eine gegebene Beobachtung $x^{(i)}$ 
-gleich der Differenz zwischen dem Modelloutput für diese Beobachtung $f(x^{(i)})$ 
-und dem durchschnittlichen Modellvorhersage $\mathbb{E}(f(X))$ sein muss:
+gleich der Differenz zwischen der Modellvorhersage für diese Beobachtung $f(x^{(i)})$ 
+und der durchschnittlichen Modellvorhersage $\mathbb{E}(f(X))$ sein muss:
 
 \begin{align}
     \sum_{j=1}^{p}\varphi_j^{(i)}(\mathcal{N}, f) = f(x^{(i)}) - \mathbb{E}(f(X)),
@@ -231,9 +239,59 @@ für $f(x^{(1)})$ (Gleichung \ref{eq:fx1}), sowie $\mathbb{E}(f(X))$ (Gleichung 
     f(x^{(1)}) - \mathbb{E}(f(X)) &= 550 - 680 = -130,   
 \end{align}
 
-womit das Effizienzaxiom erfüllt ist. Das beduetet, dass die Differenz der Vohersage 
+womit das Effizienzaxiom erfüllt ist. Die Differenz der Vohersage 
 einer konkreten Beobachtung zur durchschnittlichen 
-Modellvorhersage auf alle Merkmale verteilt ist.
+Modellvorhersage wird auf alle Merkmale verteilt.
+
+\begin{figure}[H]
+    \caption{Beitrag der Merkmale $x_{j \in \{1, 2, 3\}}$ zur Modellvorhersage $f(x^{(1)})$.}
+    \includegraphics[width=1\textwidth]{../notebooks/model-output-x1.png}
+    Quelle: Eigene Darstellung.
+    \label{pic:model-fx1}
+\end{figure}
+
+Das Modell $f(x^{(i)})$
+prognostiziert im Mittel einen Immobilienpreis von 680 \euro{}. Im Vergleich zur
+Verteilung des jeweiligen Merkmals, reduziert die Größe der 
+Wohnung ($x_1^{(1)}$) und die Anzahl der Zimmer ($x_2^{(1)}$) die Prognose 
+des Preises für die Immobilie $x^{(1)}$ um insgesamt 135 \euro{}, während die Entfernung zum Stadtzentrum
+($x_3^{(1)}$) den Preis der Wohnung um 5 \euro{} erhöht, wie in Abbildung 
+\ref{pic:model-fx1} veranschaulicht.
+
+\paragraph{Symmetrie}
+
+Das Symmetrieaxiom fordert, dass zwei Merkmale $i$ und $j$, die 
+in jeder Koalition denselben Beitrag leisten, auch denselben SHAP-Wert 
+erhalten müssen. In dem hier betrachteten Fall der Immobilienpreisprognose 
+würde dies bedeuten, dass wenn zwei Merkmale, beispielsweise die Größe einer 
+Wohnung und die Anzahl der Zimmer, immer den gleichen Einfluss auf den Preis hätten, 
+unabhängig von der Kombination anderer Merkmale, ihre SHAP-Werte identisch 
+sein müssen:
+
+\begin{equation}
+    v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i, j\} \Rightarrow \varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v),
+\end{equation}
+
+\cite[S. 221]{Molnar_2022}. Dies wird durch die Tabelle \ref{tab:shapley_marginal_features} 
+nicht illustriert, da jedes Merkmal einen unterschiedlichen Beitrag liefert, 
+was die Anwendung dieses Axioms in diesem speziellen Fall ausschließt.
+
+\paragraph{Null-Spieler-Eigenschaft (Dummy-Spieler-Eigenschaft)}
+
+Ein Merkmal $i$, das keinen Einfluss auf die Modellvorhersage hat, erhält gemäß der 
+Null-Spieler-Eigenschaft einen SHAP-Wert von Null. 
+Im Kontext des Beispiels würde ein Merkmal, das keine Veränderung in der Vorhersage 
+bewirkt, unabhängig von den anderen Merkmalen, einen SHAP-Wert von Null erhalten:
+
+\begin{equation}
+    v(\mathcal{S} \cup \{i\}) =  v(\mathcal{S}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i\} \Rightarrow \varphi_i (\mathcal{N}, v) = 0,
+\end{equation}
+
+\cite[S. 222]{Molnar_2022}. In der fiktiven Datenlage der Tabelle \ref{tab:shapley_marginal_features} hat jedes Merkmal 
+einen gewissen Einfluss, sodass die Null-Spieler-Eigenschaft hier nicht beobachtet werden kann.
+
+\paragraph{Additivität}
+
 
 \section{SHAP Estimators}
 \label{sec:estimators}
