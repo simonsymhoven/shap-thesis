@@ -1,35 +1,20 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
-import requests
-from zipfile import ZipFile
-from io import BytesIO
+import shap
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
-import shap
-from statsmodels.stats.outliers_influence import variance_inflation_factor
+import statsmodels.api as sm
+from sklearn.preprocessing import StandardScaler
+matplotlib.use('Agg')
 
 def load_data() -> pd.DataFrame:
-    url = "http://archive.ics.uci.edu/static/public/547/algerian+forest+fires+dataset.zip"
-
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        zip_data = BytesIO(response.content)
-
-        with ZipFile(zip_data, "r") as zip_file:
-            with zip_file.open("Algerian_forest_fires_dataset_UPDATE.csv") as csv_file:
-                df = pd.read_csv(csv_file, header=1, skiprows=[124, 125, 126, 170])
-        
-        df['Date'] = pd.to_datetime(df[['year', 'month', 'day']])
-        df.columns = df.columns.str.strip()
-        df.drop(columns=['day', 'month', 'year', 'Classes'], inplace=True)
-        df.set_index('Date', inplace=True)
-        return df
-    else:
-        print("Failed to download the dataset.")
-
+    url = "https://data.ub.uni-muenchen.de/2/1/miete03.asc"
+    df = pd.read_csv(url, sep='\t')
+    return df
+    
 def model(X, y):
     linreg = LinearRegression()
     linreg.fit(X, y)
@@ -60,24 +45,16 @@ def plot_corr(X):
     sns.heatmap(X.corr(), annot=True)
     plt.savefig('images/corr.png', dpi=300)
 
-def shap_explainer(linreg, X_train):
-    explainer = shap.Explainer(linreg, X_train, algorithm='linear')
-    return explainer
-
-def vif(X):
-    vif = pd.DataFrame()
-    vif["Feature"] = X.columns
-    vif["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
-    return vif
+def cdf(linreg, X):
+    cdf = pd.DataFrame(linreg.coef_.round(5), X.columns, columns=['Coefficients'])
+    cdf.loc['Intercept'] = linreg.intercept_.round(5)
+    return cdf
 
 df = load_data()
+plot_corr(X=df)
 
-
-X = df.drop(['FWI', 'FFMC', 'DMC', 'DC', 'ISI', 'BUI'], axis=1)
-y = df['FWI']
-
-vif = vif(X=X)
-print(vif)
+X = df.drop(['nm'], axis=1)
+y = df['nm']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
@@ -89,8 +66,31 @@ mse = mean_squared_error(y_test, y_pred)
 train_score = linreg.score(X_train, y_train)
 test_score = r2_score(y_test, y_pred)
 
-plot_residuals(y_test=y_test, y_pred=y_pred)
-plot_corr(X=df)
+print(mae)
+print(mse)
+print(train_score)
+print(test_score)
 
-explainer = shap_explainer(linreg=linreg, X_train=X_train)
+print(cdf(linreg, X))
+
+plot_residuals(y_test=y_test, y_pred=y_pred)
+
+explainer = shap.Explainer(linreg, X_train)
 shap_values = explainer(X_test)
+
+plt.figure(figsize=(12,10))
+shap.summary_plot(shap_values, X_test, max_display=12)
+plt.tight_layout()
+plt.savefig('images/shap_summary_plot.png', dpi=300)
+
+
+plt.figure(figsize=(12,10))
+shap.plots.bar(shap_values, max_display=12)
+plt.tight_layout()
+plt.savefig('images/shap_bar_plot.png', dpi=300)
+
+
+plt.figure(figsize=(12,10))
+shap.plots.waterfall(shap_values[56], max_display=12)
+plt.tight_layout()
+plt.savefig('images/shap_waterfall_plot.png', dpi=300)

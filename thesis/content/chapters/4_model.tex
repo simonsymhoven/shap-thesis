@@ -102,79 +102,66 @@ Modellentscheidungen führen kann.
 
 \section{Einführung in den Datensatz}
 
-Der für diese Studie verwendete Datensatz umfasst 244 Beobachtungen, die Daten aus zwei Regionen Algeriens zusammenfassen: 
-der Bejaia-Region im Nordosten und der Sidi Bel-Abbes-Region im Nordwesten des Landes. 
-Für jede Region wurden Daten aus dem Zeitraum von Juni bis September 2012 erfasst, 
-wobei jede Region mit 122 Instanzen repräsentiert ist.
+Der für diese Studie verwendete Datensatz umfasst Informationen aus dem Mietspiegel München des Jahres 2003. 
+Dieser Mietspiegel dient dazu, Mietentscheidungen in der Stadt München zu unterstützen und enthält 
+2053 Beobachtungen von Wohnungen. Das Ziel dieser Analyse besteht darin, die Nettomiete
+vorherzusagen, basierend auf den verfügbaren Merkmalen.
 
-Der Datensatz beinhaltet 11 Merkmale, die verschiedene Aspekte der Wetterbedingungen und 
-des Fire Weather Index (FWI) Systems beschreiben, sowie ein Zielattribut (Klasse), 
-das ursprünglich die Instanzen in zwei Klassen einteilte: Feuer (138 Instanzen) und kein 
-Feuer (106 Instanzen) \cite{misc_algerian_forest_fires_dataset___547}. 
-
-Für die Zwecke dieser Analyse liegt der Fokus auf einer Regression des FWI, 
-weshalb die Klassifikationsvariable aus den Daten entfernt wurde. Dadurch konzentriert sich die Untersuchung 
-ausschließlich auf die Vorhersage des FWI-Wertes anstelle der Einteilung in Brand- und Nicht-Brand-Klassen.
-
-Die Merkmale des Datensatzes umfassen:
+Die Variablen im Datensatz umfassen:
 
 \begin{itemize}
-    \item \textbf{Datum}: Tag, Monat und Jahr der Beobachtung.
-    \item \textbf{Temperatur (Temp)}: Die mittägliche Maximaltemperatur in Grad Celsius, die zwischen 22 und 42 Grad variiert.
-    \item \textbf{Relative Feuchtigkeit (RH)}: Die relative Luftfeuchtigkeit in Prozent, mit Werten von 21 bis 90 Prozent.
-    \item \textbf{Windgeschwindigkeit (Ws)}: Die Windgeschwindigkeit in Kilometern pro Stunde, die zwischen 6 und 29 km/h liegt.
-    \item \textbf{Regen}: Die Gesamtregenmenge des Tages in Millimetern, mit Werten von 0 bis 16,8 mm.
+    \item \textbf{$y$: nm (Nettomiete in EUR)}: Die monatliche Nettomiete in Euro, die Mieter für die Wohnung zahlen.
+    \item \textbf{$x_1$: nmqm (Nettomiete pro m$^2$ in EUR)}: Die monatliche Nettomiete pro Quadratmeter Wohnfläche in Euro.
+    \item \textbf{$x_2$: wfl (Wohnfläche in m$^2$)}: Die Gesamtfläche der Wohnung in Quadratmetern.
+    \item \textbf{$x_3$: rooms (Anzahl der Zimmer)}: Die Anzahl der Zimmer in der Wohnung, die die Größe und den Raumbedarf widerspiegelt.
+    \item \textbf{$x_4$: bj (Baujahr der Wohnung)}: Das Baujahr der Wohnung, das auf mögliche Modernisierungen und den Zustand hinweisen kann.
+    \item \textbf{$x_5$: bez (Stadtbezirk)}: Der Stadtbezirk in München, in dem sich die Wohnung befindet.
+    \item \textbf{$x_6$: wohngut (Gute Wohnlage)}: Eine binäre Variable, die angibt, ob die Wohnung in einer guten Wohnlage liegt (\textit{Ja=1, Nein=0}).
+    \item \textbf{$x_7$: wohnbest (Beste Wohnlage)}: Eine binäre Variable, die angibt, ob die Wohnung in der besten Wohnlage liegt (\textit{Ja=1, Nein=0}).
+    \item \textbf{$x_8$: ww0 (Warmwasserversorgung)}: Eine binäre Variable, die angibt, ob die Warmwasserversorgung vorhanden ist (\textit{Ja=0, Nein=1}).
+    \item \textbf{$x_9$: zh0 (Zentralheizung)}: Eine binäre Variable, die angibt, ob eine Zentralheizung vorhanden ist (\textit{Ja=0, Nein=1}).
+    \item \textbf{$x_{10}$: badkach0 (Gekacheltes Badezimmer)}: Eine binäre Variable, die angibt, ob das Badezimmer gekachelt ist (\textit{Ja=0, Nein=1}).
+    \item \textbf{$x_{11}$: badextra (Besondere Zusatzausstattung im Bad)}: Eine binäre Variable, die angibt, ob besondere Zusatzausstattungen im Badezimmer vorhanden sind (\textit{Ja=1, Nein=0}).
+    \item \textbf{$x_{12}$: kueche (Gehobene Küche)}: Eine binäre Variable, die angibt, ob eine gehobene Küchenausstattung vorhanden ist (\textit{Ja=1, Nein=0}).
 \end{itemize}
 
-Zusätzlich beinhaltet der Datensatz Komponenten des FWI-Systems, das als ein umfassendes System zur Einschätzung der potenziellen 
-Feuergefahr dient:
-
-\begin{itemize}
-    \item \textbf{Fine Fuel Moisture Code (FFMC)}: Ein Index, der die Feuchtigkeit des Streufalls und leicht entflammbaren Materials beschreibt, mit Werten von 28,6 bis 92,5.
-    \item \textbf{Duff Moisture Code (DMC)}: Ein Index, der die Feuchtigkeit des Auflagehumus und mitteltiefen Streufalls misst, mit Werten von 1,1 bis 65,9.
-    \item \textbf{Drought Code (DC)}: Ein Index, der die Trockenheit des tieferen Bodens beschreibt, mit Werten von 7 bis 220,4.
-    \item \textbf{Initial Spread Index (ISI)}: Ein Index, der das anfängliche Ausbreitungspotenzial eines Feuers darstellt, mit Werten von 0 bis 18,5.
-    \item \textbf{Buildup Index (BUI)}: Ein Index, der die Menge an verfügbarem brennbaren Material beschreibt, mit Werten von 1,1 bis 68.
-    \item \textbf{Fire Weather Index (FWI)}: Der umfassende Index, der auf den anderen Indizes basiert und das tägliche Feuerbrandrisiko angibt, mit Werten von 0 bis 31,1.
-\end{itemize}
-
-Weitere Informationen zum FWI-System und den spezifischen Indizes können im offiziellen Dokument des Canadian Forest Fire Danger 
-Rating System gefunden werden \cite{Van_Wagner_1987}.
-
-Der Datensatz wurde in Python mithilfe der Bibliothek \textsf{pandas} als DataFrame eingelesen, 
-wobei die Spalten für Tag, Monat und Jahr kombiniert und als Index des DataFrames verwendet wurden. Tabelle \ref{tab:df-head}
-zeigt die ersten drei Beobachtungen des Datensatzes:
+Der Datensatz wurde in Python mithilfe der Bibliothek \textsf{pandas} als DataFrame eingelesen.
+Tabelle \ref{tab:df-head} zeigt die ersten drei Beobachtungen des Datensatzes:
 
 \begin{table}[h]
-    \caption{Auszug des Datensatzes mit Wetter- und FWI-Indizes.}
+    \caption{Auszug aus dem Mietspiegel München (Jahr 2003) mit Wohnungsinformationen.}
     \footnotesize
-    \begin{tabularx}{\textwidth}{lrrrrrrrrrr}
+    \begin{tabularx}{\textwidth}{rrrrrrrrXXXXX}
     \toprule
-    Datum       & Temp & RH & Ws & Rain & FFMC & DMC & DC  & ISI & BUI & FWI \\
+    $y$ & $x_1$ & $x_2$ & $x_3$ &$x_4$ & $x_5$ & $x_6$ & $x_7$ & $x_8$ & $x_9$ & $x_{10}$ & $x_{11}$ & $x_{12}$ \\
     \midrule
-    2012-06-01  & 29   & 57 & 18 & 0.0  & 65.7 & 3.4 & 7.6 & 1.3 & 3.4 & 0.5 \\
-    2012-06-02  & 29   & 61 & 13 & 1.3  & 64.4 & 4.1 & 7.6 & 1.0 & 3.9 & 0.4 \\
-    2012-06-03  & 26   & 82 & 22 & 13.1 & 47.1 & 2.5 & 7.1 & 0.3 & 2.7 & 0.1 \\
+    741.39 & 10.90 & 68  & 2     & 1918.0 & 2   & 1       & 0        & 0   & 0   & 0        & 0        & 0      \\
+    715.82 & 11.01 & 65  & 2     & 1995.0 & 2   & 1       & 0        & 0   & 0   & 0        & 0        & 0      \\
+    528.25 & 8.38  & 63  & 3     & 1918.0 & 2   & 1       & 0        & 0   & 0   & 0        & 0        & 0      \\
     \bottomrule
     \end{tabularx}
     \label{tab:df-head}
     \normalsize\\
-    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_algerian_forest_fires_dataset___547}.
+    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{Open_Access_LMU_2010}.
 \end{table}
 
 Der vollständige Quellcode für das Einlesen der Daten sowie alle weiteren Analyseschritte ist 
 im Anhang \ref{linreg} dieser Arbeit zu finden.
 
-\section{Explorative Datenanalyse}
+\section{Explorative Datenanalyse \& Datenaufbereitung}
 
-
+\begin{figure}[h]
+    \caption{Korrelationsmatrix der Merkmale im Datensatz.}
+    \includegraphics[width=1\textwidth]{../scripts/images/corr.png}
+    Quelle: Eigene Darstellung, \ref{linreg}.
+    \label{pic:corr}
+\end{figure}
 
 \section{Modellierung der linearen Regression}
 
 TODO: Modell fitten
 
-
-\begin{figure}[H]
+\begin{figure}[h]
     \caption{Residuenanalyse: Beziehung zwischen Vorhersagen und Abweichungen.}
     \includegraphics[width=1\textwidth]{../scripts/images/residuals.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
