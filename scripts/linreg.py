@@ -6,22 +6,47 @@ import seaborn as sns
 import shap
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
-import statsmodels.api as sm
-from sklearn.preprocessing import StandardScaler
 matplotlib.use('Agg')
 
 def load_data() -> pd.DataFrame:
+    """
+    Load and return the dataset from the given URL as a Pandas DataFrame.
+
+    Returns:
+        pd.DataFrame: The loaded dataset.
+    """
     url = "https://data.ub.uni-muenchen.de/2/1/miete03.asc"
     df = pd.read_csv(url, sep='\t')
     return df
     
-def model(X, y):
+def model(X: pd.DataFrame, y: pd.Series) -> (LinearRegression, pd.DataFrame):
+    """
+    Fit a Linear Regression model to the given data.
+
+    Args:
+        X (pd.DataFrame): The feature matrix.
+        y (pd.Series): The target variable.
+
+    Returns:
+        LinearRegression: The fitted Linear Regression model.
+        DataFrame: The coefficients as DataFrame.
+    """
     linreg = LinearRegression()
     linreg.fit(X, y)
 
-    return linreg
+    cdf = pd.DataFrame(linreg.coef_.round(5), X.columns, columns=['Coefficients'])
+    cdf.loc['Intercept'] = linreg.intercept_.round(5)
 
-def plot_residuals(y_test, y_pred):
+    return linreg, cdf
+
+def plot_residuals(y_test: pd.Series, y_pred: pd.Series) -> None:
+    """
+    Create a residual plots.
+
+    Args:
+        y_test (pd.Series): The actual target values.
+        y_pred (pd.Series): The predicted target values.
+    """
     residuals = y_test - y_pred
 
     _, axs = plt.subplots(1, 2, figsize=(16, 6))
@@ -40,26 +65,52 @@ def plot_residuals(y_test, y_pred):
 
     plt.savefig('images/residuals.png', dpi=300)
 
-def plot_corr(X):
+def plot_corr(X: pd.DataFrame) -> None:
+    """
+    Create and save a correlation heatmap plot.
+
+    Args:
+        X (pd.DataFrame): The feature matrix.
+    """
     plt.figure(figsize=(12,10))
     sns.heatmap(X.corr(), annot=True)
     plt.savefig('images/corr.png', dpi=300)
 
-def cdf(linreg, X):
-    cdf = pd.DataFrame(linreg.coef_.round(5), X.columns, columns=['Coefficients'])
-    cdf.loc['Intercept'] = linreg.intercept_.round(5)
-    return cdf
+def plot_shap(shap_values: shap.Explanation, idx: int) -> None:
+    """
+    Create and save SHAP summary and bar plots.
+
+    Args:
+        shap_values (shap.Explanation): SHAP values.
+        idx (int): Index for the SHAP waterfall plot.
+    """
+    plt.figure(figsize=(12,10))
+    shap.summary_plot(shap_values, X_test, max_display=12)
+    plt.tight_layout()
+    plt.savefig('images/shap_summary_plot.png', dpi=300)
+
+    plt.figure(figsize=(12,10))
+    shap.plots.bar(shap_values, max_display=12)
+    plt.tight_layout()
+    plt.savefig('images/shap_bar_plot.png', dpi=300)
+
+    plt.figure(figsize=(12,10))
+    shap.plots.waterfall(shap_values[idx], max_display=12)
+    plt.tight_layout()
+    plt.savefig('images/shap_waterfall_plot.png', dpi=300)
 
 df = load_data()
-plot_corr(X=df)
 
-X = df.drop(['nm'], axis=1)
+X = df.drop(['nm'], axis=1) 
 y = df['nm']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
-linreg = model(X=X, y=y)
+linreg, params = model(X=X, y=y)
 y_pred = linreg.predict(X_test)
+
+explainer = shap.Explainer(linreg, X_train)
+shap_values = explainer(X_test)
 
 mae = mean_absolute_error(y_test, y_pred)
 mse = mean_squared_error(y_test, y_pred)
@@ -71,26 +122,8 @@ print(mse)
 print(train_score)
 print(test_score)
 
-print(cdf(linreg, X))
+print(params)
 
+plot_corr(X=df)
 plot_residuals(y_test=y_test, y_pred=y_pred)
-
-explainer = shap.Explainer(linreg, X_train)
-shap_values = explainer(X_test)
-
-plt.figure(figsize=(12,10))
-shap.summary_plot(shap_values, X_test, max_display=12)
-plt.tight_layout()
-plt.savefig('images/shap_summary_plot.png', dpi=300)
-
-
-plt.figure(figsize=(12,10))
-shap.plots.bar(shap_values, max_display=12)
-plt.tight_layout()
-plt.savefig('images/shap_bar_plot.png', dpi=300)
-
-
-plt.figure(figsize=(12,10))
-shap.plots.waterfall(shap_values[56], max_display=12)
-plt.tight_layout()
-plt.savefig('images/shap_waterfall_plot.png', dpi=300)
+plot_shap(shap_values=shap_values, idx=148)
