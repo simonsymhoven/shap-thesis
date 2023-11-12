@@ -22,7 +22,8 @@ die Anna, Ben und Carla erzielt hätten, wenn sie in unterschiedlichen Konstella
 Tabelle \ref{tab:shapley_example} zeigt die gegegbene Gewinnverteilung der verschiedenen Koalitionen. Die Koalition $\emptyset$ entspricht
 dabei der leeren Koalition -- der Nichtteilnahme an dem Wettbewerb.
 
-\begin{table}[H]
+\begin{table}[h]
+  \caption{Potenzielle Gewinne für verschiedene Teilnehmerkonstellationen im Designwettbewerb.}
   \footnotesize
   \begin{tabularx}{\textwidth}{Xrr}
   \toprule
@@ -38,8 +39,9 @@ dabei der leeren Koalition -- der Nichtteilnahme an dem Wettbewerb.
   $\{$Anna, Ben, Carla$\}$ & 1000 \euro & 1. Platz als Gesamtteam \\
   \bottomrule
   \end{tabularx}
-  \caption{Potenzielle Gewinne für verschiedene Teilnehmerkonstellationen im Designwettbewerb.}
   \label{tab:shapley_example}
+  \normalsize\\
+  Quelle: Eigene Darstellung.
 \end{table}
 
 Zur Berechnung der Shapley-Werte ist es erforderlich, den marginalen Beitrag jedes Spielers zu erfassen.
@@ -52,7 +54,8 @@ In diesem Beispiel mit Anna, Ben und Carla, die an einem Designwettbewerb teilne
 Anna zur Koalition von $\{$Ben$\}$ der zusätzliche Wert, den sie einbringt, wenn sie sich Ben anschließt, 
 ausgehend von Bens individuellem Gewinn.
 
-\begin{table}[H]
+\begin{table}[h]
+  \caption{Marginalbeiträge der einzelnen Teilnehmer zu den möglichen Koalitionen.}
   \footnotesize
   \begin{tabularx}{\textwidth}{XXrrr}
   \toprule
@@ -72,8 +75,9 @@ ausgehend von Bens individuellem Gewinn.
   Carla & $\{$Anna, Ben$\}$ & 750 \euro & 1000 \euro & 250 \euro \\
   \bottomrule
   \end{tabularx}
-  \caption{Marginalbeiträge der einzelnen Teilnehmer zu den möglichen Koalitionen.}
   \label{tab:shapley_marginal}
+  \normalsize\\
+  Quelle: Eigene Darstellung.
 \end{table}
 
 Die Tabelle \ref{tab:shapley_marginal} illustriert den Gewinn jeder möglichen Koalition ohne den 
@@ -233,16 +237,10 @@ dem kollektiven Ertrag der großen Koalition:
 
 \paragraph{Symmetrie}
 
-Zwei Spieler $i$ und $j$, die die gleichen marginalen Beiträgen zu jeder Koalition haben,
+Zwei Spieler $i$ und $j$, die die gleichen marginalen Beiträgen zu jeder Koalition haben erhalten das Gleiche:
 
 \begin{equation}
-v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i, j\}
-\end{equation}
-
-erhalten das Gleiche:
-
-\begin{equation}
-\varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v).
+v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i, j\} \Rightarrow \varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v).
 \end{equation}
 
 Obwohl Anna und Ben den gleichen Shapley-Wert erhalten, ist dies nicht auf das Symmetrieaxiom zurückzuführen, 
@@ -254,23 +252,18 @@ zwischen den beiden Spielern resultiert.
 
 \paragraph{Null-Spieler-Eigenschaft (Dummy-Spieler-Eigenschaft)}
 
-Ein Spieler $i$ der zu jeder Koalition nichts beiträgt:
+Ein Spieler $i$ der zu jeder Koalition nichts beiträgt erhält den Wert Null:
 
 \begin{equation}
-  v(\mathcal{S} \cup \{i\}) =  v(\mathcal{S}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i\},
+  v(\mathcal{S} \cup \{i\}) =  v(\mathcal{S}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i\} \Rightarrow \varphi_i (\mathcal{N}, v) = 0.
 \end{equation}
-
-erhält den Wert null:
-
-\begin{equation}
-  \varphi_i (\mathcal{N}, v) = 0.
-  \end{equation}
 
 Dies stell sicher, dass ein Spieler, der keinen Beitrag leistet, auch nicht belohnt wird. 
 
 \paragraph{Additivität}
 
-Wenn das Spiel in zwei unabhängige Spiele zerlegt werden kann, dann ist die Auszahlung jedes Spielers im zusammengesetzten Spiel die Summe der Auszahlungen in den aufgeteilten Spielen:
+Wenn das Spiel in zwei unabhängige Spiele mit Koalitionsfunktionen $v$ und $w$ zerlegt werden kann, dann ist die Auszahlung jedes Spielers im 
+zusammengesetzten Spiel die Summe der Auszahlungen in den aufgeteilten Spielen:
 
 \begin{equation}
 \varphi_i (\mathcal{N}, v + w) = \varphi_i (\mathcal{N}, v) + \varphi_i (\mathcal{N}, w).
@@ -281,4 +274,3 @@ besagt das Additivitätsaxiom, dass die Shapley-Werte jedes Spielers aus beiden 
 Shapley-Werte aus jedem einzelnen Wettbewerb sind. Dies impliziert, dass die faire Aufteilung der Gewinne aus beiden Wettbewerben 
 konsistent bleibt, indem die aus dem ersten Wettbewerb abgeleiteten Prinzipien auf den zweiten Wettbewerb übertragen und 
 dann addiert werden \cite[S. 5573, S.22f]{ijcai2022p778, Molnar_2022}.
-

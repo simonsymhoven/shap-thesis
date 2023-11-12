@@ -3,10 +3,10 @@ matplotlib
 scikit-learn
 numpy
 shap
-tabulate
 seaborn
 ipywidgets
 nbconvert
 jupyter_contrib_nbextensions
+statsmodels
 notebook==6.4.12
 traitlets==5.9.0
