@@ -10,7 +10,7 @@ matplotlib.use('Agg')
 
 def load_data() -> pd.DataFrame:
     """
-    Load and return the dataset from the given URL as a Pandas DataFrame.
+    Loads and returns the dataset from the given URL as a Pandas DataFrame.
 
     Returns:
         pd.DataFrame: The loaded dataset.
@@ -21,7 +21,7 @@ def load_data() -> pd.DataFrame:
     
 def model(X: pd.DataFrame, y: pd.Series) -> (LinearRegression, pd.DataFrame):
     """
-    Fit a Linear Regression model to the given data.
+    Fits a Linear Regression model to the given data.
 
     Args:
         X (pd.DataFrame): The feature matrix.
@@ -41,7 +41,7 @@ def model(X: pd.DataFrame, y: pd.Series) -> (LinearRegression, pd.DataFrame):
 
 def plot_residuals(y_test: pd.Series, y_pred: pd.Series) -> None:
     """
-    Create a residual plots.
+    Creates a residual plots.
 
     Args:
         y_test (pd.Series): The actual target values.
@@ -67,7 +67,7 @@ def plot_residuals(y_test: pd.Series, y_pred: pd.Series) -> None:
 
 def plot_corr(X: pd.DataFrame) -> None:
     """
-    Create and save a correlation heatmap plot.
+    Creates and saves a correlation heatmap plot.
 
     Args:
         X (pd.DataFrame): The feature matrix.
@@ -78,7 +78,7 @@ def plot_corr(X: pd.DataFrame) -> None:
 
 def plot_shap(shap_values: shap.Explanation, idx: int) -> None:
     """
-    Create and save SHAP summary and bar plots.
+    Creates and saves SHAP summary and bar plots.
 
     Args:
         shap_values (shap.Explanation): SHAP values.
