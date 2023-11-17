@@ -401,7 +401,7 @@ eine Approximation der Verteilungen zu erstellen und dadurch die notwendigen Int
 Darüber hinaus werden Ansätze zur Stichprobenbildung von Koalitionen vorgestellt, die es erlauben, 
 die rechnerische Last zu reduzieren, indem nicht alle Koalitionen betrachtet, sondern repräsentative Stichproben gezogen werden. 
 
-\section{Monte Carlo Integration zur Schätzung von SHAP-Werten}
+\section{Approximation der marginalen Beiträge mittels Monte Carlo Integration}
 
 Statt das Integral über eine unbekannte Verteilung zu berechnen, wie in Gleichung \ref{eq:shap-value-func},
 nähert die Monte Carlo Integration dieses Integral durch den Durchschnitt einer großen Anzahl zufällig 
@@ -429,7 +429,7 @@ $\hat{\Delta}_{\mathcal{S}, j}$ von Merkmal $j$ zur Koalition $\mathcal{S}$ gege
         &= \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup x^{(k)}_{C \setminus \{j\}}) - f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) \Big)
 \end{align}
 
-und die SHAP-Werte $\hat{\varphi}_{j}^{(i)}$ analog zu Gleichung \ref{eq:shap-eq}:
+und die SHAP-Werte $\hat{\varphi}_{j}^{(i)}$ über alle möglichen Koalitionen analog zu Gleichung \ref{eq:shap-eq}:
 
 \begin{align}
     \label{eq:monte-shap-eq}
@@ -440,5 +440,60 @@ und die SHAP-Werte $\hat{\varphi}_{j}^{(i)}$ analog zu Gleichung \ref{eq:shap-eq
 
 \section{Schätzung von Koalitionen}
 
-Gleichung \ref{eq:monte-shap-eq} löst zwar nun das Problem der Integration, setzt allerdings nach wie vor 
-vorraus, sämtliche Koalitionen zu berechnen. 
+Obwohl die Monte Carlo Integration aus Gleichung \ref{eq:monte-shap-eq} eine praktische Methode zur Approximation der benötigten marginalen Beiträge in der 
+SHAP-Wertberechnung bietet, bleibt die Herausforderung, alle möglichen Koalitionen der Features zu evaluieren. 
+Die Anzahl der Koalitionen wächst exponentiell mit der Anzahl der Features. Daher sind Ansätze gefragt, die eine effiziente Schätzung der SHAP-Werte erlauben, 
+ohne jede mögliche Koalition explizit zu berücksichtigen.
+
+In diesem Abschnitt werden zwei solcher Ansätze diskutiert: der Linear Estimator und der Kernel Estimator. 
+Beide Verfahren bieten Strategien zur Reduzierung der Berechnungskomplexität, 
+indem sie Annahmen über die Eigenschaften des Modells und der Daten treffen. 
+Weitere Ansätze werden in Kapitel \ref{sec:shap-package} angesprochen.
+
+Der Kernel Estimator verwendet Gewichtungen für die verschiedenen Koalitionen, 
+um ihre relative Wichtigkeit bei der Berechnung der SHAP-Werte zu berücksichtigen. 
+Dieser Ansatz ermöglicht es, mit einer kleineren Anzahl von sorgfältig ausgewählten 
+Koalitionen zu arbeiten, indem er diesen Koalitionen mehr Gewicht bei der Schätzung gibt.
+
+Der Linear Estimator hingegen nähert das Verhalten des komplexen Modells in der 
+Nähe einer gegebenen Beobachtung durch ein lineares Modell an. Diese Näherung basiert auf der Annahme, 
+dass die lokalen Beiträge der Features zur Modellvorhersage durch lineare Beziehungen hinreichend genau 
+beschrieben werden können. Dadurch wird die Berechnung der SHAP-Werte auf die Lösung eines linearen 
+Gleichungssystems reduziert, was deutlich weniger rechenaufwendig ist als die vollständige Kombinatorik.
+
+Beide Methoden stellen Kompromisse zwischen Berechnungsaufwand und Genauigkeit dar und werden 
+im Folgenden näher erläutert.
+
+\subsection{Linearer SHAP Estimator für lineare Modelle}
+\label{subsec:linear-shap-estimator}
+
+Für lineare Modelle bietet der lineare SHAP Estimator eine direkte und effiziente 
+Methode zur Berechnung der SHAP-Werte. Diese Methode beruht auf der Annahme 
+der Unabhängigkeit der Eingabemerkmale. Unter dieser Voraussetzung können 
+die SHAP-Werte direkt aus den Gewichtungskoeffizienten des linearen Modells 
+abgeleitet werden.
+
+Ein lineares Modell wird typischerweise in der Form 
+\( f(x) = \sum_{j=1}^{p} w_j x_j + b \) ausgedrückt, wobei \( w_j \) der 
+Gewichtungskoeffizient für das Merkmal \( j \) ist und \( b \) den 
+Achsenabschnitt (Bias) darstellt. Der lineare SHAP Estimator nutzt 
+diese Koeffizienten, um die Beiträge jedes Features zur Modellvorhersage 
+zu bestimmen. Der SHAP-Wert für ein Feature \( j \) wird dann definiert als:
+
+\begin{align}
+    \varphi_j(f, x) = w_j (x_j - \mathbb{E}[x_j]),
+\end{align}
+
+wobei \( \mathbb{E}[x_j] \) der Erwartungswert des Merkmals \( j \) über den 
+Datensatz ist. Der SHAP-Wert für den Achsenabschnitt (Bias) ist gleich 
+dem Achsenabschnitt des Modells: \( \varphi_0(f, x) = b \) \cite[S. 6]{NIPS2017_8a20a862}.
+
+Diese Berechnung der SHAP-Werte basiert auf der Idee, dass die Änderung 
+des Modelloutputs, die durch das Abweichen eines Merkmals von seinem 
+Erwartungswert entsteht, direkt durch den entsprechenden Gewichtungskoeffizienten 
+des linearen Modells beschrieben werden kann. Dieser Ansatz ermöglicht eine 
+schnelle und genaue Berechnung der SHAP-Werte für lineare Modelle und ist 
+besonders nützlich, um die Auswirkungen einzelner Features in einem solchen 
+Modell zu interpretieren.
+
+\subsection{Kernel SHAP Estimator: Modell-agnositischer Ansatz}
