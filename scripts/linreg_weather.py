@@ -9,6 +9,8 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.preprocessing import StandardScaler
 from typing import List
 import numpy as np
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
 
 matplotlib.use('Agg')
 
@@ -19,26 +21,12 @@ def load_data() -> pd.DataFrame:
     Returns:
         pd.DataFrame: The loaded dataset.
     """
-    url = "https://data.ub.uni-muenchen.de/2/1/miete03.asc"
-    df = pd.read_excel("Concrete_Data.xls")
-    df = df.rename(
-        columns={
-            'Cement (component 1)(kg in a m^3 mixture)':'cement',
-            'Blast Furnace Slag (component 2)(kg in a m^3 mixture)':'blast',
-            'Fly Ash (component 3)(kg in a m^3 mixture)':'ash',
-            'Water  (component 4)(kg in a m^3 mixture)':'water',
-            'Superplasticizer (component 5)(kg in a m^3 mixture)':'superplasticizer',
-            'Coarse Aggregate  (component 6)(kg in a m^3 mixture)':'coarse',
-            'Fine Aggregate (component 7)(kg in a m^3 mixture)':'fine',
-            'Age (day)':'age',
-            "Concrete compressive strength(MPa, megapascals) ": "strength"
-        }
-    )
+    df = pd.read_csv("weather.csv")
     df = df.drop_duplicates()
 
-    for column in df.columns:
-        df[column] += 1
-        df[column] = np.log(df[column])
+    status = pd.get_dummies(df['Description'], drop_first = True)
+    df = pd.concat([df, status],axis = 1)
+    df.drop(['Description'], axis=1, inplace= True)
 
     return df
     
@@ -123,28 +111,33 @@ def plot_shap(shap_values: shap.Explanation, idx: int) -> None:
     plt.tight_layout()
     plt.savefig('images/shap_waterfall_plot_2.png', dpi=300)
 
+def vif(X):
+    vif_data = pd.DataFrame()
+    vif_data["feature"] = X.columns
+    vif_data["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+    return vif_data
+
 df = load_data()
 
-X = df.drop(['strength'], axis=1) 
-y = df['strength']
+X = df.drop(['Temperature_c', 'Humidity', 'Pressure_millibars'], axis=1) 
+y = df['Temperature_c']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=11)
 
-scaler = StandardScaler()
 
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+linreg, params = model(X=X_train, y=y_train, cols=X.columns)
+y_pred = linreg.predict(X_test)
 
-linreg, params = model(X=X_train_scaled, y=y_train, cols=X.columns)
-y_pred = linreg.predict(X_test_scaled)
-
-explainer = shap.Explainer(linreg, X_train_scaled)
-shap_values = explainer(X_test_scaled)
+explainer = shap.Explainer(linreg, X_train)
+shap_values = explainer(X_test)
 
 mae = mean_absolute_error(y_test, y_pred)
 mse = mean_squared_error(y_test, y_pred)
-train_score = linreg.score(X_train_scaled, y_train)
-test_score = linreg.score(X_test_scaled, y_test)
+train_score = linreg.score(X_train, y_train)
+test_score = linreg.score(X_test, y_test)
+
+
+print(vif(X_train))
 
 print(mae)
 print(mse)
