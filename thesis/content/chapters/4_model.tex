@@ -153,7 +153,7 @@ im Anhang \ref{linreg} dieser Arbeit zu finden.
 Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
 
 \begin{table}[!h]
-    \caption{Auszug aus dem SGEMM GPU Kernel Performance Datensatz}
+    \caption{Auszug aus dem SGEMM GPU Kernel Performance Datensatz.}
     \footnotesize
     \begin{tabularx}{\textwidth}{Xrrrrrrrrrrrrrrr}
     \toprule
@@ -174,7 +174,7 @@ Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
 In Tabelle \ref{tab:statistics} sind deskriptive Statistiken der verschiedenen Variablen des Datensatzes dargestellt. 
 
 \begin{table}[!h]
-    \caption{Auszug aus dem SGEMM GPU Kernel Performance Datensatz}
+    \caption{Auszug aus dem SGEMM GPU Kernel Performance Datensatz.}
     \footnotesize
     \begin{tabularx}{\textwidth}{Xrrrrrrr}
     \toprule
@@ -210,10 +210,19 @@ Grafik \ref{pic:box} illustriert die Verteilungen der Runtime mittels Boxplots u
 vor und nach der log-Transformation, und verdeutlicht den Effekt der Normalisierung:
 
 \begin{figure}[!h]
-    \caption{Verteilungen der Runtime vor und nach log-Transformation}
+    \caption{Verteilungen der Runtime vor und nach log-Transformation.}
     \includegraphics[width=1\textwidth]{../scripts/images/combined_runtime_plots.png}
     Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_sgemm_gpu_kernel_performance_440}, \ref{linreg}.
     \label{pic:box}
+\end{figure}
+
+Abbildung \ref{pic:hist} zeigt die Verteilung aller Merkmale des Datensatzes. 
+
+\begin{figure}[!h]
+    \caption{Verteilungen der Merkmale.}
+    \includegraphics[width=1\textwidth]{../scripts/images/dist_gpu.png}
+    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_sgemm_gpu_kernel_performance_440}, \ref{linreg}.
+    \label{pic:hist}
 \end{figure}
 
 Die Korrelationsmatrix, die in Abbildung \ref{pic:corr} dargestellt ist, 
