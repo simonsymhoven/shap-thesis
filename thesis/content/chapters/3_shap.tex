@@ -426,6 +426,7 @@ Analog zu Gleichung \ref{eq:shap-marginal-func} ist dann zusammen mit Gleichung 
 $\hat{\Delta}_{\mathcal{S}, j}$ von Merkmal $j$ zur Koalition $\mathcal{S}$ gegeben als: 
 
 \begin{align}
+    \label{eq:monte-mar}
     \hat{\Delta}_{\mathcal{S}, j} &= \hat{v}_{x^{(i)},f}(\mathcal{S} \cup \{j\}) - \hat{v}_{x^{(i)},f}(\mathcal{S}) \\ \notag
         &= \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup x^{(k)}_{C \setminus \{j\}}) - f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) \Big)
 \end{align}
@@ -524,22 +525,23 @@ Kapitel \ref{sec:example} eingeführten linearen Modells beschrieben.
 In einem ersten Schritt wird eine zufällige $k$-te Permutation der Merkmale $o(k)$ gewählt.
 Beispielsweise könnte $o(k) = (x_2, x_3, x_1)$ eine solche Permutation darstellen.
 Wird das Merkmal $j$, für das der SHAP-Wert berechnet werden soll, als das dritte Merkmal $j=3$ angenommen, 
-ergibt sich der marginale Beitrag $\hat{\Delta}_{o(k), j}$ analog zu Gleichung \ref{eq:monte-shap-eq} aus der Differenz
-der Koalitionen mit und ohne dem betrachteten Merkmal:
+ergibt sich der marginale Beitrag $\hat{\Delta}_{o(k), j}$ analog zu Gleichung \ref{eq:monte-mar} 
+aus der Differenz der Koalitionen mit und ohne dem betrachteten Merkmal:
 
 \begin{align}
-    \label{eq:permu-shap-eq}
-    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \frac{1}{m}\sum_{k=1}^{m}\hat{\Delta}_{o(k), j},
+    \hat{\Delta}_{o(k), j} = \hat{v}(\{x_2, x_3\}) - \hat{v}(\{x_2\})
 \end{align}
 
 Dieser Prozess wird für eine Anzahl von $m$ Permutationen durchgeführt. Die Wahl von $m$,
 die kleiner als die Gesamtzahl der Merkmale sein kann, hängt von der gewünschten Approximationsgenauigkeit
 ab. Eine größere Anzahl von Permutationen $m$ führt zu einer präziseren Annäherung an den tatsächlichen SHAP-Wert.
 
-Die geschätzten marginalen Beiträge $\hat{\Delta}_{o(k), j}$ werden dann über die $m$ Permutationen gemittelt:
+Die geschätzten marginalen Beiträge $\hat{\Delta}_{o(k), j}$ werden dann über die $m$ Permutationen analog zu Gleichung
+\ref{eq:monte-shap-eq} gemittelt:
 
 \begin{align}
-\hat{\varphi}^{(i)}{j} (\mathcal{N}, f) &= \frac{1}{m}\sum{k=1}^{m}\hat{\Delta}_{o(k), j},
+    \label{eq:permu-shap-eq}
+    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \frac{1}{m}\sum_{k=1}^{m}\hat{\Delta}_{o(k), j},
 \end{align}
 
 Durch diese Methodik wird der Berechnungsaufwand bei der Ermittlung von SHAP-Werten 
