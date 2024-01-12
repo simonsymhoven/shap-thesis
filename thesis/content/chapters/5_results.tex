@@ -108,7 +108,8 @@ der eine visuelle Darstellung des Beitrags eines jeden Merkmals zu einer spezifi
 
 In Abbildung \ref{pic:shap_waterfall} ist ein Waterfall Plot der ersten Beobachtung $x^{(0)}$ dargestellt, 
 der die Zerlegung einer einzelnen Modellvorhersage zeigt. Der Plot beginnt mit dem Basiswert $\mathbb{E}[f(X)] = 4.45$, 
-der durchschnittlichen Vorhersage des Modells.
+der durchschnittlichen Vorhersage des Modells. 
+
 Von diesem Wert ausgehend, illustrieren die Balken, wie jede Merkmalausprägung – 
 angezeigt durch die grauen Zahlen entlang der y-Achse – die Vorhersage $f(x_{j}^{(0)})$ beeinflusst. 
 So steigert beispielsweise MWG mit einem Wert von $128$ die Vorhersage deutlich um $+0.72$, 
@@ -126,6 +127,11 @@ vom Basiswert $\mathbb{E}[f(X)] = 4.45$ zu einem tatsächlichen Modelloutput von
 was eine Differenz von $+1.134$ zwischen der durchschnittlichen Vorhersage 
 und der spezifischen Vorhersage für diese Beobachtung offenlegt. 
 Diese Differenz entspricht der Summe aller SHAP-Werte für diese konkrete Beobachtung \cite[S. 52f]{Molnar_2023}.
+
+Da die Zielgröße einer logarithmischen Transformation unterzogen wurde, muss diese für die Interpreation wieder rückgängig gemacht werden. 
+Dies bedeutet, dass der tatsächliche erwartete Wert der Laufzeit der Exponentialfunktion des prognostizierten Wertes entspricht, also $e^{4.45} \approx 85.63$ ms. 
+Dieser Rücktransformationsprozess ist notwendig, um die Modellprognosen in der ursprünglichen Skala der Zielvariablen zu interpretieren.
+Dies gilt auch für die konkrete Vorhersage $f(x) = 5.584$. Die prognostizierte Laufzeit für die Beobachtung $x^{(0)}$ beträgt also $e^{5.584} \approx 266.13$ ms.
 
 Dies ermöglicht eine detaillierte Analyse, wie das Modell zu einer bestimmten Vorhersage kommt, 
 und hilft dabei, die Beiträge und Interaktionen zwischen verschiedenen Merkmals zu verstehen.

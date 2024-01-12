@@ -18,5 +18,19 @@ Insgesamt hat die Untersuchung gezeigt, dass die Kombination aus linearen Regres
 Interpretation ein leistungsstarkes Werkzeug darstellt, um sowohl die Vorhersagegenauigkeit als auch die Transparenz 
 und Nachvollziehbarkeit von maschinellen Lernmodellen zu verbessern. Die gewonnenen Einsichten können genutzt werden, 
 um das Modell weiter zu verfeinern, und bieten eine Grundlage für fundierte Entscheidungen bei der Optimierung von GPU-Kerneln. 
-Die Methodik und die Ergebnisse dieser Arbeit tragen somit zur Verbesserung der Modellverständlichkeit bei und unterstützen 
-die Entwicklung von zuverlässigeren und gerechteren maschinellen Lernsystemen.
+
+Gleichzeitig werden jedoch auch die Grenzen und Herausforderungen dieser Methode deutlich.
+Kritisch betrachtet, können Shapley-Werte in bestimmten Kontexten zu einer Überinterpretation führen, 
+insbesondere wenn die Beziehungen zwischen den Merkmalen komplex und nicht-linear sind. 
+Die Berechnung von Shapley-Werten kann zudem rechnerisch intensiv sein, vor allem bei Modellen mit einer großen Anzahl von Merkmalen. 
+Die Entwicklung effizienterer Algorithmen und die Nutzung fortschrittlicher Rechenressourcen, wie GPU-basiertes Computing, 
+könnten die Anwendbarkeit von SHAP-Werten in der Praxis erheblich erweitern. Dies würde es ermöglichen, auch bei umfangreicheren und 
+komplexeren Modellen eine detaillierte Erklärbarkeit zu gewährleisten.
+
+Die Anwendung von Shapley-Werten im maschinellen Lernen bietet vielfältige Möglichkeiten, die weit über die in dieser Arbeit behandelten Aspekte hinausgehen. 
+Zukünftige Forschungen und Entwicklungen könnten sich in mehrere Richtungen erstrecken, um die Grenzen und Potenziale von SHAP-Werten weiter auszuloten und zu erweitern.
+
+Eine wichtige Erweiterung der SHAP-Wert-Analyse ist die Einbeziehung von Interaktionen zwischen Merkmalen. Viele reale Datensätze weisen 
+komplexe Beziehungen und Abhängigkeiten zwischen ihren Merkmalen auf. Diese Interaktionen explizit zu modellieren und in die Berechnung der SHAP-Werte zu integrieren, 
+würde zu einer noch genaueren und realistischeren Interpretation der Modellvorhersagen führen.
+
