@@ -22,7 +22,7 @@ die Anna, Ben und Carla erzielt hätten, wenn sie in unterschiedlichen Konstella
 Tabelle \ref{tab:shapley_example} zeigt die gegegbene Gewinnverteilung der verschiedenen Koalitionen. Die Koalition $\emptyset$ entspricht
 dabei der leeren Koalition -- der Nichtteilnahme an dem Wettbewerb.
 
-\begin{table}[h]
+\begin{table}[!h]
   \caption{Potenzielle Gewinne für verschiedene Teilnehmerkonstellationen im Designwettbewerb.}
   \footnotesize
   \begin{tabularx}{\textwidth}{Xrr}
@@ -54,7 +54,7 @@ In diesem Beispiel mit Anna, Ben und Carla, die an einem Designwettbewerb teilne
 Anna zur Koalition von $\{$Ben$\}$ der zusätzliche Wert, den sie einbringt, wenn sie sich Ben anschließt, 
 ausgehend von Bens individuellem Gewinn.
 
-\begin{table}[h]
+\begin{table}[!h]
   \caption{Marginalbeiträge der einzelnen Teilnehmer zu den möglichen Koalitionen.}
   \footnotesize
   \begin{tabularx}{\textwidth}{XXrrr}
@@ -113,7 +113,7 @@ In weiteren zwei Koalitionsbildungen (5. und 6.) wird Anna der bestehenden Koali
 In den beiden übrigen Koalitionsbildungen wird Anna einmal der Koaliton bestehend aus Ben (3.) und einmal der Koalition bestehend aus Carla (4.)
 hinzugefügt. 
 
-Daraus lässt sich nun der Shapley-Wert mit den gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
+Zusammen mit Tabelle \ref{tab:shapley_marginal} lässt sich nun der Shapley-Wert mit den gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
 
 \begin{equation}
   \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,34 \text{\euro}  

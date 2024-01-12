@@ -7,7 +7,7 @@ eines Modells zu bewerten. Hier wird die Terminologie der Shapley-Werte in den K
 Modellen übertragen, wobei jedes Merkmal als \glqq{}Spieler\grqq{} betrachtet wird, dessen Beitrag zur 
 \glqq{}Auszahlung\grqq{} – der Vorhersage des Modells – evaluiert werden soll. 
 
-\begin{table}[h]
+\begin{table}[!h]
     \caption{Terminologie der originären Shapley-Werte im Kontext des maschinellen Lernens.}
     \footnotesize
     \begin{tabularx}{\textwidth}{XXX}
@@ -90,7 +90,7 @@ Kontext des maschinellen Lernens zu illustrieren\footnote{In Anlehnung an das Be
 Immobilien-Datensatz mit drei Merkmalen: Größe des Hauses in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
 und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtungen in diesem Datensatz:
 
-\begin{table}[h]
+\begin{table}[!h]
     \caption{Merkmale von Beobachtungen in einem Immobilien-Datensatz.}
     \footnotesize
     \begin{tabularx}{\textwidth}{Xrrr}
@@ -164,7 +164,7 @@ ist es möglich, die Berechnung der SHAP-Werte zu vereinfachen. Anstelle der kom
 über die Verteilungen aller Merkmale, kann der Fokus auf die Unterschiede in den Modellvorhersagen gelegt werden, 
 die sich aus dem Hinzufügen oder Entfernen einzelner Merkmale ergeben. 
 Hierbei wird anstelle der spezifischen Werte der nicht in der betrachteten Koalition enthaltenen Merkmale 
-Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
+die Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
 die Modellvorhersage auf eine direktere und rechnerisch weniger aufwendige Weise zu erfassen.
 Diese Vereinfachung ist für lineare Modelle angemessen, da die Auswirkungen jedes Merkmals 
 auf die Vorhersage des Modells additiv und unabhängig sind. Bei komplexeren, 
@@ -192,7 +192,7 @@ Da \( X_1 \) und \( X_3 \) unabhängig und gleichmäßig verteilt sind, können 
 Die in Tabelle \ref{tab:shapley_marginal_features_x1} dargestellten Kombinationen illustrieren die marginalen Beiträge und SHAP-Werte 
 für jedes Merkmal in jeder möglichen Koalition von Merkmalen, bezogen auf die Beobachtung $x^{(1)}$. 
 
-\begin{table}[h]
+\begin{table}[!h]
     \caption{Marginalbeiträge der einzelnen Merkmale zu den möglichen Koalitionen für die Beobachtung $x^{(1)}$.}
     \footnotesize
     \begin{tabularx}{\textwidth}{XXrrrrr}
@@ -220,7 +220,7 @@ für jedes Merkmal in jeder möglichen Koalition von Merkmalen, bezogen auf die 
 
 Diese Analyse ist ebenso auf die Beobachtung $x^{(2)}$ anwendbar und erfordert eine analoge Vorgehensweise:
 
-\begin{table}[h]
+\begin{table}[!h]
     \caption{Marginalbeiträge der einzelnen Merkmale zu den möglichen Koalitionen für die Beobachtung $x^{(2)}$.}
     \footnotesize
     \begin{tabularx}{\textwidth}{XXrrrrr}
@@ -253,7 +253,7 @@ Die beobachtete Inversion der SHAP-Werte zwischen den Beobachtungen \( x^{(1)} \
 lässt sich durch die zentrale Rolle des Erwartungswerts des Modells erklären. 
 Das Modell prognostiziert im Mittel einen Immobilienpreis von 680 \euro. In einem Szenario, in dem nur zwei 
 Beobachtungen vorhanden sind, spiegeln die Beobachtungen \( x^{(1)} \) und \( x^{(2)} \) entgegengesetzte 
-Abweichungen vom Erwartungswert wider. Die SHAP-Werte, die den Beitrag jedes Features zur Abweichung 
+Abweichungen vom Erwartungswert wider. Die SHAP-Werte, die den Beitrag jedes Merkmals zur Abweichung 
 der Vorhersage vom Mittelwert messen, zeigen daher für \( x^{(1)} \) und \( x^{(2)} \) genau entgegengesetzte Werte. 
 Dieses Phänomen resultiert aus der Tatsache, dass die Merkmalsbeiträge in Bezug auf den Erwartungswert 
 berechnet werden und unsere beispielhaften Beobachtungen symmetrisch um diesen Mittelwert verteilt sind. 
@@ -261,7 +261,7 @@ Folglich heben sich ihre Beiträge im Kontext unseres linearen Modells exakt auf
 Zuverlässigkeit der SHAP-Wert-Berechnung unterstreicht.
 
 
-\begin{figure}[H]
+\begin{figure}[!h]
     \caption{Beitrag der Merkmale $x_{j \in \{1, 2, 3\}}$ zur Modellvorhersage $f(x^{(1)})$.}
     \includegraphics[width=1\textwidth]{../scripts/images/model-output-x1.png}
     Quelle: Eigene Darstellung, \ref{charts}.
@@ -276,7 +276,7 @@ des Preises für die Immobilie $x^{(1)}$ um insgesamt 135 \euro{}, während die 
 ($x_3^{(1)}$) den Preis der Wohnung um 5 \euro{} erhöht, wie in Abbildung 
 \ref{pic:model-fx1} veranschaulicht. Abbildung \ref{pic:model-fx2} visualisiert die SHAP-Werte für die Immobilie $x^{(2)}$:
 
-\begin{figure}[h]
+\begin{figure}[!h]
     \caption{Beitrag der Merkmale $x_{j \in \{1, 2, 3\}}$ zur Modellvorhersage $f(x^{(2)})$.}
     \includegraphics[width=1\textwidth]{../scripts/images/model-output-x2.png}
     Quelle: Eigene Darstellung, \ref{charts}.
@@ -295,12 +295,13 @@ Modellvorhersagen dar \cite{NIPS2017_8a20a862}.
 
 \paragraph{Effizienz}
 
-Das Effizienzaxiom besagt, dass die Summe der SHAP-Werte aller Features für eine gegebene Beobachtung $x^{(i)}$ 
+Das Effizienzaxiom besagt, dass die Summe der SHAP-Werte aller Merkmals für eine gegebene Beobachtung $x^{(i)}$ 
 gleich der Differenz zwischen der Modellvorhersage für diese Beobachtung $f(x^{(i)})$ 
 und der durchschnittlichen Modellvorhersage $\mathbb{E}(f(X))$ sein muss:
 
 \begin{align}
     \sum_{j=1}^{p}\varphi_j^{(i)}(\mathcal{N}, f) = f(x^{(i)}) - \mathbb{E}(f(X)),
+    \label{eq:eff}
 \end{align}
 
 \cite[S. 221]{Molnar_2022}. Für die Beobachtung $x^{(1)}$ aus Kapitel \ref{sec:example} und den Berechnungen 
@@ -441,28 +442,25 @@ und die SHAP-Werte $\hat{\varphi}_{j}^{(i)}$ über alle möglichen Koalitionen a
 \section{Schätzung von Koalitionen}
 
 Obwohl die Monte Carlo Integration aus Gleichung \ref{eq:monte-shap-eq} eine praktische Methode zur Approximation der benötigten marginalen Beiträge in der 
-SHAP-Wertberechnung bietet, bleibt die Herausforderung, alle möglichen Koalitionen der Features zu evaluieren. 
-Die Anzahl der Koalitionen wächst exponentiell mit der Anzahl der Features. Daher sind Ansätze gefragt, die eine effiziente Schätzung der SHAP-Werte erlauben, 
+SHAP-Wertberechnung bietet, bleibt die Herausforderung, alle möglichen Koalitionen der Merkmals zu evaluieren. 
+Die Anzahl der Koalitionen wächst exponentiell mit der Anzahl der Merkmals. Daher sind Ansätze gefragt, die eine effiziente Schätzung der SHAP-Werte erlauben, 
 ohne jede mögliche Koalition explizit zu berücksichtigen.
 
-In diesem Abschnitt werden zwei solcher Ansätze diskutiert: der Linear Estimator und der Kernel Estimator. 
+Insbesondere für lineare Modelle ohne Interaktionsterme wurde in Kpaitel \ref{sec:estimators} bereits gezeigt,
+dass die Berechnung einer einzigen Koalition für jedes Merkmal ausreichend ist \cite[S. 38]{Molnar_2023}.
+In einem solchen Modell wird angenommen, dass die Beziehung zwischen den unabhängigen 
+Variablen und der abhängigen Variable additiv ist, das heißt, es gibt keine Terme im Modell, 
+die das Produkt von zwei oder mehr unabhängigen Variablen enthalten, um mögliche Interaktionseffekte 
+zwischen ihnen zu repräsentieren.
+
+Neben dem Linearen SHAP Estimator in Kapitel \ref{subsec:linear-shap-estimator} wird die Schätzung durch Permutationen in Kapitel 
+\ref{subsec:permutation} diskutirert. Anstelle der Iteration über alle Koallitionen, werden repräsentative Stichproben zur Berechnung
+herangezogen. 
+
 Beide Verfahren bieten Strategien zur Reduzierung der Berechnungskomplexität, 
 indem sie Annahmen über die Eigenschaften des Modells und der Daten treffen. 
 Weitere Ansätze werden in Kapitel \ref{sec:shap-package} angesprochen.
 
-Der Kernel Estimator verwendet Gewichtungen für die verschiedenen Koalitionen, 
-um ihre relative Wichtigkeit bei der Berechnung der SHAP-Werte zu berücksichtigen. 
-Dieser Ansatz ermöglicht es, mit einer kleineren Anzahl von sorgfältig ausgewählten 
-Koalitionen zu arbeiten, indem er diesen Koalitionen mehr Gewicht bei der Schätzung gibt.
-
-Der Linear Estimator hingegen nähert das Verhalten des komplexen Modells in der 
-Nähe einer gegebenen Beobachtung durch ein lineares Modell an. Diese Näherung basiert auf der Annahme, 
-dass die lokalen Beiträge der Features zur Modellvorhersage durch lineare Beziehungen hinreichend genau 
-beschrieben werden können. Dadurch wird die Berechnung der SHAP-Werte auf die Lösung eines linearen 
-Gleichungssystems reduziert, was deutlich weniger rechenaufwendig ist als die vollständige Kombinatorik.
-
-Beide Methoden stellen Kompromisse zwischen Berechnungsaufwand und Genauigkeit dar und werden 
-im Folgenden näher erläutert.
 
 \subsection{Linearer SHAP Estimator für lineare Modelle}
 \label{subsec:linear-shap-estimator}
@@ -474,26 +472,85 @@ die SHAP-Werte direkt aus den Gewichtungskoeffizienten des linearen Modells
 abgeleitet werden.
 
 Ein lineares Modell wird typischerweise in der Form 
-\( f(x) = \sum_{j=1}^{p} w_j x_j + b \) ausgedrückt, wobei \( w_j \) der 
+\( f(x) = \sum_{j=1}^{p} \beta_j x_j + b \) ausgedrückt, wobei \( \beta_j \) der 
 Gewichtungskoeffizient für das Merkmal \( j \) ist und \( b \) den 
 Achsenabschnitt (Bias) darstellt. Der lineare SHAP Estimator nutzt 
-diese Koeffizienten, um die Beiträge jedes Features zur Modellvorhersage 
-zu bestimmen. Der SHAP-Wert für ein Feature \( j \) wird dann definiert als:
+diese Koeffizienten, um die Beiträge jedes Merkmals zur Modellvorhersage 
+zu bestimmen. Der SHAP-Wert für ein Merkmal \( j \) wird dann definiert als:
 
 \begin{align}
-    \varphi_j(f, x) = w_j (x_j - \mathbb{E}[x_j]),
+    \varphi_j^{(i)}(f, x) = \beta_j (x_j^{(i)} - \mathbb{E}[X_j]),
 \end{align}
 
-wobei \( \mathbb{E}[x_j] \) der Erwartungswert des Merkmals \( j \) über den 
+wobei \( \mathbb{E}[X_j] \) der Erwartungswert des Merkmals \( j \) über den 
 Datensatz ist. Der SHAP-Wert für den Achsenabschnitt (Bias) ist gleich 
 dem Achsenabschnitt des Modells: \( \varphi_0(f, x) = b \) \cite[S. 6]{NIPS2017_8a20a862}.
+
+Aufgrund der Unabhängigkeit der Eingabemerkmale, kann das arithmetische Mittel aus Kapitel 
+\ref{sec:example} Gleichung \ref{eq:e} als erwartungstreuer Schätzer für den Erwartungswert verwendet werden:
+
+\begin{align}
+    \varphi_j^{(i)}(f, x) = \beta_j \Big(x_j^{(i)} - \frac{1}{n} \sum_{k=1}^{n} (x_j^{(k)})\Big),
+\end{align}
+
+Das Effizienzaxiom aus Gleichung \ref{eq:eff} is erfüllt:
+
+\begin{align}
+    \sum_{j=1}^p \varphi_j^{(i)}(f, x) &= \sum_{j=1}^p  \Big( \beta_j x_j^{(i)} - \mathbb{E}[\beta_j X_j]\Big) \\ \notag
+                                    &= \beta_0 + \sum_{j=1}^p \beta_j x_j^{(i)} - ( \beta_0 + \sum_{j=1}^p \mathbb{E}[\beta_j X_j]) \\ \notag
+                                    &= f(x) - \mathbb{E}[f(X)],
+\end{align}                 
+
+\cite[S. 48]{Molnar_2023}.
 
 Diese Berechnung der SHAP-Werte basiert auf der Idee, dass die Änderung 
 des Modelloutputs, die durch das Abweichen eines Merkmals von seinem 
 Erwartungswert entsteht, direkt durch den entsprechenden Gewichtungskoeffizienten 
 des linearen Modells beschrieben werden kann. Dieser Ansatz ermöglicht eine 
 schnelle und genaue Berechnung der SHAP-Werte für lineare Modelle und ist 
-besonders nützlich, um die Auswirkungen einzelner Features in einem solchen 
+besonders nützlich, um die Auswirkungen einzelner Merkmals in einem solchen 
 Modell zu interpretieren. 
 
-\subsection{Kernel SHAP Estimator: Modell-agnositischer Ansatz} 
+\subsection{Schätzung durch Permutationen}
+\label{subsec:permutation}
+
+Der Einsatz von Permutationen zur Schätzung von SHAP-Werten bietet eine 
+praktikable Alternative zur vollständigen Auswertung aller Merkmalskoalitionen. 
+Dieses Verfahren ist insbesondere in Szenarien mit einer hohen Anzahl von Merkmalen von Vorteil, 
+da es die Berechnungslast reduziert, ohne die Genauigkeit der Schätzung wesentlich zu beeinträchtigen. 
+Im Folgenden wird die Methode anhand eines Beispiels illustriert und die Anwendung im Kontext des in 
+Kapitel \ref{sec:example} eingeführten linearen Modells beschrieben.
+
+In einem ersten Schritt wird eine zufällige $k$-te Permutation der Merkmale $o(k)$ gewählt.
+Beispielsweise könnte $o(k) = (x_2, x_3, x_1)$ eine solche Permutation darstellen.
+Wird das Merkmal $j$, für das der SHAP-Wert berechnet werden soll, als das dritte Merkmal $j=3$ angenommen, 
+ergibt sich der marginale Beitrag $\hat{\Delta}_{o(k), j}$ analog zu Gleichung \ref{eq:monte-shap-eq} aus der Differenz
+der Koalitionen mit und ohne dem betrachteten Merkmal:
+
+\begin{align}
+    \label{eq:permu-shap-eq}
+    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \frac{1}{m}\sum_{k=1}^{m}\hat{\Delta}_{o(k), j},
+\end{align}
+
+Dieser Prozess wird für eine Anzahl von $m$ Permutationen durchgeführt. Die Wahl von $m$,
+die kleiner als die Gesamtzahl der Merkmale sein kann, hängt von der gewünschten Approximationsgenauigkeit
+ab. Eine größere Anzahl von Permutationen $m$ führt zu einer präziseren Annäherung an den tatsächlichen SHAP-Wert.
+
+Die geschätzten marginalen Beiträge $\hat{\Delta}_{o(k), j}$ werden dann über die $m$ Permutationen gemittelt:
+
+\begin{align}
+\hat{\varphi}^{(i)}{j} (\mathcal{N}, f) &= \frac{1}{m}\sum{k=1}^{m}\hat{\Delta}_{o(k), j},
+\end{align}
+
+Durch diese Methodik wird der Berechnungsaufwand bei der Ermittlung von SHAP-Werten 
+signifikant verringert, was besonders bei Modellen mit einer großen Anzahl von Merkmalen von 
+Bedeutung ist. Der hier vorgestellte Ansatz ermöglicht es, mit einer begrenzten Anzahl von 
+Permutationen eine aussagekräftige Schätzung der SHAP-Werte zu erhalten \cite[S. 39]{Molnar_2023}.
+
+Zusätzlich zur Mittelung der geschätzten marginalen Beiträge bietet die Methode der Permutationen 
+die Möglichkeit, die Effekte von Vorwärts- und Rückwärtspropagation zu untersuchen, 
+indem die Reihenfolge der Merkmale sowohl in ihrer ursprünglichen als auch in umgekehrter 
+Abfolge betrachtet wird. Für eine detaillierte Darstellung dieser Technik und ihrer 
+Auswirkungen auf die SHAP-Wertberechnung sei auf die weiterführende Literatur verwiesen \cite[S. 39f]{Molnar_2023}.
+
+
