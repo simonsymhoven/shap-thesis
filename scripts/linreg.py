@@ -10,7 +10,6 @@ import shap
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 import numpy as np
-from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 matplotlib.use('Agg')
 
@@ -178,11 +177,9 @@ print(df.describe().T)
 original_runtime = df["Runtime"]
 df["Runtime"] = np.log(df["Runtime"])
 
-# Plots
 plot_target_dist(df=df, original_runtime=original_runtime)
 plot_dist(df=df)
 
-# Train/Test Split and Model Initialisation/Fitting
 X = df.drop(['Runtime'], axis=1) 
 y = df['Runtime']
 

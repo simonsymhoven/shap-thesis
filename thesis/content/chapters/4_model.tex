@@ -111,9 +111,9 @@ Das Paket bietet eine Vielzahl von Explainern, die auf unterschiedliche Modellty
 Einer der bemerkenswerten Aspekte von \textsf{shap} ist der auto Modus des Estimators, 
 der automatisch den am besten geeigneten Explainer für das gegebene Modell auswählt. 
 Diese Funktion ist besonders nützlich, da sie die Komplexität der Auswahl des richtigen Explainers 
-reduziert und den Anwendungsprozess vereinfacht. Speziell für Modelle mit ca. 15 Merkmals\footnote{\exacturl} wählt der 
+reduziert und den Anwendungsprozess vereinfacht. Speziell für Modelle mit ca. 15 Merkmalen\footnote{\exacturl} wählt der 
 auto Modus den exakten Explainer, der präzise SHAP-Werte auf Grundlage aller Daten und Koalitionen berechnet, was für Modelle mit einer geringeren Anzahl 
-von Merkmals effizient und praktikabel ist \cite[S. 40f]{Molnar_2023}. Eine Übersicht der zur Verfügung stehenden \textsf{shap}-Explainern ist in der
+von Merkmalen effizient und praktikabel ist \cite[S. 40f]{Molnar_2023}. Eine Übersicht der zur Verfügung stehenden \textsf{shap}-Explainern ist in der
 Dokumentation des Pakets zu finden\footnote{\shapurl}. 
 
 
@@ -157,7 +157,7 @@ Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
     \footnotesize
     \begin{tabularx}{\textwidth}{Xrrrrrrrrrrrrrrr}
     \toprule
-    Index & \rotatebox{90}{MWG} & \rotatebox{90}{NWG} & \rotatebox{90}{KWG} & \rotatebox{90}{MDIMC} & \rotatebox{90}{NDIMC} & \rotatebox{90}{MDIMA} & \rotatebox{90}{NDIMB} & \rotatebox{90}{KWI} & \rotatebox{90}{VWM} & \rotatebox{90}{VWN} & \rotatebox{90}{STRM} & \rotatebox{90}{STRN} & \rotatebox{90}{SA} & \rotatebox{90}{SB} & \rotatebox{90}{Runtime (ms)} \\
+    Index & \rotatebox{90}{MWG} & \rotatebox{90}{NWG} & \rotatebox{90}{KWG} & \rotatebox{90}{MDIMC} & \rotatebox{90}{NDIMC} & \rotatebox{90}{MDIMA} & \rotatebox{90}{NDIMB} & \rotatebox{90}{KWI} & \rotatebox{90}{VWM} & \rotatebox{90}{VWN} & \rotatebox{90}{STRM} & \rotatebox{90}{STRN} & \rotatebox{90}{SA} & \rotatebox{90}{SB} & \rotatebox{90}{$\varnothing$ Runtime (ms)} \\
     \midrule
     0 & 16 & 16 & 16 & 8 & 8 & 8 & 8 & 2 & 1 & 1 & 0 & 0 & 0 & 0 & 116.3700 \\
     1 & 16 & 16 & 16 & 8 & 8 & 8 & 8 & 2 & 1 & 1 & 0 & 0 & 0 & 1 & 78.7050 \\
@@ -199,6 +199,7 @@ In Tabelle \ref{tab:statistics} sind deskriptive Statistiken der verschiedenen V
     \end{tabularx}
     \label{tab:statistics}
     \normalsize
+    \\ Quelle: Eigene Darstellung, \ref{linreg}.
 \end{table}
 
 Die Zielvariable Runtime weist eine erhebliche Variabilität und Spannweite auf. 
@@ -217,13 +218,13 @@ vor und nach der log-Transformation, und verdeutlicht den Effekt der Normalisier
 
 Die Korrelationsmatrix, die in Abbildung \ref{pic:corr} dargestellt ist, 
 umfasst die Zielvariable Runtime, wodurch direkte Einblicke in die Beziehungen 
-zwischen den Merkmals und der Zielvariablen möglich sind. Die Koeffizienten variieren 
+zwischen den Merkmalen und der Zielvariablen möglich sind. Die Koeffizienten variieren 
 von -0.25 bis 0.46, was darauf hindeutet, dass einige Variablen eine moderate 
 Korrelation mit der Runtime aufweisen. Positive Werte, wie der höchste Koeffizient 
-von 0.46, implizieren, dass eine Erhöhung der entsprechenden Merkmal-Werte tendenziell 
+von 0.46, implizieren, dass eine Erhöhung der entsprechenden Merkmalsausprägungen tendenziell 
 mit längeren Ausführungszeiten verbunden ist. Negative Werte, wie der niedrigste Koeffizient 
 von -0.25, deuten hingegen auf eine umgekehrte Beziehung hin, 
-bei der höhere Merkmal-Werte mit kürzeren Laufzeiten korrelieren. 
+bei der höhere Merkmalsausprägungen mit kürzeren Laufzeiten korrelieren. 
 Diese Korrelationen liefern wichtige Informationen für die Modellierung, da sie aufzeigen, 
 welche Parameter möglicherweise einen stärkeren Einfluss auf die Laufzeit haben. 
 
@@ -251,31 +252,35 @@ Anschließend wurde das Modell mit dem Testset geprüft, um seine Vorhersagegena
 Die Leistung des Modells wurde anhand von Metriken wie dem mittleren quadratischen Fehler (Mean Squared Error, MSE) gemessen, 
 die ein Maß für die Abweichung der Modellvorhersagen von den tatsächlichen Werten darstellen.
 
-Codeauschnitt \ref{code:model} zeigt das Trainieren und Testen der zugrundeliegenden Daten eines linearen
-Regressionsmodells:
+Codeauschnitt \ref{code:model} und \ref{code:model-train} zeigen das Trainieren und Testen der zugrundeliegenden Daten 
+eines linearen Regressionsmodells:
 
-\lstinputlisting[language=Python,label=code:model, firstline=186, lastline=193, 
-    caption={Training und Testen eines linearen Regressionsmodells, \ref{linreg}.}]{../scripts/linreg.py}
+\lstinputlisting[language=Python,label=code:model, firstline=34, lastline=52, 
+    caption={Initialisierung eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
+
+
+\lstinputlisting[language=Python,label=code:model-train, firstline=183, lastline=190, 
+    caption={Training und Testen eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
 \section{Berechnung von SHAP-Werten}
 
 Um SHAP-Werte zu berechnen, wird zunächst ein SHAP-Explainer-Objekt erstellt. In diesem Fall wird der Explainer 
 von SHAP mit dem trainierten linearen Regressionsmodell und dem Trainingsdatensatz initialisiert. 
-Anschließend werden die SHAP-Werte für die Testdaten berechnet, um die Beiträge der einzelnen Merkmals 
+Anschließend werden die SHAP-Werte für die Testdaten berechnet, um die Beiträge der einzelnen Merkmale 
 zu analysieren. Der Typ des Explainers wird durch die Art des übergebenen Modells bestimmt. 
 Da in diesem Beispiel ein lineares Modell verwendet wird, wird automatisch ein geeigneter Explainer 
 für lineare Modelle ausgewählt.
 
 Das folgende Codeausschnitt \ref{code:shap} zeigt die Initialisierung des SHAP-Explainers und die Berechnung der SHAP-Werte:
 
-\lstinputlisting[language=Python,label=code:shap, firstline=194, lastline=195, 
-    caption={Berechnung von SHAP-Werten für das lineare Regressionsmodell, \ref{linreg}.}]{../scripts/linreg.py}
+\lstinputlisting[language=Python,label=code:shap, firstline=191, lastline=193, 
+    caption={Berechnung von SHAP-Werten für das lineare Regressionsmodell, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 Das Explainer-Objekt enthält neben den SHAP-Werten (.values), 
-die die Einflüsse der einzelnen Merkmals der Testmenge auf die Modellvorhersage quantifizieren, 
+die die Einflüsse der einzelnen Merkmale der Testmenge auf die Modellvorhersage quantifizieren, 
 auch die Basiswerte (.base\_values), die die durchschnittliche Vorhersage des Modells darstellen, 
-und die ursprünglichen Merkmal-Daten (.data), die für die Berechnung dieser Werte verwendet wurden \cite[S. 51]{Molnar_2023}.
+und die ursprünglichen Merkmalsausprägungen (.data), die für die Berechnung dieser Werte verwendet wurden \cite[S. 51]{Molnar_2023}.
 
 Dies bildet die Grundlage für den nächsten entscheidenden Schritt: 
 die Visualisierung und tiefere Analyse dieser Werte. Die SHAP-Bibliothek bietet eine 
@@ -290,5 +295,5 @@ verschiedenen Merkmale im Kontext des linearen Regressionsmodells bieten.
 Die Grafiken wurden mithilfe der \textsf{shap}-Bibliothek wie folgt erzeugt:
 
 \lstinputlisting[language=Python,label=code:img, firstline=92, lastline=113, 
-    caption={Erzeugen der SHAP Plots, \ref{linreg}.}]{../scripts/linreg.py}
+    caption={Erzeugen der SHAP Plots, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 

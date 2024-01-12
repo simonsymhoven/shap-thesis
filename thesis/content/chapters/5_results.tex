@@ -6,7 +6,7 @@ die aus dem linearen Regressionsmodell gewonnen wurden, welches entwickelt wurde
 um die Runtime basierend auf verschiedenen Parametern aus dem SGEMM GPU Kernel Performance 
 Datensatz zu prognostizieren. Neben der detaillierten Darstellung der Modellkoeffizienten und 
 der zugehörigen Metriken umfasst dieses Kapitel auch eine Vorstellung der SHAP-Werte 
-zur Interpretation der Modellvorhersagen und zur Einsicht in die Wichtigkeit der einzelnen Merkmals.
+zur Interpretation der Modellvorhersagen und zur Einsicht in die Wichtigkeit der einzelnen Merkmale.
 
 \section{Lineares Regressionmodell}
 
@@ -19,7 +19,6 @@ die geschätzte Runtime, wenn alle unabhängigen Variablen den Wert Null annehme
 zusammen mit Gleichung \ref{eq:reg-model} die Regressionsgerade für das Modell.
 
 \begin{table}[!h]
-    \centering
     \caption{Koeffizienten des linearen Regressionsmodells}
     \begin{tabularx}{\textwidth}{Xr}
     \toprule
@@ -43,6 +42,7 @@ zusammen mit Gleichung \ref{eq:reg-model} die Regressionsgerade für das Modell.
     \bottomrule
     \end{tabularx}
     \label{tab:model-coefficients}
+    \\ Quelle: Eigene Darstellung, \ref{linreg}.
 \end{table}
 
 Die Modellmetriken, dargestellt in Tabelle \ref{tab:model-metrics}, 
@@ -52,7 +52,6 @@ der Fehler in den Vorhersagen, und die R²-Werte zeigen, wie gut das Modell die 
 der Zielvariable erklärt.
 
 \begin{table}[!h]
-    \centering
     \caption{Modellmetriken des linearen Regressionsmodells}
     \begin{tabularx}{\textwidth}{Xr}
     \toprule
@@ -66,6 +65,7 @@ der Zielvariable erklärt.
     \bottomrule
     \end{tabularx}
     \label{tab:model-metrics}
+    \\ Quelle: Eigene Darstellung, \ref{linreg}.
 \end{table}
 
 Darüber hinaus wurden die tatsächlichen gegen die vorhergesagten Werte der Runtime
@@ -86,7 +86,7 @@ die auf eine Verletzung der Modellannahmen hindeuten könnten.
 
 Die Interpretation der Ergebnisse der Modellanalyse bietet wertvolle Einsichten in die Daten 
 und das Verhalten des linearen Regressionsmodells. Durch die Verwendung von SHAP-Werten wird 
-es möglich, die Beiträge der einzelnen Merkmals zur Vorhersageleistung des Modells nicht nur 
+es möglich, die Beiträge der einzelnen Merkmale zur Vorhersageleistung des Modells nicht nur 
 auf globaler Ebene, sondern auch auf lokaler, individueller Ebene zu verstehen. 
 Diese tiefgehende Analyse ermöglicht es, das Modell auf seine Fairness, 
 Genauigkeit und Transparenz zu überprüfen.
@@ -115,12 +115,12 @@ angezeigt durch die grauen Zahlen entlang der y-Achse – die Vorhersage $f(x_{j
 So steigert beispielsweise MWG mit einem Wert von $128$ die Vorhersage deutlich um $+0.72$, 
 wohingegen SA mit einem Wert von $1$ die Vorhersage um $-0.09$ verringert.
 
-Rote Balken repräsentieren Merkmals, die die Vorhersage erhöhen, während blaue Balken solche 
+Rote Balken repräsentieren Merkmale, die die Vorhersage erhöhen, während blaue Balken solche 
 darstellen, die sie senken. Die Größe jedes Balkens zeigt das Ausmaß des jeweiligen Beitrags, 
 und die abschließende Vorhersage $f(x) = 5.584$ wird am Ende der Kette dieser Effekte erreicht. 
 
-Kleine positive und negative Beiträge von Merkmals wie KWG ($32$), STRM ($0$), SB ($0$) und VWM ($4$) 
-zeigen, wie feingranulare Anpassungen der Merkmal-Werte die Vorhersage leicht erhöhen oder senken können.
+Kleine positive und negative Beiträge von Merkmalen wie KWG ($32$), STRM ($0$), SB ($0$) und VWM ($4$) 
+zeigen, wie feingranulare Anpassungen der Merkmalsausprägungen die Vorhersage leicht erhöhen oder senken können.
 
 Für die Beobachtung $x^{(0)}$ führt die kumulative Abweichung der Merkmal-Effekte 
 vom Basiswert $\mathbb{E}[f(X)] = 4.45$ zu einem tatsächlichen Modelloutput von $f(x) = 5.584$, 
@@ -131,10 +131,11 @@ Diese Differenz entspricht der Summe aller SHAP-Werte für diese konkrete Beobac
 Da die Zielgröße einer logarithmischen Transformation unterzogen wurde, muss diese für die Interpreation wieder rückgängig gemacht werden. 
 Dies bedeutet, dass der tatsächliche erwartete Wert der Laufzeit der Exponentialfunktion des prognostizierten Wertes entspricht, also $e^{4.45} \approx 85.63$ ms. 
 Dieser Rücktransformationsprozess ist notwendig, um die Modellprognosen in der ursprünglichen Skala der Zielvariablen zu interpretieren.
-Dies gilt auch für die konkrete Vorhersage $f(x) = 5.584$. Die prognostizierte Laufzeit für die Beobachtung $x^{(0)}$ beträgt also $e^{5.584} \approx 266.13$ ms.
+Dies gilt darüberhinaus sowhl für die einzelnen SHAP-Werte, als auch für die konkrete Vorhersage $f(x) = 5.584$. 
+Die prognostizierte Laufzeit für die Beobachtung $x^{(0)}$ beträgt folglich $e^{5.584} \approx 266.13$ ms.
 
 Dies ermöglicht eine detaillierte Analyse, wie das Modell zu einer bestimmten Vorhersage kommt, 
-und hilft dabei, die Beiträge und Interaktionen zwischen verschiedenen Merkmals zu verstehen.
+und hilft dabei, die Beiträge und Interaktionen zwischen verschiedenen Merkmalen zu verstehen.
 
 Die lokale Interpretation mittels SHAP-Werten ermöglicht zwar eine präzise Erklärung 
 der Modellvorhersagen für individuelle Beobachtungen, jedoch stellt sich bei einer 
@@ -158,10 +159,10 @@ wie die Merkmal-Beiträge sich im Kontext des gesamten Datensatzes darstellen la
 \end{figure}
 
 Der SHAP Beeswarm Plot in Abbildung \ref{pic:shap_beeswarm} bietet eine globale 
-Sicht auf die Modellvorhersagen, indem er die Verteilung der SHAP-Werte für jedes Merkmal 
+Sicht auf die Modellvorhersagen, indem er die Verteilung der SHAP-Werte für jedes Merkmals 
 über alle Beobachtungen hinweg darstellt. Jeder Punkt repräsentiert eine Beobachtung aus dem Datensatz.
-Die Farbe der Punkte zeigt den Merkmals-Wert an: hohe Werte in Rot und niedrige Werte in Blau. 
-Die Position auf der x-Achse gibt den Impact des Merkmals auf die Modellvorhersage an. 
+Die Farbe der Punkte zeigt die Merkmalsausprägungen an: hohe Werte in Rot und niedrige Werte in Blau. 
+Die Position auf der x-Achse gibt den Einfluss des Merkmals auf die Modellvorhersage an. 
 Positive SHAP-Werte (rechts von der Nulllinie) zeigen eine Erhöhung der Vorhersage an, 
 während negative Werte (links von der Nulllinie) eine Verringerung bedeuten. 
 
@@ -173,7 +174,7 @@ iedrigere Werte wie 16 führen hingegen zu einer geringeren Vorhersage,
 erkennbar an den linksseitigen Punkten. Diese Streuung der Punkte zeigt, 
 dass die Auswirkung von MWG auf die Vorhersage stark von seiner quantitativen Ausprägung abhängt.
 
-Diese Darstellung ermöglicht es, die Merkmals zu identifizieren, 
+Diese Darstellung ermöglicht es, die Merkmale zu identifizieren, 
 die den größten Einfluss auf das Modell haben und wie dieser Einfluss über 
 unterschiedliche Beobachtungen variiert.
 
@@ -187,8 +188,8 @@ unterschiedliche Beobachtungen variiert.
 Der SHAP Bar Plot in Abbildung \ref{pic:shap_bar} illustriert die durchschnittliche 
 Auswirkung jedes Merkmals auf das Modell, gemessen an der absoluten Größe der SHAP-Werte 
 über alle Beobachtungen hinweg. Die Balken zeigen die durchschnittlichen Beiträge der 
-Merkmals zur Vorhersage: Je länger der Balken, desto größer ist der Einfluss des jeweiligen Merkmals. 
+Merkmale zur Vorhersage: Je länger der Balken, desto größer ist der Einfluss des jeweiligen Merkmale. 
 Hier ist das Merkmal MWG mit dem höchsten durchschnittlichen SHAP-Wert (+0.51) das einflussreichste 
-Merkmal, was auf eine starke positive Beziehung zur Zielvariablen hinweist. Die weiteren Merkmals 
+Merkmal, was auf eine starke positive Beziehung zur Zielvariablen hinweist. Die weiteren Merkmale 
 folgen in absteigender Reihenfolge ihrer Bedeutung, wobei auch die Summe der Beiträge der 
-fünf weiteren Merkmals am unteren Rand der Grafik dargestellt wird.
+fünf weiteren Merkmale am unteren Rand der Grafik dargestellt wird.
