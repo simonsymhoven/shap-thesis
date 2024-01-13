@@ -10,6 +10,7 @@ import shap
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 import numpy as np
+from sklearn.inspection import permutation_importance
 
 matplotlib.use('Agg')
 
@@ -156,7 +157,7 @@ def plot_box(df: pd.DataFrame, df2: pd.DataFrame):
         df (pd.DataFrame): first dataframe.
         df2 (pd.Dataframe): second dataframe.
     """
-    fig, axs = plt.subplots(1, 2, figsize=(12, 6))
+    fig, axs = plt.subplots(1, 2, figsize=(12, 4))
     
     axs[0].boxplot(df2.values, vert=False)
     axs[0].set_title('original')
@@ -168,6 +169,25 @@ def plot_box(df: pd.DataFrame, df2: pd.DataFrame):
     
     plt.tight_layout()
     plt.savefig('images/boxplot.png', dpi=300)
+    plt.show()
+
+def plot_permutation_importance(perm_importance_train, perm_importance_test, columns):
+    fig, axs = plt.subplots(1, 2, figsize=(12, 4))
+    
+    sorted_idx_train = perm_importance_train.importances_mean.argsort()
+    axs[0].barh(range(len(sorted_idx_train)), perm_importance_train.importances_mean[sorted_idx_train], align='center')
+    axs[0].set_title('train')
+    axs[0].set_xlabel('Change in MSE')
+    axs[0].set_yticks(range(len(sorted_idx_train)), np.array(columns)[sorted_idx_train])
+    
+    sorted_idx_test = perm_importance_test.importances_mean.argsort()
+    axs[1].barh(range(len(sorted_idx_test)), perm_importance_test.importances_mean[sorted_idx_test], align='center')
+    axs[1].set_title('test')
+    axs[1].set_xlabel('Change in MSE')
+    axs[1].set_yticks(range(len(sorted_idx_test)), np.array(columns)[sorted_idx_test])
+
+    plt.tight_layout()
+    plt.savefig('images/permutation_importance.png', dpi=300)
     plt.show()
 
 df = load_data()
@@ -205,10 +225,12 @@ y = df['strength']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
 linreg, coef = model(X=X_train, y=y_train)
-
-plot_coef(coef=coef)
-
 y_pred = linreg.predict(X_test)
+
+perm_importance_train = permutation_importance(linreg, X_train, y_train)
+perm_importance_test = permutation_importance(linreg, X_test, y_test)
+plot_permutation_importance(perm_importance_train, perm_importance_test, X.columns)
+
 explainer = shap.LinearExplainer(linreg, X_train)
 shap_values = explainer(X_test)
 
@@ -223,6 +245,7 @@ print(f"Root Mean Squared Error (RMSE): {mse ** 0.5:.2f}")
 print(f"Training Score (R^2): {train_score:.4f}")
 print(f"Test Score (R^2): {test_score:.4f}")
 
+plot_coef(coef=coef)
 print(coef)
 plot_corr(df=df)
 plot_residuals(y_test=y_test, y_pred=y_pred)

@@ -202,10 +202,21 @@ Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
 Tabelle \ref{tab:statistics} offenbart eine signifikante Variabilität und Bandbreite 
 in den Werten aller Variablen. Um eine gleichmäßigere Verteilung für die Regressionsanalyse 
 zu erzielen und den Einfluss von Ausreißern zu reduzieren, wurde eine logarithmische Transformation 
-auf die Daten angewendet. Diese Transformation hilft, die Skalierung der Variablen zu vereinheitlichen 
+auf die Daten angewendet. Abbildung \ref{pic:box} zeigt das Minimum, das untere Quartil, den Median, das obere Quartil und das Maximum
+der jeweiligen Merkmale vor und nach der logarthimischen Transformation. 
+
+
+\begin{figure}[!h]
+    \caption{Boxplot der Merkmale vor und nach der Log-Transformation.}
+    \includegraphics[width=1\textwidth]{../scripts/images/boxplot.png}
+    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_concrete_compressive_strength_165}, \ref{linreg}.
+    \label{pic:box}
+\end{figure}
+
+Diese Transformation hilft, die Skalierung der Variablen zu vereinheitlichen 
 und die Datenverteilung zu normalisieren, was für die Effektivität des Regressionsmodells vorteilhaft ist.
 
-Abbildung \ref{pic:hist} zeigt die Verteilung aller Merkmale des Datensatzes nach der logarithmischen Transformation. 
+Abbildung \ref{pic:hist} zeigt die Häufigkeitsverteilung aller Merkmale des Datensatzes nach der logarithmischen Transformation. 
 
 \begin{figure}[!h]
     \caption{Verteilungen der Merkmale.}
@@ -215,7 +226,7 @@ Abbildung \ref{pic:hist} zeigt die Verteilung aller Merkmale des Datensatzes nac
 \end{figure}
 
 Die Korrelationsmatrix, dargestellt in Abbildung \ref{pic:corr}, 
-zeigt die Beziehungen zwischen den einzelnen Bestandteilen des Betons und der Zielvariablen der 
+quantifziert die Beziehungen zwischen den einzelnen Bestandteilen des Betons und der Zielvariablen der 
 Betondruckfestigkeit. Die Koeffizienten bewegen sich zwischen -0.61 und 0.63, was auf 
 unterschiedlich starke Korrelationen hinweist. Ein markantes Beispiel ist der positive Wert 
 von 0.63 zwischen Asche und Wasser, was eine starke direkte Beziehung nahelegt, während der Wert 
@@ -252,11 +263,11 @@ die ein Maß für die Abweichung der Modellvorhersagen von den tatsächlichen We
 Codeauschnitt \ref{code:model} und \ref{code:model-train} zeigen das Trainieren und Testen der zugrundeliegenden Daten 
 eines linearen Regressionsmodells:
 
-\lstinputlisting[language=Python,label=code:model, firstline=34, lastline=52, 
+\lstinputlisting[language=Python,label=code:model, firstline=35, lastline=53, 
     caption={Initialisierung eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
-\lstinputlisting[language=Python,label=code:model-train, firstline=172, lastline=178, 
+\lstinputlisting[language=Python,label=code:model-train, firstline=222, lastline=228, 
     caption={Training und Testen eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
@@ -271,7 +282,7 @@ für lineare Modelle ausgewählt.
 
 Das folgende Codeausschnitt \ref{code:shap} zeigt die Initialisierung des SHAP-Explainers und die Berechnung der SHAP-Werte:
 
-\lstinputlisting[language=Python,label=code:shap, firstline=182, lastline=183, 
+\lstinputlisting[language=Python,label=code:shap, firstline=234, lastline=235, 
     caption={Berechnung von SHAP-Werten für das lineare Regressionsmodell, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 Das Explainer-Objekt enthält neben den SHAP-Werten (.values), 
@@ -291,6 +302,6 @@ verschiedenen Merkmale im Kontext des linearen Regressionsmodells bieten.
 
 Die Grafiken wurden mithilfe der \textsf{shap}-Bibliothek wie folgt erzeugt:
 
-\lstinputlisting[language=Python,label=code:img, firstline=91, lastline=112, 
+\lstinputlisting[language=Python,label=code:img, firstline=92, lastline=113, 
     caption={Erzeugen der SHAP Plots, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
