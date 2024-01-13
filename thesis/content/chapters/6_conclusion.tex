@@ -1,36 +1,45 @@
 \chapter{Fazit}
 
-Das Fazit der vorliegenden Arbeit reflektiert die erzielten Erkenntnisse 
-aus der Anwendung des linearen Regressionsmodells zur Vorhersage der Laufzeiten von GPU-Kernen. 
-Durch die Integration von SHAP-Werten konnte eine tiefergehende Interpretation der Modellvorhersagen 
-erreicht werden, die über die traditionelle statistische Analyse hinausgeht. Es wurde demonstriert,
-dass die Koeffizienten des linearen Modells einen direkten Einblick in die Beziehung zwischen den 
-unabhängigen Variablen und der Zielvariable bieten, während die SHAP-Werte es ermöglichen, 
-diese Beziehungen auf einer granularen Ebene zu interpretieren.
+Diese Arbeit hat die Anwendung und Interpretation von SHAP-Werten in der 
+linearen Regressionsanalyse zur Vorhersage der Druckfestigkeit von Beton umfassend untersucht. 
+SHAP-Werte, als ein fortschrittlicher Ansatz zur Modellinterpretation, haben sich als besonders 
+wertvoll erwiesen, indem sie eine tiefere und nuanciertere Einsicht in die Beiträge einzelner 
+Merkmale zur Modellvorhersage bieten. Im Vergleich zu herkömmlichen Interpretationsmethoden, 
+wie der Analyse der Regressionskoeffizienten und der Permutation Feature Importance, 
+bieten SHAP-Werte mehrere entscheidende Vorteile.
 
-Die Visualisierungen, insbesondere der Waterfall- und Beeswarm-Plots,
-haben eine klare und intuitive Darstellung der Merkmals-Beiträge ermöglicht, die für die 
-Verständlichkeit des Modellverhaltens von entscheidender Bedeutung ist. Die Arbeit hat auch aufgezeigt, 
-dass die lokale Interpretation, obwohl sie präzise und aufschlussreich für einzelne Vorhersagen ist, 
-durch die globale Perspektive ergänzt werden muss, um allgemeingültige Schlussfolgerungen über das Modellverhalten zu ziehen.
+Einer der Hauptvorteile von SHAP-Werten liegt in ihrer Fähigkeit, sowohl globale als auch 
+lokale Interpretationen zu ermöglichen. Sie erlauben es, den Einfluss einzelner Merkmale auf 
+spezifische Vorhersagen zu verstehen, während gleichzeitig ein Überblick über deren Bedeutung 
+im gesamten Modell gegeben wird. Darüber hinaus berücksichtigen SHAP-Werte die Interaktionen 
+zwischen den Merkmalen und bieten somit eine ganzheitlichere Sicht auf die Modellvorhersagen. 
+Dies ist besonders relevant in komplexen Datenstrukturen, wo Merkmalsinteraktionen eine signifikante
+Rolle spielen.
 
-Insgesamt hat die Untersuchung gezeigt, dass die Kombination aus linearen Regressionsmodellen und SHAP-basierter 
-Interpretation ein leistungsstarkes Werkzeug darstellt, um sowohl die Vorhersagegenauigkeit als auch die Transparenz 
-und Nachvollziehbarkeit von maschinellen Lernmodellen zu verbessern. Die gewonnenen Einsichten können genutzt werden, 
-um das Modell weiter zu verfeinern, und bieten eine Grundlage für fundierte Entscheidungen bei der Optimierung von GPU-Kerneln. 
+Ein weiterer zentraler Vorteil der SHAP-Werte liegt in ihrer umfassenden Erklärungskraft.
+Im Gegensatz zur Permutation Feature Importance, die sich darauf konzentriert, wie sich der 
+Vorhersagefehler des Modells verändert, wenn die Werte eines Merkmals zufällig vertauscht werden, 
+bieten SHAP-Werte eine detaillierte Aufschlüsselung des Beitrags jedes einzelnen Merkmals zur 
+Vorhersage. Diese Eigenschaft der SHAP-Werte ist besonders wertvoll, da sie eine faire 
+Aufteilung der Vorhersageabweichung unter allen Merkmalsausprägungen gewährleistet – bekannt 
+als die Effizienzeigenschaft der Shapley-Werte. Diese faire Aufteilung ist besonders wichtig 
+in Kontexten, in denen eine vollständige Erklärbarkeit erforderlich ist.
 
-Gleichzeitig werden jedoch auch die Grenzen und Herausforderungen dieser Methode deutlich.
-Kritisch betrachtet, können Shapley-Werte in bestimmten Kontexten zu einer Überinterpretation führen, 
-insbesondere wenn die Beziehungen zwischen den Merkmalen komplex und nicht-linear sind. 
-Die Berechnung von Shapley-Werten kann zudem rechnerisch intensiv sein, vor allem bei Modellen mit einer großen Anzahl von Merkmalen. 
-Die Entwicklung effizienterer Algorithmen und die Nutzung fortschrittlicher Rechenressourcen, wie GPU-basiertes Computing, 
-könnten die Anwendbarkeit von SHAP-Werten in der Praxis erheblich erweitern. Dies würde es ermöglichen, auch bei umfangreicheren und 
-komplexeren Modellen eine detaillierte Erklärbarkeit zu gewährleisten.
+Trotz dieser Stärken ist es wichtig, auch die Grenzen der SHAP-Methode zu erkennen. 
+Eine der Herausforderungen bei der Anwendung von SHAP-Werten ist die Interpretation der Ergebnisse, 
+insbesondere wenn es um komplexe Modelle mit einer großen Anzahl von Merkmalen und komplizierten 
+Interaktionen geht. Die Interpretation kann schnell überwältigend werden und erfordert ein tiefes 
+Verständnis der zugrundeliegenden Daten und des Modells. Darüber hinaus kann die Berechnung von 
+SHAP-Werten insbesondere bei großen Datensätzen rechenintensiv sein, was praktische Einschränkungen 
+mit sich bringt \cite[S. 224]{Molnar_2022}.
 
-Die Anwendung von Shapley-Werten im maschinellen Lernen bietet vielfältige Möglichkeiten, die weit über die in dieser Arbeit behandelten Aspekte hinausgehen. 
-Zukünftige Forschungen und Entwicklungen könnten sich in mehrere Richtungen erstrecken, um die Grenzen und Potenziale von SHAP-Werten weiter auszuloten und zu erweitern.
+Ein weiterer wichtiger Punkt ist die potenzielle Verzerrung, die durch die Stichprobenabhängigkeit 
+der SHAP-Werte entstehen kann. SHAP-Werte basieren auf der Annahme, dass die Daten, auf denen
+das Modell trainiert wurde, repräsentativ für die zugrunde liegende Population sind. 
+Wenn diese Annahme nicht erfüllt ist, können die SHAP-Werte irreführende Interpretationen liefern.
 
-Eine wichtige Erweiterung der SHAP-Wert-Analyse ist die Einbeziehung von Interaktionen zwischen Merkmalen. Viele reale Datensätze weisen 
-komplexe Beziehungen und Abhängigkeiten zwischen ihren Merkmalen auf. Diese Interaktionen explizit zu modellieren und in die Berechnung der SHAP-Werte zu integrieren, 
-würde zu einer noch genaueren und realistischeren Interpretation der Modellvorhersagen führen.
-
+Zusammenfassend lässt sich sagen, dass SHAP-Werte eine bedeutende Erweiterung der Möglichkeiten
+zur Interpretation von linearen Modellen darstellen. Sie bieten tiefergehende Einblicke in die 
+Funktionsweise von linearen Modellen und ermöglichen eine präzisere und umfassendere Analyse der Merkmalsrelevanz 
+und -interaktionen. Dennoch ist es entscheidend, ihre Limitationen zu verstehen und sie als 
+einen Teil eines umfassenden Prozesses der Modellinterpretation und -validierung zu betrachten. 

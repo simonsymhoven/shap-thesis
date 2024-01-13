@@ -84,7 +84,7 @@ die auf eine Verletzung der Modellannahmen hindeuten könnten.
 \end{figure}
 
 
-\section{Herkömmliche Interpretation}
+\section{Interpretation der Koeffizienten \& Permutation Feature Importance}
 
 In diesem Abschnitt wird die herkömmliche Interpretation der Modellkoeffizienten genauer betrachtet. 
 Die Koeffizienten eines linearen Modells repräsentieren die Änderung der abhängigen Variable (in diesem Fall die Druckfestigkeit von Beton) 
@@ -212,7 +212,7 @@ des Modells über verschiedene Beobachtungen hinweg zu erfassen.
 \subsection{Globale Interpretation}
 
 Der folgende Abschnitt widmet sich dieser globalen Sichtweise und untersucht, 
-wie die Merkmal-Beiträge sich im Kontext des gesamten Datensatzes darstellen lassen.
+wie die Merkmalsa-Beiträge sich im Kontext des gesamten Datensatzes darstellen lassen.
 
 \begin{figure}[!h]
     \caption{SHAP Beeswarm Plot}
@@ -255,8 +255,27 @@ Hier ist das Merkmal age mit dem höchsten durchschnittlichen SHAP-Wert (+0.27) 
 Merkmal, was auf eine starke positive Beziehung zur Zielvariablen hinweist. Die weiteren Merkmale 
 folgen in absteigender Reihenfolge ihrer Bedeutung.
 
-Es fällt auf, dass die Reihenfolge der Merkmalsrelevanz im Vergleich zu Abbildung \ref{pic:permutation} gleich ist.
-Die Interpretation ist jedoch eine andere. Die Permutation Feature Importance sagt lediglich aus, wie sehr sich der mittlere
-quadratische Fehler des Modell verändert, wenn das entsprechende Merkmal entfernt wird. Der SHAP Bar Plot hingegegen zeigt die
-durchschnittliche Auswirkung auf das Modell, also die Veränderung der abhängigen Variable über alle Beobachtungen.
+Es fällt auf, dass eine Übereinstimmung in der Reihenfolge der Merkmalsrelevanz zwischen 
+der Permutation Feature Importance aus Abbildung \ref{pic:permutation} und den SHAP-Werten aus Abbildung \ref{pic:shap_bar}
+besteht, obwohl die zugrundeliegenden Interpretationen dieser beiden Methoden deutlich verschieden sind. 
+
+Die Permutation Feature Importance konzentriert sich darauf, die Veränderungen im Vorhersagefehler des Modells, 
+speziell den mittleren quadratischen Fehler, zu messen, die eintreten, wenn die Werte eines Merkmals zufällig vertauscht werden. 
+Diese Methode gibt Aufschluss darüber, wie stark das Modell auf das jeweilige Merkmal für seine Vorhersagegenauigkeit angewiesen ist. 
+Ein wesentliches Merkmal dieser Methode ist, dass sie nicht direkt die Wechselwirkungen zwischen den Merkmalen berücksichtigt. 
+Sie zeigt vielmehr, wie wichtig ein Merkmal isoliert für die Gesamtleistung des Modells ist.
+
+Im Gegensatz dazu bieten die SHAP-Werte einen tieferen Einblick in die Beiträge jedes Merkmals zur Vorhersageleistung des Modells. 
+Sie quantifizieren den Einfluss eines Merkmals auf die Abweichung der Prognose vom Basiswert, also der durchschnittlichen Vorhersage des Modells. 
+Hierbei wird nicht nur die individuelle Wichtigkeit jedes Merkmals hervorgehoben, sondern auch deren Wechselwirkungen mit anderen 
+Merkmalen berücksichtigt. Diese Methodik ermöglicht es, sowohl eine globale als auch eine lokale Perspektive auf die Modellvorhersagen zu werfen. 
+Während die globale Interpretation durchschnittliche Auswirkungen aller Merkmale aufzeigt, erlaubt die lokale Sichtweise, die Vorhersagen 
+für einzelne Beobachtungen präzise zu erklären.
+
+Diese unterschiedlichen Herangehensweisen und Interpretationen der Merkmalsrelevanz, einerseits durch die 
+Permutation Feature Importance und andererseits durch die SHAP-Werte, verdeutlichen die Komplexität und die Tiefe der Analyse, 
+die für ein umfassendes Verständnis von Vorhersagemodellen erforderlich ist. Beide Methoden ergänzen sich gegenseitig und tragen dazu bei, 
+ein vollständigeres Bild der Dynamiken innerhalb des Modells zu zeichnen.
+
+Im abschließenden Kapitel dieser Arbeit werden die wichtigsten Erkenntnisse zusammengefasst und diskutiert.
 
