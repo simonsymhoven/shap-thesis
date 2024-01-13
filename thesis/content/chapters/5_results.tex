@@ -1,12 +1,13 @@
 \chapter{Ergebnisse}
 \label{chapter:results}
 
-Das folgende Kapitel präsentiert eine eingehende Analyse der Ergebnisse, 
-die aus dem linearen Regressionsmodell gewonnen wurden, welches entwickelt wurde, 
-um die Runtime basierend auf verschiedenen Parametern aus dem SGEMM GPU Kernel Performance 
-Datensatz zu prognostizieren. Neben der detaillierten Darstellung der Modellkoeffizienten und 
-der zugehörigen Metriken umfasst dieses Kapitel auch eine Vorstellung der SHAP-Werte 
-zur Interpretation der Modellvorhersagen und zur Einsicht in die Wichtigkeit der einzelnen Merkmale.
+In diesem Kapitel werden die Resultate der angewandten linearen Regressionsanalyse 
+zur Vorhersage der Druckfestigkeit von Beton dargestellt. 
+Die Analyse berücksichtigt sowohl die geschätzten Koeffizienten des linearen Modells 
+als auch verschiedene Evaluierungsmetriken wie den mittleren absoluten Fehler (MAE), 
+den mittleren quadratischen Fehler (MSE) sowie die Bestimmtheitsmaße ($R^2$) 
+für Trainings- und Testdaten. Diese Metriken liefern Aufschluss über die Güte des Modells 
+und die Präzision der Vorhersagen.
 
 \section{Lineares Regressionmodell}
 
@@ -24,21 +25,15 @@ zusammen mit Gleichung \ref{eq:reg-model} die Regressionsgerade für das Modell.
     \toprule
     Merkmal ($\beta_j$) & Koeffizient \\
     \midrule
-    Intercept ($\beta_0$) & 4.23287 \\
-    MWG & 0.01336 \\
-    NWG & 0.01057 \\
-    KWG & 0.01239 \\
-    MDIMC & -0.05684 \\
-    NDIMC & -0.05493 \\
-    MDIMA & 0.00020 \\
-    NDIMB & -0.00003 \\
-    KWI & -0.00422 \\
-    VWM & -0.00917 \\
-    VWN & -0.02371 \\
-    STRM & -0.13102 \\
-    STRN & -0.01729 \\
-    SA & -0.18991 \\
-    SB & -0.04747 \\
+    Intercept ($\beta_0$) & 4.36596 \\
+    cement & 0.75091 \\
+    blast & 0.06610 \\
+    ash & 0.02683 \\
+    water & -0.92315 \\
+    superplasticizer & 0.06410 \\
+    coarse & 0.08554 \\
+    fine &  -0.31901 \\
+    age & 0.29090 \\
     \bottomrule
     \end{tabularx}
     \label{tab:model-coefficients}
@@ -57,11 +52,11 @@ der Zielvariable erklärt.
     \toprule
     Metrik & Wert \\
     \midrule
-    Mean Absolute Error (MAE) & 0.6000 \\
-    Mean Squared Error (MSE) & 0.5600 \\
-    Root Mean Squared Error (RMSE) & 0.7500 \\
-    Training Score (R²) & 0.5622 \\
-    Test Score (R²) & 0.5571 \\
+    Mean Absolute Error (MAE) & 0.19 \\
+    Mean Squared Error (MSE) & 0.06 \\
+    Root Mean Squared Error (RMSE) & 0.24 \\
+    Training Score (R²) & 0.7852 \\
+    Test Score (R²) & 0.8155 \\
     \bottomrule
     \end{tabularx}
     \label{tab:model-metrics}
@@ -77,7 +72,7 @@ die auf eine Verletzung der Modellannahmen hindeuten könnten.
 
 \begin{figure}[!h]
     \caption{Residuenanalyse: Beziehung zwischen Vorhersagen und Abweichungen.}
-    \includegraphics[width=1\textwidth]{../scripts/images/residuals_gpu.png}
+    \includegraphics[width=1\textwidth]{../scripts/images/residuals.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:residuals}
 \end{figure}
@@ -91,6 +86,12 @@ auf globaler Ebene, sondern auch auf lokaler, individueller Ebene zu verstehen.
 Diese tiefgehende Analyse ermöglicht es, das Modell auf seine Fairness, 
 Genauigkeit und Transparenz zu überprüfen.
 
+\subsection{Bisherige Möglichkeiten der Feature Importance Interpreation}
+
+TODO 
+
+Überleitung warum SHAP jetzt so dolle ist.
+
 
 \subsection{Lokale Interpretation}
 
@@ -100,7 +101,7 @@ der eine visuelle Darstellung des Beitrags eines jeden Merkmals zu einer spezifi
 
 \begin{figure}[!h]
     \caption{SHAP Waterfall Plot}
-    \includegraphics[width=1\textwidth]{../scripts/images/shap_waterfall_plot_gpu.png}
+    \includegraphics[width=1\textwidth]{../scripts/images/shap_waterfall_plot.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:shap_waterfall}
 \end{figure}
@@ -153,7 +154,7 @@ wie die Merkmal-Beiträge sich im Kontext des gesamten Datensatzes darstellen la
 
 \begin{figure}[!h]
     \caption{SHAP Beeswarm Plot}
-    \includegraphics[width=1\textwidth]{../scripts/images/shap_beeswarm_plot_gpu.png}
+    \includegraphics[width=1\textwidth]{../scripts/images/shap_beeswarm_plot.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:shap_beeswarm}
 \end{figure}
@@ -180,7 +181,7 @@ unterschiedliche Beobachtungen variiert.
 
 \begin{figure}[!h]
     \caption{SHAP Bar Plot}
-    \includegraphics[width=1\textwidth]{../scripts/images/shap_bar_plot_gpu.png}
+    \includegraphics[width=1\textwidth]{../scripts/images/shap_bar_plot.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:shap_bar}
 \end{figure}

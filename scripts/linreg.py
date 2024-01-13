@@ -20,14 +20,14 @@ def load_data() -> pd.DataFrame:
     Returns:
         pd.DataFrame: The loaded dataset.
     """
-    url = "https://archive.ics.uci.edu/static/public/440/sgemm+gpu+kernel+performance.zip"
+    url = "https://archive.ics.uci.edu/static/public/165/concrete+compressive+strength.zip"
 
     r = requests.get(url)
 
     if r.ok:
         with zipfile.ZipFile(BytesIO(r.content)) as thezip:
-            with thezip.open("sgemm_product.csv") as thefile:
-                return pd.read_csv(thefile, sep=",")
+            with thezip.open("Concrete_Data.xls") as thefile:
+                return pd.read_excel(thefile, header=0)
     else:
         raise Exception("Something went wrong.")
     
@@ -75,7 +75,7 @@ def plot_residuals(y_test: pd.Series, y_pred: pd.Series) -> None:
     axs[1].set_xlabel('Predicted Values')
     axs[1].set_ylabel('Residuals')
 
-    plt.savefig('images/residuals_gpu.png', dpi=300)
+    plt.savefig('images/residuals.png', dpi=300)
 
 def plot_corr(df: pd.DataFrame) -> None:
     """
@@ -86,7 +86,7 @@ def plot_corr(df: pd.DataFrame) -> None:
     """
     plt.figure(figsize=(12,10))
     sns.heatmap(df.corr(), annot=True, cmap="YlGnBu", fmt=".2f")
-    plt.savefig('images/corr_gpu.png', dpi=300)
+    plt.savefig('images/corr.png', dpi=300)
 
 def plot_shap(shap_values: shap.Explanation, idx: int) -> None:
     """
@@ -99,17 +99,17 @@ def plot_shap(shap_values: shap.Explanation, idx: int) -> None:
     plt.figure(figsize=(12,10))
     shap.plots.beeswarm(shap_values)
     plt.tight_layout()
-    plt.savefig('images/shap_beeswarm_plot_gpu.png', dpi=300)
+    plt.savefig('images/shap_beeswarm_plot.png', dpi=300)
 
     plt.figure(figsize=(12,10))
     shap.plots.bar(shap_values)
     plt.tight_layout()
-    plt.savefig('images/shap_bar_plot_gpu.png', dpi=300)
+    plt.savefig('images/shap_bar_plot.png', dpi=300)
 
     plt.figure(figsize=(12,10))
     shap.plots.waterfall(shap_values[idx])
     plt.tight_layout()
-    plt.savefig('images/shap_waterfall_plot_gpu.png', dpi=300)
+    plt.savefig('images/shap_waterfall_plot.png', dpi=300)
 
 def plot_dist(df: pd.DataFrame):
     """
@@ -119,7 +119,7 @@ def plot_dist(df: pd.DataFrame):
     Args:
         df (pd.DataFrame): The feature matrix.
     """
-    fig, axes = plt.subplots(5, 3, figsize=(15, 20))
+    fig, axes = plt.subplots(3, 3, figsize=(15, 15))
     axes = axes.flatten()
 
     for i, var in enumerate(df.keys()):
@@ -127,65 +127,86 @@ def plot_dist(df: pd.DataFrame):
         axes[i].set_title(var)
 
     plt.tight_layout()
-    plt.savefig('images/dist_gpu.png', dpi=300)
+    plt.savefig('images/dist.png', dpi=300)
     plt.show()
 
-
-def plot_target_dist(df: pd.DataFrame, original_runtime: pd.Series):
+def plot_coef(coef: pd.DataFrame):
     """
-    Creates and saves distribution and histrogramm plot for targets variable 
-    before log transformation and after.
-
+    Plot the coefficients of a linear model as a horizontal bar chart.
+    
     Args:
-        df (pd.DataFrame): The feature matrix.
+        coef (pd.DataFrame): A DataFrame containing the model's coefficients, 
+                         with feature names as the index and a 'Coefficients' column.
     """
-    fig, axs = plt.subplots(2, 2, figsize=(16, 12))
-
-    sns.histplot(original_runtime, ax=axs[0, 0], kde=True)
-    axs[0, 0].set_ylabel("Count")
-    axs[0, 0].set_title("Original")
-
-    axs[1, 0].boxplot(original_runtime)
-    axs[1, 0].set_ylabel("Values")
-    axs[1, 0].set_xticks([1], ['Runtime'])
-
-    sns.histplot(df["Runtime"], ax=axs[0, 1], kde=True)
-    axs[0, 1].set_ylabel("Count")
-    axs[0, 1].set_title("log-transformiert")
-
-    axs[1, 1].boxplot(df["Runtime"])
-    axs[1, 1].set_ylabel("Values")
-    axs[1, 1].set_xticks([1], ['Runtime'])
-
-    plt.tight_layout()
-    plt.savefig('images/combined_runtime_plots.png', dpi=300)
+    coef = coef.drop('Intercept', errors='ignore')
+    coef = coef.sort_values(by='Coefficients', ascending=True)
+    plt.figure(figsize=(12, 10))
+    plt.barh(coef.index, coef['Coefficients'])
+    plt.axvline(0)
+    plt.xlabel('Coefficients')
+    plt.ylabel('Features')
+    plt.savefig('images/coef.png', dpi=300)
     plt.show()
 
+def plot_box(df: pd.DataFrame, df2: pd.DataFrame):
+    """
+    Plot the distribution of two dataframes as boxplot.
+    
+    Args:
+        df (pd.DataFrame): first dataframe.
+        df2 (pd.Dataframe): second dataframe.
+    """
+    fig, axs = plt.subplots(1, 2, figsize=(12, 6))
+    
+    axs[0].boxplot(df2.values, vert=False)
+    axs[0].set_title('original')
+    axs[0].set_yticklabels(df2.columns)
+    
+    axs[1].boxplot(df.values, vert=False)
+    axs[1].set_title('log-transformed')
+    axs[1].set_yticklabels(df.columns)
+    
+    plt.tight_layout()
+    plt.savefig('images/boxplot.png', dpi=300)
+    plt.show()
 
 df = load_data()
 
-
-# Preprocessing
-mean_values = df.iloc[:, 14:18].mean(axis=1)
-df.insert(14, "Runtime", mean_values)
-df.drop(['Run1 (ms)', 'Run2 (ms)', 'Run3 (ms)', 'Run4 (ms)'], axis='columns', inplace=True)
+df = df.rename(
+    columns={
+        'Cement (component 1)(kg in a m^3 mixture)':'cement',
+        'Blast Furnace Slag (component 2)(kg in a m^3 mixture)':'blast',
+        'Fly Ash (component 3)(kg in a m^3 mixture)':'ash',
+        'Water  (component 4)(kg in a m^3 mixture)':'water',
+        'Superplasticizer (component 5)(kg in a m^3 mixture)':'superplasticizer',
+        'Coarse Aggregate  (component 6)(kg in a m^3 mixture)':'coarse',
+        'Fine Aggregate (component 7)(kg in a m^3 mixture)':'fine',
+        'Age (day)':'age',
+        'Concrete compressive strength(MPa, megapascals) ': 'strength'
+    }
+)
+df = df.drop_duplicates()
+df_original = df.copy()
 
 print(df.head())
 print(df.isnull().sum())
 print(df.describe().T)
 
-original_runtime = df["Runtime"]
-df["Runtime"] = np.log(df["Runtime"])
+for column in df.columns:
+    df[column] += 1
+    df[column] = np.log(df[column])
 
-plot_target_dist(df=df, original_runtime=original_runtime)
 plot_dist(df=df)
+plot_box(df=df, df2=df_original)
 
-X = df.drop(['Runtime'], axis=1) 
-y = df['Runtime']
+X = df.drop(['strength'], axis=1) 
+y = df['strength']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=2743)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
 linreg, coef = model(X=X_train, y=y_train)
+
+plot_coef(coef=coef)
 
 y_pred = linreg.predict(X_test)
 explainer = shap.LinearExplainer(linreg, X_train)
@@ -203,6 +224,6 @@ print(f"Training Score (R^2): {train_score:.4f}")
 print(f"Test Score (R^2): {test_score:.4f}")
 
 print(coef)
-plot_corr(X=df)
+plot_corr(df=df)
 plot_residuals(y_test=y_test, y_pred=y_pred)
 plot_shap(shap_values=shap_values, idx=0)

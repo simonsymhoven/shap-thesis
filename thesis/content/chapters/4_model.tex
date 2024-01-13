@@ -119,135 +119,123 @@ Dokumentation des Pakets zu finden\footnote{\shapurl}.
 
 \section{Einführung in den Datensatz}
 
-In der vorliegenden Arbeit wird der SGEMM GPU Kernel Performance Datensatz verwendet, welcher die Laufzeitmessung eines Matrix-Matrix-Produkts 
-\(A*B = C\) dokumentiert, wobei alle Matrizen die Größe 2048 x 2048 haben. 
-Der Datensatz wurde erstellt, um verschiedene Konfigurationen eines parameterisierbaren SGEMM 
-(Single-precision General Matrix Multiply) GPU-Kernels zu testen. Mit insgesamt 261400 möglichen Parameterkombinationen, 
-von denen jede viermal ausgeführt wurde, bietet der Datensatz eine umfassende Grundlage zur Untersuchung der Laufzeitperformance.
-Die Daten wurden von Enrique G. Paredes und Rafael Ballester-Ripoll vom Visualization and MultiMedia Lab der Universität 
-Zürich gesammelt \cite{ballesterripoll2017sobol, Nugteren_2015}. 
 
-Der Datensatz umfasst folgende Variablen \cite{misc_sgemm_gpu_kernel_performance_440}:
+Der Concrete Compressive Strength Datensatz ist eine umfassende Sammlung von Daten, 
+die die Druckfestigkeit von Beton in Bezug auf verschiedene Bestandteile und das Alter des Betons untersucht. 
+Die Bestandteile umfassen Zement, Hochofenschlacke, Flugasche, Wasser, Superplastifikator, 
+groben Zuschlag und feinen Zuschlag \cite{misc_concrete_compressive_strength_165}.
+
+\textbf{Ziel der Regression:} Das Ziel ist es, die Druckfestigkeit von Beton in Megapascal basierend 
+auf seiner Zusammensetzung und dem Alter vorherzusagen. Diese Vorhersage ist entscheidend, 
+da Beton das Fundament der modernen Welt bildet und seine Festigkeit für die Sicherheit und 
+Langlebigkeit von Bauwerken von größter Bedeutung ist.
+
+Der Datensatz umfasst folgende Variablen:
 
 \begin{itemize}
-    \item \textbf{MWG, NWG} (Matrix Widths for Global tile size): Dimensionen der 2D-Aufteilung einer Matrix auf Workgroup-Ebene. Mögliche Werte sind \{16, 32, 64, 128\}, was die Anzahl der Datenpunkte in jeder Dimension angibt.
-    \item \textbf{KWG} (Kernel Width for Global tile size): Innere Dimension der 2D-Aufteilung auf Workgroup-Ebene. Mögliche Werte sind \{16, 32\}, ebenfalls als Anzahl der Datenpunkte.
-    \item \textbf{MDIMC, NDIMC} (Local Workgroup Size): Dimensionen für die lokale Workgroup-Größe. Werte in \{8, 16, 32\}, repräsentieren die Anzahl der Threads pro Dimension innerhalb einer Workgroup.
-    \item \textbf{MDIMA, NDIMB} (Local Memory Shape): Dimensionen, die die Form des lokalen Speichers bestimmen. Werte sind \{8, 16, 32\} und beziehen sich auf die Größe des Speicherblocks pro Dimension.
-    \item \textbf{KWI} (Kernel Workgroup unrolling): Ein Faktor für das Kernel Loop Unrolling. Mögliche Werte sind \{2, 8\}, die den Grad der Schleifenvereinfachung angeben.
-    \item \textbf{VWM, VWN} (Vector Widths for loading/storing): Vektorbreiten für das Laden und Speichern von Matrizen. Werte in \{1, 2, 4, 8\} repräsentieren die Anzahl der Datenpunkte, die simultan pro Operation gehandhabt werden.
-    \item \textbf{STRM, STRN} (Enable stride): Binäre Einstellungen, die festlegen, ob ein Stride für den Speicherzugriff innerhalb eines Threads aktiviert ist. Werte \{0, 1\} repräsentieren ausgeschaltet bzw. eingeschaltet.
-    \item \textbf{SA, SB} (Manual Caching): Binäre Variablen zur Aktivierung der manuellen Zwischenspeicherung von 2D Workgroup-Kacheln. Werte \{0, 1\} repräsentieren ausgeschaltet bzw. eingeschaltet.
-    \item \textbf{Run1, Run2, Run3, Run4} (Performance Times): Vier unabhängige Laufzeiten (in Millisekunden) für jede Parameterkombination. Sie zeigen die Performanz des GPU-Kernels unter verschiedenen Einstellungen und Bedingungen. Die Zeiten variieren zwischen 13.25 ms und 3397.08 ms.
+    \item \textbf{\texttt{cement} (Zement)}: Menge an Zement (kg in einem m³ Gemisch). Zement ist ein Hauptbestandteil von Beton und wesentlich für dessen Festigkeit.
+    \item \textbf{\texttt{blast} (Hochofenschlacke)}: Menge an Hochofenschlacke (kg in einem m³ Gemisch). Schlacke kann die Festigkeit und Haltbarkeit von Beton verbessern.
+    \item \textbf{\texttt{ash} (Flugasche)}: Menge an Flugasche (kg in einem m³ Gemisch). Flugasche wird als Ersatz für Zement verwendet und beeinflusst die Verarbeitbarkeit und Festigkeit.
+    \item \textbf{\texttt{water} (Wasser)}: Menge an Wasser (kg in einem m³ Gemisch). Wasser ist für die Hydratation des Zements und die Konsistenz des Betons notwendig.
+    \item \textbf{\texttt{superplasticizer} (Superplastifikator)}: Menge an Superplastifikator (kg in einem m³ Gemisch). Superplastifikatoren verbessern die Fließfähigkeit und Verarbeitbarkeit von Beton.
+    \item \textbf{\texttt{coarse} (Grober Zuschlag)}: Menge an grobem Zuschlag (kg in einem m³ Gemisch). Grober Zuschlag trägt zur Stabilität und Struktur des Betons bei.
+    \item \textbf{\texttt{fine} (Feiner Zuschlag)}: Menge an feinem Zuschlag (kg in einem m³ Gemisch). Feiner Zuschlag beeinflusst die Dichte und die Oberflächeneigenschaften des Betons.
+    \item \textbf{\texttt{age} (Alter)}: Alter des Betons in Tagen. Das Alter hat einen signifikanten Einfluss auf die Festigkeit des Betons.
+    \item \textbf{\texttt{strength} (Druckfestigkeit)}: Die tatsächliche Druckfestigkeit von Beton (MPa). Dies ist die Zielvariable, die modelliert wird.
 \end{itemize}
+ 
+Die Bedeutung dieses Themas liegt in der zentralen Rolle, die Beton im Bauwesen spielt. 
+Als eines der am meisten verwendeten Materialien weltweit, ist die genaue Vorhersage seiner Festigkeit von entscheidender 
+Bedeutung für die Planung und den Bau sicherer und langlebiger Strukturen. Dieser Datensatz bietet daher wertvolle Einblicke für Ingenieure und Forscher, 
+um die Eigenschaften und das Verhalten von Beton besser zu verstehen und zu optimieren.
 
 \section{Explorative Datenanalyse \& Datenaufbereitung}
 
 Der Datensatz wurde in Python mithilfe der Bibliothek \textsf{pandas} als \textsf{Dataframe} eingelesen.
-Die Zielvariable Runtime für die Regression wurde als Durchschnitt der vier unabhängigen Laufzeiten (Run1, Run2, Run3 und Run4) berechnet, 
-um eine repräsentative Maßzahl für die Gesamtperformance zu erhalten.
-
 Der vollständige Quellcode für das Einlesen der Daten sowie alle weiteren Analyseschritte ist 
 im Anhang \ref{linreg} dieser Arbeit zu finden.
 
 Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
 
 \begin{table}[!h]
-    \caption{Auszug aus dem SGEMM GPU Kernel Performance Datensatz.}
+    \caption{Auszug aus dem Concrete Compressive Strength Datensatz.}
     \footnotesize
-    \begin{tabularx}{\textwidth}{Xrrrrrrrrrrrrrrr}
+    \begin{tabularx}{\textwidth}{Xrrrrrrrrr}
     \toprule
-    Index & \rotatebox{90}{MWG} & \rotatebox{90}{NWG} & \rotatebox{90}{KWG} & \rotatebox{90}{MDIMC} & \rotatebox{90}{NDIMC} & \rotatebox{90}{MDIMA} & \rotatebox{90}{NDIMB} & \rotatebox{90}{KWI} & \rotatebox{90}{VWM} & \rotatebox{90}{VWN} & \rotatebox{90}{STRM} & \rotatebox{90}{STRN} & \rotatebox{90}{SA} & \rotatebox{90}{SB} & \rotatebox{90}{$\varnothing$ Runtime (ms)} \\
+    Index & \rotatebox{90}{cement} & \rotatebox{90}{blast} & \rotatebox{90}{ash} & \rotatebox{90}{water} & \rotatebox{90}{superplasticizer} & \rotatebox{90}{coarse} & \rotatebox{90}{fine} & \rotatebox{90}{age} & \rotatebox{90}{strength} \\
     \midrule
-    0 & 16 & 16 & 16 & 8 & 8 & 8 & 8 & 2 & 1 & 1 & 0 & 0 & 0 & 0 & 116.3700 \\
-    1 & 16 & 16 & 16 & 8 & 8 & 8 & 8 & 2 & 1 & 1 & 0 & 0 & 0 & 1 & 78.7050 \\
-    2 & 16 & 16 & 16 & 8 & 8 & 8 & 8 & 2 & 1 & 1 & 0 & 0 & 1 & 0 & 80.5650 \\
-    3 & 16 & 16 & 16 & 8 & 8 & 8 & 8 & 2 & 1 & 1 & 0 & 0 & 1 & 1 & 86.6375 \\
-    4 & 16 & 16 & 16 & 8 & 8 & 8 & 8 & 2 & 1 & 1 & 0 & 1 & 0 & 0 & 118.6625 \\
+    0 & 540.0 & 0.0 & 0.0 & 162.0 & 2.5 & 1040.0 & 676.0 & 28 & 79.986111 \\
+    1 & 540.0 & 0.0 & 0.0 & 162.0 & 2.5 & 1055.0 & 676.0 & 28 & 61.887366 \\
+    2 & 332.5 & 142.5 & 0.0 & 228.0 & 0.0 & 932.0 & 594.0 & 270 & 40.269535 \\
+    3 & 332.5 & 142.5 & 0.0 & 228.0 & 0.0 & 932.0 & 594.0 & 365 & 41.052780 \\
+    4 & 198.6 & 132.4 & 0.0 & 192.0 & 0.0 & 978.4 & 825.5 & 360 & 44.296075 \\
     \bottomrule
     \end{tabularx}
     \label{tab:df-head}
     \normalsize\\
-    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_sgemm_gpu_kernel_performance_440}.
+    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_concrete_compressive_strength_165}, \ref{linreg}.
 \end{table}
 
-In Tabelle \ref{tab:statistics} sind deskriptive Statistiken der verschiedenen Variablen des Datensatzes dargestellt. 
-
 \begin{table}[!h]
-    \caption{Auszug aus dem SGEMM GPU Kernel Performance Datensatz.}
+    \caption{Statistische Übersicht des Concrete Compressive Strength Datensatzes.}
     \footnotesize
     \begin{tabularx}{\textwidth}{Xrrrrrrr}
     \toprule
     Variable & mean & std & min & 25\% & 50\% & 75\% & max \\
     \midrule
-    MWG & 80.415364 & 42.469220 & 16.0000 & 32.0000 & 64.00 & 128.0000 & 128.0000 \\
-    NWG & 80.415364 & 42.469220 & 16.0000 & 32.0000 & 64.00 & 128.0000 & 128.0000 \\
-    KWG & 25.513113 & 7.855619 & 16.0000 & 16.0000 & 32.00 & 32.0000 & 32.0000 \\
-    MDIMC & 13.935894 & 7.873662 & 8.0000 & 8.0000 & 8.00 & 16.0000 & 32.0000 \\
-    NDIMC & 13.935894 & 7.873662 & 8.0000 & 8.0000 & 8.00 & 16.0000 & 32.0000 \\
-    MDIMA & 17.371126 & 9.389418 & 8.0000 & 8.0000 & 16.00 & 32.0000 & 32.0000 \\
-    NDIMB & 17.371126 & 9.389418 & 8.0000 & 8.0000 & 16.00 & 32.0000 & 32.0000 \\
-    KWI & 5.000000 & 3.000006 & 2.0000 & 2.0000 & 5.00 & 8.0000 & 8.0000 \\
-    VWM & 2.448609 & 1.953759 & 1.0000 & 1.0000 & 2.00 & 4.0000 & 8.0000 \\
-    VWN & 2.448609 & 1.953759 & 1.0000 & 1.0000 & 2.00 & 4.0000 & 8.0000 \\
-    STRM & 0.500000 & 0.500001 & 0.0000 & 0.0000 & 0.50 & 1.0000 & 1.0000 \\
-    STRN & 0.500000 & 0.500001 & 0.0000 & 0.0000 & 0.50 & 1.0000 & 1.0000 \\
-    SA & 0.500000 & 0.500001 & 0.0000 & 0.0000 & 0.50 & 1.0000 & 1.0000 \\
-    SB & 0.500000 & 0.500001 & 0.0000 & 0.0000 & 0.50 & 1.0000 & 1.0000 \\
-    Runtime & 217.571953 & 368.750161 & 13.3175 & 40.6675 & 69.79 & 228.3875 & 3341.5075 \\
+    cement & 278.629 & 104.345 & 102.0 & 190.68 & 265.0 & 349.0 & 540.0 \\
+    blast & 72.043 & 86.171 & 0.0 & 0.0 & 20.0 & 142.5 & 359.4 \\
+    ash & 55.535 & 64.207 & 0.0 & 0.0 & 0.0 & 118.27 & 200.1 \\
+    water & 182.074 & 21.341 & 121.75 & 166.61 & 185.7 & 192.94 & 247.0 \\
+    superplasticizer & 6.032 & 5.92 & 0.0 & 0.0 & 6.1 & 10.0 & 32.2 \\
+    coarse & 974.376 & 77.58 & 801.0 & 932.0 & 968.0 & 1031.0 & 1145.0 \\
+    fine & 772.687 & 80.34 & 594.0 & 724.3 & 780.0 & 822.2 & 992.6 \\
+    age & 45.857 & 63.735 & 1.0 & 7.0 & 28.0 & 56.0 & 365.0 \\
+    strength & 35.250 & 16.285 & 2.332 & 23.524 & 33.798 & 44.868 & 82.599 \\
     \bottomrule
     \end{tabularx}
     \label{tab:statistics}
     \normalsize
-    \\ Quelle: Eigene Darstellung, \ref{linreg}.
+    \\ Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_concrete_compressive_strength_165}, \ref{linreg}.
 \end{table}
 
-Die Zielvariable Runtime weist eine erhebliche Variabilität und Spannweite auf. 
-Um eine homogenere Verteilung für die Regression zu erreichen und den Einfluss 
-von Ausreißern zu verringern, wurde sie einer logarithmischen Transformation unterzogen, 
-wie auch von den Datensatzautoren empfohlen \cite{misc_sgemm_gpu_kernel_performance_440}. 
-Grafik \ref{pic:box} illustriert die Verteilungen der Runtime mittels Boxplots und Histogrammen, 
-vor und nach der log-Transformation, und verdeutlicht den Effekt der Normalisierung:
+Tabelle \ref{tab:statistics} offenbart eine signifikante Variabilität und Bandbreite 
+in den Werten aller Variablen. Um eine gleichmäßigere Verteilung für die Regressionsanalyse 
+zu erzielen und den Einfluss von Ausreißern zu reduzieren, wurde eine logarithmische Transformation 
+auf die Daten angewendet. Diese Transformation hilft, die Skalierung der Variablen zu vereinheitlichen 
+und die Datenverteilung zu normalisieren, was für die Effektivität des Regressionsmodells vorteilhaft ist.
 
-\begin{figure}[!h]
-    \caption{Verteilungen der Runtime vor und nach log-Transformation.}
-    \includegraphics[width=1\textwidth]{../scripts/images/combined_runtime_plots.png}
-    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_sgemm_gpu_kernel_performance_440}, \ref{linreg}.
-    \label{pic:box}
-\end{figure}
-
-Abbildung \ref{pic:hist} zeigt die Verteilung aller Merkmale des Datensatzes. 
+Abbildung \ref{pic:hist} zeigt die Verteilung aller Merkmale des Datensatzes nach der logarithmischen Transformation. 
 
 \begin{figure}[!h]
     \caption{Verteilungen der Merkmale.}
-    \includegraphics[width=1\textwidth]{../scripts/images/dist_gpu.png}
-    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_sgemm_gpu_kernel_performance_440}, \ref{linreg}.
+    \includegraphics[width=1\textwidth]{../scripts/images/dist.png}
+    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_concrete_compressive_strength_165}, \ref{linreg}.
     \label{pic:hist}
 \end{figure}
 
-Die Korrelationsmatrix, die in Abbildung \ref{pic:corr} dargestellt ist, 
-umfasst die Zielvariable Runtime, wodurch direkte Einblicke in die Beziehungen 
-zwischen den Merkmalen und der Zielvariablen möglich sind. Die Koeffizienten variieren 
-von -0.25 bis 0.46, was darauf hindeutet, dass einige Variablen eine moderate 
-Korrelation mit der Runtime aufweisen. Positive Werte, wie der höchste Koeffizient 
-von 0.46, implizieren, dass eine Erhöhung der entsprechenden Merkmalsausprägungen tendenziell 
-mit längeren Ausführungszeiten verbunden ist. Negative Werte, wie der niedrigste Koeffizient 
-von -0.25, deuten hingegen auf eine umgekehrte Beziehung hin, 
-bei der höhere Merkmalsausprägungen mit kürzeren Laufzeiten korrelieren. 
-Diese Korrelationen liefern wichtige Informationen für die Modellierung, da sie aufzeigen, 
-welche Parameter möglicherweise einen stärkeren Einfluss auf die Laufzeit haben. 
+Die Korrelationsmatrix, dargestellt in Abbildung \ref{pic:corr}, 
+zeigt die Beziehungen zwischen den einzelnen Bestandteilen des Betons und der Zielvariablen der 
+Betondruckfestigkeit. Die Koeffizienten bewegen sich zwischen -0.61 und 0.63, was auf 
+unterschiedlich starke Korrelationen hinweist. Ein markantes Beispiel ist der positive Wert 
+von 0.63 zwischen Asche und Wasser, was eine starke direkte Beziehung nahelegt, während der Wert 
+von -0.61 zwischen Wasser und Superplastifikator auf eine starke umgekehrte Beziehung hindeutet. 
+Die Zielvariable der Betondruckfestigkeit zeigt die stärkste direkte Korrelation mit dem Zementgehalt (0.46), 
+was darauf schließen lässt, dass ein höherer Zementanteil tendenziell zu einer stärkeren Betonmischung führt. 
+Diese Korrelationsmuster sind essentiell für die Modellentwicklung, da sie Aufschluss darüber geben, welche 
+Mischungsbestandteile einen bedeutenden Einfluss auf die Betondruckfestigkeit haben könnten.
 
 \begin{figure}[!h]
     \caption{Korrelationsmatrix der Merkmale im Datensatz.}
-    \includegraphics[width=1\textwidth]{../scripts/images/corr_gpu.png}
+    \includegraphics[width=1\textwidth]{../scripts/images/corr.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:corr}
 \end{figure}
 
 \section{Modellierung der linearen Regression}
 
-Um die Beziehung zwischen den unabhängigen Variablen und der Zielvariablen 
-Runtime zu untersuchen, wurde ein lineares Regressionsmodell aufgestellt. 
+Um die Beziehung zwischen den unabhängigen Variablen und der Zielvariablen  zu untersuchen, 
+wurde ein lineares Regressionsmodell aufgestellt. 
 Zur Bewertung der Vorhersageleistung des Modells und zur Vermeidung von Overfitting wurde der 
 Datensatz in zwei Teile aufgeteilt: 80\% der Daten dienten als Trainingsset zur 
 Anpassung des Modells, während die restlichen 20\% als Testset verwendet wurden, 
@@ -268,7 +256,7 @@ eines linearen Regressionsmodells:
     caption={Initialisierung eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
-\lstinputlisting[language=Python,label=code:model-train, firstline=183, lastline=190, 
+\lstinputlisting[language=Python,label=code:model-train, firstline=172, lastline=178, 
     caption={Training und Testen eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
@@ -283,7 +271,7 @@ für lineare Modelle ausgewählt.
 
 Das folgende Codeausschnitt \ref{code:shap} zeigt die Initialisierung des SHAP-Explainers und die Berechnung der SHAP-Werte:
 
-\lstinputlisting[language=Python,label=code:shap, firstline=191, lastline=193, 
+\lstinputlisting[language=Python,label=code:shap, firstline=182, lastline=183, 
     caption={Berechnung von SHAP-Werten für das lineare Regressionsmodell, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 Das Explainer-Objekt enthält neben den SHAP-Werten (.values), 
@@ -303,6 +291,6 @@ verschiedenen Merkmale im Kontext des linearen Regressionsmodells bieten.
 
 Die Grafiken wurden mithilfe der \textsf{shap}-Bibliothek wie folgt erzeugt:
 
-\lstinputlisting[language=Python,label=code:img, firstline=92, lastline=113, 
+\lstinputlisting[language=Python,label=code:img, firstline=91, lastline=112, 
     caption={Erzeugen der SHAP Plots, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
