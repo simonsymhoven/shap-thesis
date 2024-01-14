@@ -6,3 +6,5 @@ shap
 seaborn
 statsmodels
 mlxtend
+requests
+xlrd

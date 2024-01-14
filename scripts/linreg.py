@@ -89,13 +89,15 @@ def plot_corr(df: pd.DataFrame) -> None:
     sns.heatmap(df.corr(), annot=True, cmap="YlGnBu", fmt=".2f")
     plt.savefig('images/corr.png', dpi=300)
 
-def plot_shap(shap_values: shap.Explanation, idx: int) -> None:
+def plot_shap(shap_values: shap.Explanation, idx: int, model: LinearRegression, X_test: pd.DataFrame) -> None:
     """
     Creates and saves SHAP beeswarm, bar and waterfall plots.
 
     Args:
         shap_values (shap.Explanation): SHAP values.
         idx (int): Index for the SHAP waterfall plot.
+        model (LinearRegression): The Linear Regression model.
+        X_test (pd.DataFrame): The dataset for partial dependence plot.
     """
     plt.figure(figsize=(12,10))
     shap.plots.beeswarm(shap_values)
@@ -111,6 +113,16 @@ def plot_shap(shap_values: shap.Explanation, idx: int) -> None:
     shap.plots.waterfall(shap_values[idx])
     plt.tight_layout()
     plt.savefig('images/shap_waterfall_plot.png', dpi=300)
+
+    plt.figure(figsize=(12,10))
+    shap.plots.partial_dependence("cement", model.predict, X_test, 
+                                  model_expected_value=True, 
+                                  feature_expected_value=True,
+                                  ice=False, 
+                                  shap_values=shap_values[idx:idx+1,:])
+    plt.tight_layout()
+    plt.savefig('images/shap_dependence_plot.png', dpi=300)
+
 
 def plot_dist(df: pd.DataFrame):
     """
@@ -171,7 +183,21 @@ def plot_box(df: pd.DataFrame, df2: pd.DataFrame):
     plt.savefig('images/boxplot.png', dpi=300)
     plt.show()
 
-def plot_permutation_importance(perm_importance_train, perm_importance_test, columns):
+def plot_permutation_importance(perm_importance_train: permutation_importance, 
+                                perm_importance_test: permutation_importance,
+                                columns: np.ndarray):
+    """
+    Plots the permutation importance of features for both training and test datasets.
+
+    Args:
+        perm_importance_train (object): A fitted PermutationImportance instance for the training dataset.
+                                    It contains importances_mean attribute, representing the decrease in 
+                                    model score when a feature is randomly shuffled.
+        perm_importance_test (object): A fitted PermutationImportance instance for the test dataset, 
+                                   similar to perm_importance_train.
+        columns (list or array): An array or list of feature names corresponding to the indices in 
+                             the perm_importance objects.
+    """
     fig, axs = plt.subplots(1, 2, figsize=(12, 4))
     
     sorted_idx_train = perm_importance_train.importances_mean.argsort()
@@ -231,7 +257,7 @@ perm_importance_train = permutation_importance(linreg, X_train, y_train)
 perm_importance_test = permutation_importance(linreg, X_test, y_test)
 plot_permutation_importance(perm_importance_train, perm_importance_test, X.columns)
 
-explainer = shap.LinearExplainer(linreg, X_train)
+explainer = shap.Explainer(linreg, X_train)
 shap_values = explainer(X_test)
 
 mae = mean_absolute_error(y_test, y_pred)
@@ -249,4 +275,4 @@ plot_coef(coef=coef)
 print(coef)
 plot_corr(df=df)
 plot_residuals(y_test=y_test, y_pred=y_pred)
-plot_shap(shap_values=shap_values, idx=0)
+plot_shap(shap_values=shap_values, idx=0, model=linreg, X_test=X_test)

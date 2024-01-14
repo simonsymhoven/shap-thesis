@@ -158,8 +158,37 @@ eines Merkmals auf die Vorhersage unter Berücksichtigung aller anderen Merkmale
 \subsection{Lokale Interpretation}
 
 Die lokale Interpretation konzentriert sich auf das Verständnis der Vorhersagen 
-für eine einzelne Beobachtung aus dem Datensatz. Hierzu wird der SHAP Waterfall Plot eingesetzt, 
-der eine visuelle Darstellung des Beitrags eines jeden Merkmals zu einer spezifischen Vorhersage liefert.
+für eine einzelne Beobachtung aus dem Datensatz.
+
+\begin{figure}[!h]
+    \caption{SHAP Partial Dependence Plot}
+    \includegraphics[width=1\textwidth]{../scripts/images/shap_dependence_plot.png}
+    Quelle: Eigene Darstellung, \ref{linreg}.
+    \label{pic:shap_dependence}
+\end{figure}
+
+Im Partial Dependence Plot der Abbildung \ref{pic:shap_dependence} wird die Beziehung zwischen 
+dem Merkmal cement und der Zielvariable für die spezifische Beobachtung $x^{(0)}$ aus dem Datensatz visualisiert. 
+Die blaue Linie im Diagramm repräsentiert die modellierte Abhängigkeit der Vorhersage vom Merkmal cement, 
+unter Konstanthaltung aller anderen Merkmale. Der schwarze Punkt markiert die tatsächliche Ausprägung des 
+Merkmals cement ($5.035$) für die betrachtete Beobachtung und die korrespondierende Vorhersage 
+des linearen Regressionsmodells. Die rote Linie illustriert die marginale Abweichung der Vorhersage 
+von der durchschnittlichen Modellprognose $\mathbb{E}[f(X)] = 3.421$, ausgehend vom beobachteten Wert von cement.
+
+Die Anordnung des schwarzen Punktes entlang der funktionalen Beziehung gibt den spezifischen Wert 
+von cement an und reflektiert, wie dieser Wert in den Kontext des gesamten Wertebereichs dieses Merkmals 
+eingeordnet wird. Die vertikale Distanz zwischen der durchschnittlichen Vorhersage (dargestellt durch die horizontale 
+gestrichelte Linie) und dem Punkt auf der funktionalen Abhängigkeit (blaue Linie) zeigt den Einfluss des Merkmals 
+cement auf die individuelle Vorhersage im Vergleich zum Modellmittelwert. Dieser Einfluss verkörpert 
+den marginalen Beitrag des Merkmals cement zur Prognoseabweichung für die ausgewählte Beobachtung.
+
+Während der Partial Dependence Plot einen wertvollen Einblick in die Modellabhängigkeit von 
+einzelnen Merkmalen bietet, ist für ein umfassendes Verständnis der Modellvorhersage eine ganzheitliche 
+Betrachtung aller Merkmale notwendig. Der SHAP Waterfall Plot adressiert diese Notwendigkeit, 
+indem er eine kumulative Darstellung aller marginalen Beiträge liefert. Jedes Merkmal wird in 
+Form einer Sequenz von Beiträgen visualisiert, beginnend mit dem Basiswert der Vorhersage, welcher 
+durch die Addition oder Subtraktion der individuellen Merkmalsbeiträge schrittweise zur finalen Vorhersage 
+modifiziert wird.
 
 \begin{figure}[!h]
     \caption{SHAP Waterfall Plot}
@@ -167,7 +196,6 @@ der eine visuelle Darstellung des Beitrags eines jeden Merkmals zu einer spezifi
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:shap_waterfall}
 \end{figure}
-
 
 In Abbildung \ref{pic:shap_waterfall} ist ein Waterfall Plot der ersten Beobachtung $x^{(0)}$ dargestellt, 
 der die Zerlegung einer einzelnen Modellvorhersage zeigt. Der Plot beginnt mit dem Basiswert $\mathbb{E}[f(X)] = 3.421$, 
@@ -195,7 +223,7 @@ Da die Zielgröße einer logarithmischen Transformation unterzogen wurde, muss d
 Dies bedeutet, dass der tatsächliche erwartete Wert der Druckfestigkeit der Exponentialfunktion des prognostizierten Wertes entspricht, also $e^{3.421} \approx 30.60$ MPa. 
 Dieser Rücktransformationsprozess ist notwendig, um die Modellprognosen in der ursprünglichen Skala der Zielvariablen zu interpretieren.
 Dies gilt darüberhinaus sowhl für die einzelnen SHAP-Werte, als auch für die konkrete Vorhersage $f(x) = 3.257$. 
-Die prognostizierte Laufzeit für die Beobachtung $x^{(0)}$ beträgt folglich $e^{3.257} \approx 25.97$ MPa.
+Die prognostizierte Durckfestigkeit für die Beobachtung $x^{(0)}$ beträgt folglich $e^{3.257} \approx 25.97$ MPa.
 
 Dies ermöglicht eine detaillierte Analyse, wie das Modell zu einer bestimmten Vorhersage kommt, 
 und hilft dabei, die Beiträge und Interaktionen zwischen verschiedenen Merkmalen zu verstehen.
@@ -277,5 +305,39 @@ Permutation Feature Importance und andererseits durch die SHAP-Werte, verdeutlic
 die für ein umfassendes Verständnis von Vorhersagemodellen erforderlich ist. Beide Methoden ergänzen sich gegenseitig und tragen dazu bei, 
 ein vollständigeres Bild der Dynamiken innerhalb des Modells zu zeichnen.
 
-Im abschließenden Kapitel dieser Arbeit werden die wichtigsten Erkenntnisse zusammengefasst und diskutiert.
+Shapley-Werte bieten für die Prognose der Druckfestigkeit von Beton einen signifikanten Vorteil, 
+da sie eine gerechte Verteilung des Vorhersagebeitrags über alle Merkmale gewährleisten. 
+Diese gerechte Verteilung ist eine der Kernstärken der 
+Shapley-Werte, die sie von anderen Methoden abhebt.
+
+Die Druckfestigkeit von Beton ist das Ergebnis einer komplexen Interaktion verschiedener 
+Materialkomponenten und Eigenschaften wie Zementgehalt, Wasser-Zement-Verhältnis, 
+Zuschlagstoffe und Alter des Betons. Jede dieser Komponenten trägt unterschiedlich 
+zur Endfestigkeit bei, und ihre Effekte können nicht isoliert betrachtet werden, 
+da sie interdependent sind. Hier ermöglichen Shapley-Werte eine faire und ausgewogene 
+Zurechnung der Einflüsse jedes Merkmals auf die Vorhersage, indem sie die marginalen 
+Beiträge jedes Merkmals unter Berücksichtigung aller möglichen Kombinationen von Merkmalen 
+im Modell kalkulieren.
+
+Andere Methoden, wie beispielsweise die Betrachtung von Regressionskoeffizienten, 
+geben zwar Aufschluss über die Richtung und Stärke des Zusammenhangs zwischen Merkmalen 
+und der Zielvariable, vernachlässigen jedoch die Interaktionseffekte zwischen den Merkmalen.
+
+In der Praxis bedeutet dies für die Prognose der Druckfestigkeit von Beton, 
+dass Shapley-Werte eine präzise Zuordnung der Einflussstärke jedes Bestandteils 
+und Verarbeitungsmerkmals erlauben. Da die Festigkeit von Beton von einer Vielzahl von 
+Faktoren abhängt, ermöglicht die granulare Aufschlüsselung der Shapley-Werte eine 
+detailreiche Einsicht, welche Komponenten optimiert werden sollten, um die gewünschten 
+Eigenschaften des Betons zu erreichen.
+
+Im Kontext von industriellen Anwendungen und Forschung, wo Entscheidungen auf Grundlage 
+der Modellvorhersagen getroffen werden, gewährleisten Shapley-Werte somit eine transparente 
+und gerechtfertigte Grundlage. Dies ist nicht nur für die Entwicklung von Betonmischungen 
+von Bedeutung, sondern auch für die Einhaltung von Bauvorschriften und die Gewährleistung 
+der Sicherheit. Durch die Verwendung von Shapley-Werten kann die Forschung im Bereich 
+der Materialwissenschaften fundierter und zielgerichteter gestaltet werden, was zu einer 
+effizienteren und effektiveren Materialentwicklung führt.
+
+Im abschließenden Kapitel dieser Arbeit werden die wichtigsten Erkenntnisse zusammengefasst 
+und diskutiert.
 
