@@ -26,7 +26,7 @@ wenn alle unabhängigen Variablen den Wert Null annehmen.
 Daraus ergibt sich zusammen mit Gleichung \ref{eq:reg-model} die Regressionsgerade für das Modell.
 
 \begin{table}[!h]
-    \caption{Koeffizienten des linearen Regressionsmodells}
+    \caption{Koeffizienten des linearen Regressionsmodells.}
     \begin{tabularx}{\textwidth}{Xr}
     \toprule
     Merkmal ($\beta_j$) & Koeffizient \\
@@ -49,11 +49,11 @@ Daraus ergibt sich zusammen mit Gleichung \ref{eq:reg-model} die Regressionsgera
 Die Modellmetriken, dargestellt in Tabelle \ref{tab:model-metrics}, 
 geben Auskunft über die Vorhersagegenauigkeit und die Anpassungsgüte des Modells. 
 Der MAE und RMSE liefern dabei Informationen über die durchschnittliche Größe 
-der Fehler in den Vorhersagen, und die $R^2$-Werte zeigen, wie gut das Modell die Varianz 
-der Zielvariable erklärt.
+der Fehler in den Vorhersagen. Im Mittel weicht die Prognose um $0.19$ vom tatsächlichen Wert ab.
+Die $R^2$-Werte zeigen, wie gut das Modell die Varianz der Zielvariable erklärt.
 
 \begin{table}[!h]
-    \caption{Modellmetriken des linearen Regressionsmodells}
+    \caption{Modellmetriken des linearen Regressionsmodells.}
     \begin{tabularx}{\textwidth}{Xr}
     \toprule
     Metrik & Wert \\
@@ -122,9 +122,32 @@ wenn alle anderen Merkmale konstant bleiben. Eine Erhöhung von cement führt zu
 Im Gegensatz dazu führt eine Erhöhung von water zu einer Verringerung der Druckfestigkeit, immer unter der Vorraussetzung, das alle
 anderen Merkmale konstant bleiben.
 
+Abbildung \ref{pic:effect} zeigt einen Effektplot für die erste Beobachtung im Testdatensatz. Dieser 
+ermöglicht es, den individuellen Effekt eines Merkmals auf die Vorhersage in Relation zur gesamten 
+Verteilung aller Beobachtungen zu veranschaulichen. Die graphische Darstellung zeigt die Auswirkungen 
+der Merkmale auf die Vorhersage für diese spezielle Beobachtung. 
+Jedes Merkmal wird durch ein rotes Kreuz markiert, das den Effekt (Koeffizient multipliziert mit der Merkmalsausprägung) dieses 
+Merkmals auf die Vorhersage darstellt. 
+Die horizontale Position des Kreuzes zeigt den Wert des Effekts, während die vertikale Position das entsprechende Merkmal repräsentiert.
+
+\begin{figure}[!h]
+    \caption{Effektplot für Beoabchtung $x^{(0)}$ der Testmenge.}
+    \includegraphics[width=1\textwidth]{../scripts/images/feature_effects_boxplot.png}
+    Quelle: Eigene Darstellung, \ref{linreg}.
+    \label{pic:effect}
+\end{figure}
+
+Innerhalb des Boxplots zeigt die Box die Interquartilspanne (IQR), während der horizontale Strich in der Mitte der Box den Median repräsentiert. Die Whiskers 
+(die Linien oberhalb und unterhalb der Box) zeigen die Streuung der Daten, während Ausreißer als einzelne Punkte außerhalb der Whiskers 
+dargestellt werden. Dieser Teil des Plots ermöglicht es, den Effekt eines Merkmals in Bezug auf seine Verteilung innerhalb 
+des gesamten Datensatzes zu interpretieren.
+
+Der Effektplot ist ein nützliches Werkzeug, um zu verstehen, wie sich Änderungen in den Merkmalswerten auf die 
+Vorhersage auswirken und wie dieser individuelle Effekt im Vergleich zur gesamten Datenverteilung steht.
+
 Im Anschluss an die Analyse der Koeffizienten des linearen Regressionsmodells wird 
-die Feature Importance näher betrachtet. Ein bewährtes Verfahren zur Bestimmung der 
-Feature Importance ist die sogenannte Permutation Feature Importance. 
+die Merkmalsrelevanz näher betrachtet. Ein bewährtes Verfahren zur Bestimmung der 
+Merkmalsrelevanz ist die sogenannte Permutation Feature Importance. 
 Diese Methode misst die Veränderung im Vorhersagefehler des Modells nach der 
 zufälligen Vertauschung der Werte eines bestimmten Merkmals. 
 Ein Merkmal gilt als wichtig, wenn die Vertauschung seiner Werte den Modellfehler erhöht, 
@@ -136,7 +159,7 @@ Abbildung \ref{pic:permutation} zeigt die Merkmalsrelevanz auf der Test- und Tra
 anhand der Veränderung des mittleren quadratischen Fehlers des Modells:
 
 \begin{figure}[!h]
-    \caption{Permutation Feature Importance}
+    \caption{Permutation Feature Importance.}
     \includegraphics[width=1\textwidth]{../scripts/images/permutation_importance.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:permutation}
@@ -161,14 +184,14 @@ Die lokale Interpretation konzentriert sich auf das Verständnis der Vorhersagen
 für eine einzelne Beobachtung aus dem Datensatz.
 
 \begin{figure}[!h]
-    \caption{SHAP Partial Dependence Plot}
+    \caption{SHAP Partial Dependence Plot für Beobachtung $x^{(0)}$ der Testmenge.}
     \includegraphics[width=1\textwidth]{../scripts/images/shap_dependence_plot.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:shap_dependence}
 \end{figure}
 
 Im Partial Dependence Plot der Abbildung \ref{pic:shap_dependence} wird die Beziehung zwischen 
-dem Merkmal cement und der Zielvariable für die spezifische Beobachtung $x^{(0)}$ aus dem Datensatz visualisiert. 
+dem Merkmal cement und der Zielvariable für die spezifische Beobachtung $x^{(0)}$ aus dem Testmenge visualisiert. 
 Die blaue Linie im Diagramm repräsentiert die modellierte Abhängigkeit der Vorhersage vom Merkmal cement, 
 unter Konstanthaltung aller anderen Merkmale. Der schwarze Punkt markiert die tatsächliche Ausprägung des 
 Merkmals cement ($5.035$) für die betrachtete Beobachtung und die korrespondierende Vorhersage 
@@ -191,7 +214,7 @@ durch die Addition oder Subtraktion der individuellen Merkmalsbeiträge schrittw
 modifiziert wird.
 
 \begin{figure}[!h]
-    \caption{SHAP Waterfall Plot}
+    \caption{SHAP Waterfall Plot für Beobachtung $x^{(0)}$ der Testmenge.}
     \includegraphics[width=1\textwidth]{../scripts/images/shap_waterfall_plot.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:shap_waterfall}
@@ -243,7 +266,7 @@ Der folgende Abschnitt widmet sich dieser globalen Sichtweise und untersucht,
 wie die Merkmalsa-Beiträge sich im Kontext des gesamten Datensatzes darstellen lassen.
 
 \begin{figure}[!h]
-    \caption{SHAP Beeswarm Plot}
+    \caption{SHAP Beeswarm Plot.}
     \includegraphics[width=1\textwidth]{../scripts/images/shap_beeswarm_plot.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:shap_beeswarm}
@@ -269,7 +292,7 @@ die den größten Einfluss auf das Modell haben und wie dieser Einfluss über
 unterschiedliche Beobachtungen variiert.
 
 \begin{figure}[!h]
-    \caption{SHAP Bar Plot}
+    \caption{SHAP Bar Plot.}
     \includegraphics[width=1\textwidth]{../scripts/images/shap_bar_plot.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:shap_bar}

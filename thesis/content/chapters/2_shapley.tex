@@ -80,22 +80,22 @@ ausgehend von Bens individuellem Gewinn.
   Quelle: Eigene Darstellung.
 \end{table}
 
-Die Tabelle \ref{tab:shapley_marginal} illustriert den Gewinn jeder möglichen Koalition ohne den 
+Tabelle \ref{tab:shapley_marginal} illustriert den Gewinn jeder möglichen Koalition ohne den 
 betrachteten Spieler und den neuen Gesamtgewinn, sobald dieser Spieler der Koalition beitritt. 
 Der marginale Beitrag jedes Spielers wird dann als die Differenz zwischen diesen beiden Werten 
 berechnet und gibt Aufschluss über den individuellen Wertbeitrag zum gemeinschaftlichen Erfolg.
 
 Nachdem die marginalen Beiträge jedes Teilnehmers für die verschiedenen Koalitionen festgestellt wurden, 
 ist der nächste Schritt, die Shapley-Werte zu bestimmen, welche eine faire Aufteilung des Gesamtgewinns 
-erlauben. Hierzu wird jede mögliche Reihenfolge (Permutation) betrachtet, in der die Spieler der 
+erlauben. Hierzu wird jede mögliche Permutation betrachtet, in der die Spieler der 
 Koalition beitreten könnten. Jede dieser Permutationen liefert unterschiedliche marginale Beiträge 
-für die Spieler, je nach der Reihenfolge ihres Beitritts \cite[S. 307ff]{Shapley+1953+307+318}.
+für die Spieler, je nach der Reihenfolge ihres Beitritts, wie \ref{tab:shapley_marginal} zeigt \cite[S. 19]{Molnar_2023}.
 
 Im Falle dieses Beispiels mit Anna, Ben und Carla bedeutet dies, dass alle möglichen Reihenfolgen 
 berücksichtigt werden müssen, in denen sie zum ersten Platz beigetragen haben könnten. 
 Die Shapley-Werte werden dann als Durchschnitt der marginalen Beiträge über alle Permutationen berechnet. 
 Dies gewährleistet, dass jeder Spieler einen Anteil des Preisgeldes erhält, der seinem durchschnittlichen 
-Beitrag zum Erfolg entspricht.
+Beitrag zum Erfolg entspricht \cite[S. 20]{Molnar_2023}.
 
 Bei drei Teilnehmern exisitieren $3! = 3 \cdot 2 \cdot 1 = 6$ Permutationen:
 
@@ -116,14 +116,14 @@ hinzugefügt.
 Zusammen mit Tabelle \ref{tab:shapley_marginal} lässt sich nun der Shapley-Wert mit den gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
 
 \begin{equation}
-  \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,34 \text{\euro}  
+  \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,34 \text{\euro}.  
 \label{eq:marginal_anna}
 \end{equation}
 
-Analog gilt das für Ben:
+Analog gilt dies für Ben:
 
 \begin{equation}
-  \frac{1}{6} ( \underbrace{2 \cdot 750 \text{\euro}}_{\text{B $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot 500 \text{\euro}}_{\text{B $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A, C$\}}} ) \approx 458,34 \text{\euro}  
+  \frac{1}{6} ( \underbrace{2 \cdot 750 \text{\euro}}_{\text{B $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot 500 \text{\euro}}_{\text{B $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A, C$\}}} ) \approx 458,34 \text{\euro},  
   \label{eq:marginal_ben}
 \end{equation}
 
@@ -134,12 +134,11 @@ und Carla:
   \label{eq:marginal_carla}
 \end{equation}
 
-
 Auf Basis der gewichteten durchschnittlichen marginalen Beiträge lässt sich feststellen, 
 dass Anna und Ben jeweils einen Shapley-Wert von ungefähr 458,34 \euro{} erhalten, 
 während Carla einen Shapley-Wert von etwa 83,34 \euro{} zugewiesen bekommt. 
 Diese Werte spiegeln den fairen Anteil jedes Teilnehmers an der Gesamtprämie wider, 
-basierend auf ihrem individuellen Beitrag zum Erfolg des Teams. Mit dieser konkreten Anwendung der Shapley-Werte 
+basierend auf ihrem individuellen Beitrag zum Erfolg des Teams \cite[S. 20]{Molnar_2023}. Mit dieser konkreten Anwendung der Shapley-Werte 
 auf ein alltagsnahes Beispiel wird nun die zugrunde liegende Theorie und die formale Definition 
 der Shapley-Werte, die diese Berechnungen ermöglichen, detaillierter betrachtet.
 
@@ -204,7 +203,7 @@ genau ein Drittel der Zeit am Ende geschieht. Somit wird ihr marginaler Beitrag 
 um den Shapley-Wert zu berechnen (vgl. Berechnung \ref{eq:marginal_anna}) \cite[S. 21f]{Molnar_2023}.
 
 
-\section{Axiome}
+\section{Axiomatische Grundlage}
 \label{sec:axiome-shapley}
 
 Nachdem die Berechnung des Shapley-Werts für das Beispiel konkretisiert wurde, ist es nun von Bedeutung, die zugrundeliegenden Axiome zu betrachten, 

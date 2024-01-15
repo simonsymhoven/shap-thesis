@@ -54,7 +54,7 @@ def model(X: pd.DataFrame, y: pd.Series) -> (LinearRegression, pd.DataFrame):
 
 def plot_residuals(y_test: pd.Series, y_pred: pd.Series) -> None:
     """
-    Creates a residual plots.
+    Creates and saves residual plots.
 
     Args:
         y_test (pd.Series): The actual target values.
@@ -85,37 +85,37 @@ def plot_corr(df: pd.DataFrame) -> None:
     Args:
         df (pd.DataFrame): The feature matrix.
     """
-    plt.figure(figsize=(12,10))
+    plt.figure(figsize=(12, 10))
     sns.heatmap(df.corr(), annot=True, cmap="YlGnBu", fmt=".2f")
     plt.savefig('images/corr.png', dpi=300)
 
-def plot_shap(shap_values: shap.Explanation, idx: int, model: LinearRegression, X_test: pd.DataFrame) -> None:
+def plot_shap(shap_values: shap.Explanation, model: LinearRegression, X: pd.DataFrame, idx: int) -> None:
     """
-    Creates and saves SHAP beeswarm, bar and waterfall plots.
+    Creates and saves SHAP beeswarm, bar, and waterfall plots.
 
     Args:
         shap_values (shap.Explanation): SHAP values.
-        idx (int): Index for the SHAP waterfall plot.
         model (LinearRegression): The Linear Regression model.
-        X_test (pd.DataFrame): The dataset for partial dependence plot.
+        X (pd.DataFrame): The background data for partial dependence plot.
+        idx (int): Index for the SHAP waterfall plot.
     """
-    plt.figure(figsize=(12,10))
+    plt.figure(figsize=(12, 10))
     shap.plots.beeswarm(shap_values)
     plt.tight_layout()
     plt.savefig('images/shap_beeswarm_plot.png', dpi=300)
 
-    plt.figure(figsize=(12,10))
+    plt.figure(figsize=(12, 10))
     shap.plots.bar(shap_values)
     plt.tight_layout()
     plt.savefig('images/shap_bar_plot.png', dpi=300)
 
-    plt.figure(figsize=(12,10))
+    plt.figure(figsize=(12, 10))
     shap.plots.waterfall(shap_values[idx])
     plt.tight_layout()
     plt.savefig('images/shap_waterfall_plot.png', dpi=300)
 
-    plt.figure(figsize=(12,10))
-    shap.plots.partial_dependence("cement", model.predict, X_test, 
+    plt.figure(figsize=(12, 10))
+    shap.plots.partial_dependence("cement", model.predict, X, 
                                   model_expected_value=True, 
                                   feature_expected_value=True,
                                   ice=False, 
@@ -123,19 +123,18 @@ def plot_shap(shap_values: shap.Explanation, idx: int, model: LinearRegression, 
     plt.tight_layout()
     plt.savefig('images/shap_dependence_plot.png', dpi=300)
 
-
-def plot_dist(df: pd.DataFrame):
+def plot_dist(df: pd.DataFrame) -> None:
     """
-    Creates and saves distribution and histrogramm plot over all
+    Creates and saves distribution and histogram plot over all
     features of df.
 
     Args:
         df (pd.DataFrame): The feature matrix.
     """
-    fig, axes = plt.subplots(3, 3, figsize=(15, 15))
+    _, axes = plt.subplots(3, 3, figsize=(15, 10))
     axes = axes.flatten()
 
-    for i, var in enumerate(df.keys()):
+    for i, var in enumerate(df.columns):
         sns.histplot(df[var], ax=axes[i], kde=True)
         axes[i].set_title(var)
 
@@ -143,13 +142,13 @@ def plot_dist(df: pd.DataFrame):
     plt.savefig('images/dist.png', dpi=300)
     plt.show()
 
-def plot_coef(coef: pd.DataFrame):
+def plot_coef(coef: pd.DataFrame) -> None:
     """
     Plot the coefficients of a linear model as a horizontal bar chart.
     
     Args:
         coef (pd.DataFrame): A DataFrame containing the model's coefficients, 
-                         with feature names as the index and a 'Coefficients' column.
+                             with feature names as the index and a 'Coefficients' column.
     """
     coef = coef.drop('Intercept', errors='ignore')
     coef = coef.sort_values(by='Coefficients', ascending=True)
@@ -161,13 +160,13 @@ def plot_coef(coef: pd.DataFrame):
     plt.savefig('images/coef.png', dpi=300)
     plt.show()
 
-def plot_box(df: pd.DataFrame, df2: pd.DataFrame):
+def plot_box(df: pd.DataFrame, df2: pd.DataFrame) -> None:
     """
-    Plot the distribution of two dataframes as boxplot.
+    Plot the distribution of two dataframes as a box plot.
     
     Args:
-        df (pd.DataFrame): first dataframe.
-        df2 (pd.Dataframe): second dataframe.
+        df (pd.DataFrame): First dataframe.
+        df2 (pd.Dataframe): Second dataframe.
     """
     fig, axs = plt.subplots(1, 2, figsize=(12, 4))
     
@@ -185,7 +184,7 @@ def plot_box(df: pd.DataFrame, df2: pd.DataFrame):
 
 def plot_permutation_importance(perm_importance_train: permutation_importance, 
                                 perm_importance_test: permutation_importance,
-                                columns: np.ndarray):
+                                columns: np.ndarray) -> None:
     """
     Plots the permutation importance of features for both training and test datasets.
 
@@ -214,6 +213,31 @@ def plot_permutation_importance(perm_importance_train: permutation_importance,
 
     plt.tight_layout()
     plt.savefig('images/permutation_importance.png', dpi=300)
+    plt.show()
+
+def plot_feature_effects(coef: pd.DataFrame, X: pd.DataFrame, idx: int) -> None:
+    """
+    Create and save a box plot of feature effects.
+
+    Args:
+        coef (pd.DataFrame): A DataFrame containing the model's coefficients, 
+                             with feature names as the index and a 'Coefficients' column.
+        X (pd.DataFrame): The feature matrix.
+        idx (int): Index for the data point to plot.
+    """
+    coef = coef.drop('Intercept', errors='ignore')
+    feature_effects = X * coef['Coefficients']
+    feature_names = X.columns
+
+    plt.figure(figsize=(12, 6))
+    plt.boxplot(feature_effects.values, vert=False)
+    plt.plot(X.iloc[idx] * coef['Coefficients'], range(1, len(X.iloc[idx]) + 1), 'rx', markersize=10)
+    plt.axvline(0, linestyle='--', color='black')
+    plt.xlabel('Feature Effects')
+    plt.ylabel('Features')
+    plt.yticks(range(1, len(feature_names) + 1), feature_names)
+    plt.tight_layout()
+    plt.savefig('images/feature_effects_boxplot.png', dpi=300)
     plt.show()
 
 df = load_data()
@@ -275,4 +299,5 @@ plot_coef(coef=coef)
 print(coef)
 plot_corr(df=df)
 plot_residuals(y_test=y_test, y_pred=y_pred)
-plot_shap(shap_values=shap_values, idx=0, model=linreg, X_test=X_test)
+plot_shap(shap_values=shap_values, model=linreg, X=X_test, idx=0)
+plot_feature_effects(coef=coef, X=X_test, idx=0)

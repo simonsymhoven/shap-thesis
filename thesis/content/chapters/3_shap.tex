@@ -3,7 +3,7 @@
 Im Rahmen der kooperativen Spieltheorie ermöglichen die Shapley-Werte eine faire Verteilung des kollektiv 
 erwirtschafteten Nutzens auf die beteiligten Akteure. Diese Methodik findet eine analoge Anwendung 
 in der Welt des maschinellen Lernens, um die Beiträge einzelner Merkmale zur Vorhersageleistung 
-eines Modells zu bewerten. Hier wird die Terminologie der Shapley-Werte in den Kontext von Machine Learning 
+eines Modells zu bewerten \cite[S. 26]{Molnar_2023}. Hier wird die Terminologie der Shapley-Werte in den Kontext von Machine Learning 
 Modellen übertragen, wobei jedes Merkmal als \glqq{}Spieler\grqq{} betrachtet wird, dessen Beitrag zur 
 \glqq{}Auszahlung\grqq{} – der Vorhersage des Modells – evaluiert werden soll. 
 
@@ -159,7 +159,7 @@ wobei $p = |\mathcal{N}| = 3$ die Anzahl der Merkmale ist und $X_C$ die Menge de
 außerhalb der Koalition $\mathcal{S}$ repräsentiert. Die Integrale repräsentieren die erwartete 
 Vorhersage des Modells über die Verteilung der nicht in der Koalition enthaltenen Merkmale.
 
-In linearen Modellen, unter der Prämisse, dass die Merkmale unabhängig voneinander und gleichverteilt sind, 
+In linearen Modellen, unter der Prämisse, dass die Merkmale unabhängig voneinander und identisch verteilt sind, 
 ist es möglich, die Berechnung der SHAP-Werte zu vereinfachen. Anstelle der komplexen Integration 
 über die Verteilungen aller Merkmale, kann der Fokus auf die Unterschiede in den Modellvorhersagen gelegt werden, 
 die sich aus dem Hinzufügen oder Entfernen einzelner Merkmale ergeben. 
@@ -167,7 +167,7 @@ Hierbei wird anstelle der spezifischen Werte der nicht in der betrachteten Koali
 die Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
 die Modellvorhersage auf eine direktere und rechnerisch weniger aufwendige Weise zu erfassen.
 Diese Vereinfachung ist für lineare Modelle angemessen, da die Auswirkungen jedes Merkmals 
-auf die Vorhersage des Modells additiv und unabhängig sind. Bei komplexeren, 
+auf die Vorhersage des Modells additiv und unabhängig sind \cite[S. 48]{Molnar_2023}. Bei komplexeren, 
 nichtlinearen Modellen ist eine detailliertere Berechnung erforderlich, 
 die oft auf numerischen Methoden oder Annäherungen basiert, mehr dazu in Kapitel \ref{sec:estimators}.
 
@@ -179,7 +179,7 @@ nach Formel \ref{eq:shap-formular} berechnet als:
         &\quad \cdot \int f(x_1, x_2 , X_3) d\mathbb{P}(X_3) - \int f(X_1, x_2, X_3) d\mathbb{P}(X_1, X_3)
 \end{align}
 
-Da \( X_1 \) und \( X_3 \) unabhängig und gleichmäßig verteilt sind, können \( X_2 \) und \( X_3 \) durch ihre Erwartungswerte (Gleichung \ref{eq:e}) ersetzt werden:
+Da \( X_1 \) und \( X_3 \) unabhängig und identisch verteilt sind, können \( X_2 \) und \( X_3 \) durch ihre Erwartungswerte (Gleichung \ref{eq:e}) ersetzt werden:
 
 \begin{align}
     \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1}{6} \Big(f(x_1, x_2, \mathbb{E}(X_3)) - f(\mathbb{E}(X_1), x_2, \mathbb{E}(X_3))\Big) \\ \notag
@@ -218,7 +218,8 @@ für jedes Merkmal in jeder möglichen Koalition von Merkmalen, bezogen auf die 
     Quelle: Eigene Darstellung.
 \end{table}
 
-Diese Analyse ist ebenso auf die Beobachtung $x^{(2)}$ anwendbar und erfordert eine analoge Vorgehensweise:
+Diese Analyse ist ebenso auf die Beobachtung $x^{(2)}$ anwendbar und erfordert eine analoge Vorgehensweise, 
+wie in Tabelle \ref{tab:shapley_marginal_features_x2} dargestellt:
 
 \begin{table}[!h]
     \caption{Marginalbeiträge der einzelnen Merkmale zu den möglichen Koalitionen für die Beobachtung $x^{(2)}$.}
@@ -284,7 +285,7 @@ des Preises für die Immobilie $x^{(1)}$ um insgesamt 135 \euro{}, während die 
 \end{figure}
 
 
-\section{Axiome}
+\section{Kontextualisierte axiomatische Grundlage der Shapley-Werte}
 
 Die in Tabellen \ref{tab:shapley_marginal_features_x1} und \ref{tab:shapley_marginal_features_x2} präsentierten Ergebnisse bieten eine Grundlage, 
 um die Konformität der SHAP-Werte mit den etablierten Axiomen der Shapley-Werte, wie sie im 

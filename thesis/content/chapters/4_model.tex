@@ -173,7 +173,7 @@ Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
     \end{tabularx}
     \label{tab:df-head}
     \normalsize\\
-    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_concrete_compressive_strength_165}, \ref{linreg}.
+    Quelle: Eigene Darstellung, \ref{linreg}.
 \end{table}
 
 \begin{table}[!h]
@@ -196,7 +196,7 @@ Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
     \end{tabularx}
     \label{tab:statistics}
     \normalsize
-    \\ Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_concrete_compressive_strength_165}, \ref{linreg}.
+    \\ Quelle: Eigene Darstellung, \ref{linreg}.
 \end{table}
 
 Tabelle \ref{tab:statistics} offenbart eine signifikante Variabilität und Bandbreite 
@@ -209,7 +209,7 @@ der jeweiligen Merkmale vor und nach der logarthimischen Transformation.
 \begin{figure}[!h]
     \caption{Boxplot der Merkmale vor und nach der Log-Transformation.}
     \includegraphics[width=1\textwidth]{../scripts/images/boxplot.png}
-    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_concrete_compressive_strength_165}, \ref{linreg}.
+    Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:box}
 \end{figure}
 
@@ -221,7 +221,7 @@ Abbildung \ref{pic:hist} zeigt die Häufigkeitsverteilung aller Merkmale des Dat
 \begin{figure}[!h]
     \caption{Verteilungen der Merkmale.}
     \includegraphics[width=1\textwidth]{../scripts/images/dist.png}
-    Quelle: Eigene Darstellung auf Basis der Datengrundlage \cite{misc_concrete_compressive_strength_165}, \ref{linreg}.
+    Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:hist}
 \end{figure}
 
@@ -236,7 +236,7 @@ was darauf schließen lässt, dass ein höherer Zementanteil tendenziell zu eine
 Diese Korrelationsmuster sind essentiell für die Modellentwicklung, da sie Aufschluss darüber geben, welche 
 Mischungsbestandteile einen bedeutenden Einfluss auf die Betondruckfestigkeit haben könnten.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \caption{Korrelationsmatrix der Merkmale im Datensatz.}
     \includegraphics[width=1\textwidth]{../scripts/images/corr.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
@@ -267,7 +267,7 @@ eines linearen Regressionsmodells:
     caption={Initialisierung eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
-\lstinputlisting[language=Python,label=code:model-train, firstline=236, lastline=242, 
+\lstinputlisting[language=Python,label=code:model-train, firstline=272, lastline=278, 
     caption={Training und Testen eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
@@ -282,7 +282,7 @@ für lineare Modelle ausgewählt.
 
 Das folgende Codeausschnitt \ref{code:shap} zeigt die Initialisierung des SHAP-Explainers und die Berechnung der SHAP-Werte:
 
-\lstinputlisting[language=Python,label=code:shap, firstline=248, lastline=249, 
+\lstinputlisting[language=Python,label=code:shap, firstline=284, lastline=285, 
     caption={Berechnung von SHAP-Werten für das lineare Regressionsmodell, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 Das Explainer-Objekt enthält neben den SHAP-Werten (.values), 
@@ -302,6 +302,6 @@ verschiedenen Merkmale im Kontext des linearen Regressionsmodells bieten.
 
 Die Grafiken wurden mithilfe der \textsf{shap}-Bibliothek wie folgt erzeugt:
 
-\lstinputlisting[language=Python,label=code:img, firstline=92, lastline=113, 
+\lstinputlisting[language=Python,label=code:img, firstline=92, lastline=124, 
     caption={Erzeugen der SHAP Plots, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
