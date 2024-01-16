@@ -1,7 +1,6 @@
 \chapter{Theorie der Shapley-Werte}
 
-In diesem Kapitel werden die Shapley-Werte als Instrument zur gerechten Aufteilung von Gewinnen in 
-kooperativen Spielen vorgestellt. Durch die Verwendung eines praktischen Beispiels – der Aufteilung 
+Durch die Verwendung eines praktischen Beispiels – der Aufteilung 
 eines Preisgeldes aus einem Designwettbewerb unter den Gewinnern – wird zunächst eine intuitive Einführung 
 in das Konzept gegeben. Anschließend wird die formale Definition der Shapley-Werte erläutert, um die 
 theoretischen Grundlagen für ihre Berechnung und Anwendung zu legen.
@@ -108,8 +107,9 @@ Bei drei Teilnehmern exisitieren $3! = 3 \cdot 2 \cdot 1 = 6$ Permutationen:
   \item Carla, Ben, Anna
 \end{enumerate}
 
-Jede Permutation entspricht einer Koalitionsbildung. Anna wird in zwei Koalitionsbildungen (1. und 2.) einer leeren Koalition hinzugefügt.
-In weiteren zwei Koalitionsbildungen (5. und 6.) wird Anna der bestehenden Koalition aus Ben und Carla hinzugefügt. 
+Jede Permutation entspricht einer Koalitionsbildung. Anna wird in zwei Koalitionsbildungen (1. und 2.) einer leeren Koalition hinzugefügt, da Sie die erste ist, 
+die der Koalition beitritt.
+In weiteren zwei Koalitionsbildungen (5. und 6.) wird Anna der bestehenden Koalition aus Ben und Carla, respektive Carla und Ben hinzugefügt. 
 In den beiden übrigen Koalitionsbildungen wird Anna einmal der Koaliton bestehend aus Ben (3.) und einmal der Koalition bestehend aus Carla (4.)
 hinzugefügt. 
 
@@ -156,7 +156,7 @@ Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\math
 Eine nicht leere Teilmenge der Spieler $\mathcal{S} \subseteq \mathcal{N}$ heißt Koalition. $\mathcal{N}$ selbst bezichnet die große Koalition. Den Ausdruck $v(\mathcal{S})$ nennt man den Wert der Koalition $\mathcal{S}$.
 Der Shapley-Wert ordnet nun jedem Spieler aus $\mathcal{N}$ eine Auszahlung für das Spiel $v$ zu.
 
-Der marginale Beitag eines Spieler $i \in \mathcal{N}$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
+Der marginale Beitag eines Spielers $i \in \mathcal{N}$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
 
 \begin{equation}
 v(\mathcal{S} \cup \{i\}) - v(\mathcal{S}).

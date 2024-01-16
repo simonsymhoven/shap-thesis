@@ -84,7 +84,7 @@ die auf eine Verletzung der Modellannahmen hindeuten könnten.
 \end{figure}
 
 
-\section{Interpretation der Koeffizienten \& Permutation Feature Importance}
+\section{Interpretation der Koeffizienten \& Permutation der Merkmalrelevanz}
 
 In diesem Abschnitt wird die herkömmliche Interpretation der Modellkoeffizienten genauer betrachtet. 
 Die Koeffizienten eines linearen Modells repräsentieren die Änderung der abhängigen Variable (in diesem Fall die Druckfestigkeit von Beton) 
@@ -147,7 +147,7 @@ Vorhersage auswirken und wie dieser individuelle Effekt im Vergleich zur gesamte
 
 Im Anschluss an die Analyse der Koeffizienten des linearen Regressionsmodells wird 
 die Merkmalsrelevanz näher betrachtet. Ein bewährtes Verfahren zur Bestimmung der 
-Merkmalsrelevanz ist die sogenannte Permutation Feature Importance. 
+Merkmalsrelevanz ist die sogenannte Permutation Feature Importance (Permutation der Merkmalrelevanz). 
 Diese Methode misst die Veränderung im Vorhersagefehler des Modells nach der 
 zufälligen Vertauschung der Werte eines bestimmten Merkmals. 
 Ein Merkmal gilt als wichtig, wenn die Vertauschung seiner Werte den Modellfehler erhöht, 
@@ -159,7 +159,7 @@ Abbildung \ref{pic:permutation} zeigt die Merkmalsrelevanz auf der Test- und Tra
 anhand der Veränderung des mittleren quadratischen Fehlers des Modells:
 
 \begin{figure}[!h]
-    \caption{Permutation Feature Importance.}
+    \caption{Permutation der Merkmalrelevanz.}
     \includegraphics[width=1\textwidth]{../scripts/images/permutation_importance.png}
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:permutation}
@@ -192,17 +192,40 @@ für eine einzelne Beobachtung aus dem Datensatz.
 
 Im Partial Dependence Plot der Abbildung \ref{pic:shap_dependence} wird die Beziehung zwischen 
 dem Merkmal cement und der Zielvariable für die spezifische Beobachtung $x^{(0)}$ aus dem Testmenge visualisiert. 
+Das Histogramm zeigt die Verteilung der konkreten Merkmalsausprägungen über die Gesamtheit der Daten.
 Die blaue Linie im Diagramm repräsentiert die modellierte Abhängigkeit der Vorhersage vom Merkmal cement, 
 unter Konstanthaltung aller anderen Merkmale. Der schwarze Punkt markiert die tatsächliche Ausprägung des 
 Merkmals cement ($5.035$) für die betrachtete Beobachtung und die korrespondierende Vorhersage 
 des linearen Regressionsmodells. Die rote Linie illustriert die marginale Abweichung der Vorhersage 
-von der durchschnittlichen Modellprognose $\mathbb{E}[f(X)] = 3.421$, ausgehend vom beobachteten Wert von cement.
+von der durchschnittlichen Modellprognose $\mathbb{E}[f(X)] = 3.457$, ausgehend vom 
+beobachteten Wert von cement nach Gleichung \ref{eq:shap-single}:
+
+\begin{align}
+    \label{eq:shap0}
+    \varphi_{\text{cement}}^{(0)}(f, x) &= \beta_{\text{cement}} (x_{\text{cement}}^{(0)} - \mathbb{E}[X_{\text{cement}}]) \\ \notag
+                        &= 0.75091 \cdot (5.035 - 5.568) \\ \notag
+                        &\approx -0.40
+\end{align}
+
+Codeausschnitt \ref{code:shap-idx} zeigt die manuelle Berechnung der für $\varphi_{\text{cement}}^{(0)}(f, x)$ basierend
+auf den zur Verfügung stehenden Daten für das Merkmal cement\footnote{Die Anwendung des SHAP-Explainers, 
+insbesondere im Kontext eines Train-Test-Splits, stößt aufgrund der aktuellen Implementierung im SHAP-Python-Paket 
+auf Herausforderungen. Die SHAP-Werte werden auf Basis des Datensatzes $X$ berechnet, 
+was bei der Verwendung von Teilmengen wie $X_{\text{test}}$ zu geringfügigen Abweichungen führen kann, wie Berechnung \ref{eq:shap0} zeigt.
+Dieses Verhalten ist insbesondere in Diskussionen auf GitHub zu erkennen, wie beispielsweise in dem Issue 
+\url{https://github.com/shap/shap/issues/3456} diskutiert. Eine Erörterung dieses Problems in Bezug auf die interne Logik und die Verwendung des Pakets
+findet sich in einem von mir verfassten Stack Overflow Beitrag, verfügbar unter 
+\url{https://stackoverflow.com/questions/77820555/shap-partial-dependence-plot-misalignment-with-train-test-split-in-linear-regres}.}
+.
+
+\lstinputlisting[language=Python,label=code:shap-idx, linerange={248-265,330-331},
+    caption={Berechnen der SHAP-Werte für ein Merkmal und eine Beobachtung, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 Die Anordnung des schwarzen Punktes entlang der funktionalen Beziehung gibt den spezifischen Wert 
 von cement an und reflektiert, wie dieser Wert in den Kontext des gesamten Wertebereichs dieses Merkmals 
 eingeordnet wird. Die vertikale Distanz zwischen der durchschnittlichen Vorhersage (dargestellt durch die horizontale 
 gestrichelte Linie) und dem Punkt auf der funktionalen Abhängigkeit (blaue Linie) zeigt den Einfluss des Merkmals 
-cement auf die individuelle Vorhersage im Vergleich zum Modellmittelwert. Dieser Einfluss verkörpert 
+cement auf die individuelle Vorhersage im Vergleich zum Modellmittelwert. Dieser Magnitude der roten Linie verkörpert den SHAP-Wert,
 den marginalen Beitrag des Merkmals cement zur Prognoseabweichung für die ausgewählte Beobachtung.
 
 Während der Partial Dependence Plot einen wertvollen Einblick in die Modellabhängigkeit von 
@@ -221,31 +244,31 @@ modifiziert wird.
 \end{figure}
 
 In Abbildung \ref{pic:shap_waterfall} ist ein Waterfall Plot der ersten Beobachtung $x^{(0)}$ dargestellt, 
-der die Zerlegung einer einzelnen Modellvorhersage zeigt. Der Plot beginnt mit dem Basiswert $\mathbb{E}[f(X)] = 3.421$, 
+der die Zerlegung einer einzelnen Modellvorhersage zeigt. Der Plot beginnt mit dem Basiswert $\mathbb{E}[f(X)] = 3.457$, 
 der durchschnittlichen Vorhersage des Modells. 
 
 Von diesem Wert ausgehend, illustrieren die Balken, wie jede Merkmalausprägung – 
 angezeigt durch die grauen Zahlen entlang der y-Achse – die Vorhersage $f(x_{j}^{(0)})$ beeinflusst. 
-So steigert beispielsweise blast mit einem Wert von $4.982$ die Vorhersage um $+0.21$, 
-wohingegen cement mit einem Wert von $5.035$ die Vorhersage um $-0.45$ verringert.
+So steigert beispielsweise blast mit einem Wert von $4.982$ die Vorhersage um $+0.18$, 
+wohingegen cement mit einem Wert von $5.035$ die Vorhersage um $-0.39$ verringert.
 
 Rote Balken repräsentieren Merkmale, die die Vorhersage erhöhen, während blaue Balken solche 
 darstellen, die sie senken. Die Größe jedes Balkens zeigt das Ausmaß des jeweiligen Beitrags, 
 und die abschließende Vorhersage $f(x) = 3.257$ wird am Ende der Kette dieser Effekte erreicht. 
 
-Kleine positive und negative Beiträge von Merkmalen wie fine ($6.713$), water ($5.188$), ash ($0$) und superplasticizer ($2.197$) 
-zeigen, wie feingranulare Anpassungen der Merkmalsausprägungen die Vorhersage leicht erhöhen oder senken können.
+Kleine positive und negative Beiträge von Merkmalen wie fine ($6.713$), coarse ($6.908$) und water ($5.188$)
+zeigen, wie feingranulare Anpassungen der Merkmalsausprägungen die Vorhersage nicht verändern, leicht erhöhen oder senken können.
 
 Für die Beobachtung $x^{(0)}$ führt die kumulative Abweichung der Merkmal-Effekte 
-vom Basiswert $\mathbb{E}[f(X)] = 3.421$ zu einem tatsächlichen Modelloutput von $f(x) = 3.257$, 
-was eine Differenz von $-0.164$ zwischen der durchschnittlichen Vorhersage 
+vom Basiswert $\mathbb{E}[f(X)] = 3.457$ zu einem tatsächlichen Modelloutput von $f(x) = 3.257$, 
+was eine Differenz von $-0.2$ zwischen der durchschnittlichen Vorhersage 
 und der spezifischen Vorhersage für diese Beobachtung offenlegt. 
 Diese Differenz entspricht der Summe aller SHAP-Werte für diese konkrete Beobachtung \cite[S. 52f]{Molnar_2023}.
 
 Da die Zielgröße einer logarithmischen Transformation unterzogen wurde, muss diese für die Interpreation wieder rückgängig gemacht werden. 
-Dies bedeutet, dass der tatsächliche erwartete Wert der Druckfestigkeit der Exponentialfunktion des prognostizierten Wertes entspricht, also $e^{3.421} \approx 30.60$ MPa. 
+Dies bedeutet, dass der tatsächliche erwartete Wert der Druckfestigkeit der Exponentialfunktion des prognostizierten Wertes entspricht, also $e^{3.457} \approx 34.71$ MPa. 
 Dieser Rücktransformationsprozess ist notwendig, um die Modellprognosen in der ursprünglichen Skala der Zielvariablen zu interpretieren.
-Dies gilt darüberhinaus sowhl für die einzelnen SHAP-Werte, als auch für die konkrete Vorhersage $f(x) = 3.257$. 
+Dies gilt darüberhinaus sowohl für die einzelnen SHAP-Werte, als auch für die konkrete Vorhersage $f(x) = 3.257$. 
 Die prognostizierte Durckfestigkeit für die Beobachtung $x^{(0)}$ beträgt folglich $e^{3.257} \approx 25.97$ MPa.
 
 Dies ermöglicht eine detaillierte Analyse, wie das Modell zu einer bestimmten Vorhersage kommt, 
@@ -281,13 +304,27 @@ Positive SHAP-Werte (rechts von der Nulllinie) zeigen eine Erhöhung der Vorhers
 während negative Werte (links von der Nulllinie) eine Verringerung bedeuten. 
 
 Das Merkmal age zeigt eine hohe Variabilität in seinem Einfluss auf die Modellvorhersage. 
-Höhere Werte von age sind mit einer Zunahme der Vorhersage (positive SHAP-Werte) assoziiert, 
+Höhere Werte cement age sind mit einer Zunahme der Vorhersage (positive SHAP-Werte) assoziiert, 
 was durch die rechtsseitigen Punkte in der Grafik dargestellt wird. 
 Niedrigere Werte führen hingegen zu einer geringeren Vorhersage, 
 erkennbar an den linksseitigen Punkten. Diese Streuung der Punkte zeigt, 
-dass die Auswirkung von age auf die Vorhersage stark von seiner quantitativen Ausprägung abhängt.
+dass die Auswirkung von cement auf die Vorhersage stark von seiner quantitativen Ausprägung abhängt, 
+wie Abbildung \ref{pic:shap_scatter} verdeutlicht. 
 
-Diese Darstellung ermöglicht es, die Merkmale zu identifizieren, 
+\begin{figure}[!h]
+    \caption{SHAP Scatter Plot.}
+    \includegraphics[width=1\textwidth]{../scripts/images/shap_scatter_plot.png}
+    Quelle: Eigene Darstellung, \ref{linreg}.
+    \label{pic:shap_scatter}
+\end{figure}
+
+Der Scatter Plot zeigt die SHAP-Werte für cement bezüglich ihrer quantitivaten Ausprägung über alle 
+Daten. Steigende Merkmalsausprägungen von cement führen zu größeren SHAP-Werte und somit zu einer Erhöhung der 
+Modellprognose, was die ersten Analysen der Korrelationsmatrix aus Abbildung \ref{pic:corr} bestätigen. Der Einfluss von
+water ist invers. Steigende Werte von water führen zu geringeren SHAP-Werten und reduzieren somit die 
+Modellprognose. 
+
+Diese Darstellungen ermöglichen es, die Merkmale zu identifizieren, 
 die den größten Einfluss auf das Modell haben und wie dieser Einfluss über 
 unterschiedliche Beobachtungen variiert.
 
@@ -302,15 +339,15 @@ Der SHAP Bar Plot in Abbildung \ref{pic:shap_bar} illustriert die durchschnittli
 Auswirkung jedes Merkmals auf das Modell, gemessen an der absoluten Größe der SHAP-Werte 
 über alle Beobachtungen hinweg. Die Balken zeigen die durchschnittlichen Beiträge der 
 Merkmale zur Vorhersage: Je länger der Balken, desto größer ist der Einfluss des jeweiligen Merkmals. 
-Hier ist das Merkmal age mit dem höchsten durchschnittlichen SHAP-Wert (+0.27) das einflussreichste 
+Hier ist das Merkmal age mit dem höchsten durchschnittlichen SHAP-Wert ($+0.27$) das einflussreichste 
 Merkmal, was auf eine starke positive Beziehung zur Zielvariablen hinweist. Die weiteren Merkmale 
 folgen in absteigender Reihenfolge ihrer Bedeutung.
 
 Es fällt auf, dass eine Übereinstimmung in der Reihenfolge der Merkmalsrelevanz zwischen 
-der Permutation Feature Importance aus Abbildung \ref{pic:permutation} und den SHAP-Werten aus Abbildung \ref{pic:shap_bar}
+der Permutation der Merkmalrelevanz aus Abbildung \ref{pic:permutation} und den SHAP-Werten aus Abbildung \ref{pic:shap_bar}
 besteht, obwohl die zugrundeliegenden Interpretationen dieser beiden Methoden deutlich verschieden sind. 
 
-Die Permutation Feature Importance konzentriert sich darauf, die Veränderungen im Vorhersagefehler des Modells, 
+Die Permutation der Merkmalrelevanz konzentriert sich darauf, die Veränderungen im Vorhersagefehler des Modells, 
 speziell den mittleren quadratischen Fehler, zu messen, die eintreten, wenn die Werte eines Merkmals zufällig vertauscht werden. 
 Diese Methode gibt Aufschluss darüber, wie stark das Modell auf das jeweilige Merkmal für seine Vorhersagegenauigkeit angewiesen ist. 
 Ein wesentliches Merkmal dieser Methode ist, dass sie nicht direkt die Wechselwirkungen zwischen den Merkmalen berücksichtigt. 
@@ -324,20 +361,20 @@ Während die globale Interpretation durchschnittliche Auswirkungen aller Merkmal
 für einzelne Beobachtungen präzise zu erklären.
 
 Diese unterschiedlichen Herangehensweisen und Interpretationen der Merkmalsrelevanz, einerseits durch die 
-Permutation Feature Importance und andererseits durch die SHAP-Werte, verdeutlichen die Komplexität und die Tiefe der Analyse, 
+Permutation der Merkmalrelevanz und andererseits durch die SHAP-Werte, verdeutlichen die Komplexität und die Tiefe der Analyse, 
 die für ein umfassendes Verständnis von Vorhersagemodellen erforderlich ist. Beide Methoden ergänzen sich gegenseitig und tragen dazu bei, 
 ein vollständigeres Bild der Dynamiken innerhalb des Modells zu zeichnen.
 
-Shapley-Werte bieten für die Prognose der Druckfestigkeit von Beton einen signifikanten Vorteil, 
+SHAP-Werte bieten für die Prognose der Druckfestigkeit von Beton einen signifikanten Vorteil, 
 da sie eine gerechte Verteilung des Vorhersagebeitrags über alle Merkmale gewährleisten. 
 Diese gerechte Verteilung ist eine der Kernstärken der 
-Shapley-Werte, die sie von anderen Methoden abhebt.
+SHAP-Werte, die sie von anderen Methoden abhebt.
 
 Die Druckfestigkeit von Beton ist das Ergebnis einer komplexen Interaktion verschiedener 
 Materialkomponenten und Eigenschaften wie Zementgehalt, Wasser-Zement-Verhältnis, 
 Zuschlagstoffe und Alter des Betons. Jede dieser Komponenten trägt unterschiedlich 
 zur Endfestigkeit bei, und ihre Effekte können nicht isoliert betrachtet werden, 
-da sie interdependent sind. Hier ermöglichen Shapley-Werte eine faire und ausgewogene 
+da sie interdependent sind. Hier ermöglichen SHAP-Werte eine faire und ausgewogene 
 Zurechnung der Einflüsse jedes Merkmals auf die Vorhersage, indem sie die marginalen 
 Beiträge jedes Merkmals unter Berücksichtigung aller möglichen Kombinationen von Merkmalen 
 im Modell kalkulieren.
@@ -347,17 +384,17 @@ geben zwar Aufschluss über die Richtung und Stärke des Zusammenhangs zwischen 
 und der Zielvariable, vernachlässigen jedoch die Interaktionseffekte zwischen den Merkmalen.
 
 In der Praxis bedeutet dies für die Prognose der Druckfestigkeit von Beton, 
-dass Shapley-Werte eine präzise Zuordnung der Einflussstärke jedes Bestandteils 
+dass SHAP-Werte eine präzise Zuordnung der Einflussstärke jedes Bestandteils 
 und Verarbeitungsmerkmals erlauben. Da die Festigkeit von Beton von einer Vielzahl von 
-Faktoren abhängt, ermöglicht die granulare Aufschlüsselung der Shapley-Werte eine 
+Faktoren abhängt, ermöglicht die granulare Aufschlüsselung der SHAP-Werte eine 
 detailreiche Einsicht, welche Komponenten optimiert werden sollten, um die gewünschten 
 Eigenschaften des Betons zu erreichen.
 
 Im Kontext von industriellen Anwendungen und Forschung, wo Entscheidungen auf Grundlage 
-der Modellvorhersagen getroffen werden, gewährleisten Shapley-Werte somit eine transparente 
+der Modellvorhersagen getroffen werden, gewährleisten SHAP-Werte somit eine transparente 
 und gerechtfertigte Grundlage. Dies ist nicht nur für die Entwicklung von Betonmischungen 
 von Bedeutung, sondern auch für die Einhaltung von Bauvorschriften und die Gewährleistung 
-der Sicherheit. Durch die Verwendung von Shapley-Werten kann die Forschung im Bereich 
+der Sicherheit. Durch die Verwendung von SHAP-Werten kann die Forschung im Bereich 
 der Materialwissenschaften fundierter und zielgerichteter gestaltet werden, was zu einer 
 effizienteren und effektiveren Materialentwicklung führt.
 

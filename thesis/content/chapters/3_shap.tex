@@ -219,7 +219,7 @@ für jedes Merkmal in jeder möglichen Koalition von Merkmalen, bezogen auf die 
 \end{table}
 
 Diese Analyse ist ebenso auf die Beobachtung $x^{(2)}$ anwendbar und erfordert eine analoge Vorgehensweise, 
-wie in Tabelle \ref{tab:shapley_marginal_features_x2} dargestellt:
+wie in Tabelle \ref{tab:shapley_marginal_features_x2} dargestellt.
 
 \begin{table}[!h]
     \caption{Marginalbeiträge der einzelnen Merkmale zu den möglichen Koalitionen für die Beobachtung $x^{(2)}$.}
@@ -481,6 +481,7 @@ diese Koeffizienten, um die Beiträge jedes Merkmals zur Modellvorhersage
 zu bestimmen. Der SHAP-Wert für ein Merkmal \( j \) wird dann definiert als:
 
 \begin{align}
+    \label{eq:shap-single}
     \varphi_j^{(i)}(f, x) = \beta_j (x_j^{(i)} - \mathbb{E}[X_j]),
 \end{align}
 

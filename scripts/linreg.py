@@ -123,6 +123,11 @@ def plot_shap(shap_values: shap.Explanation, model: LinearRegression, X: pd.Data
     plt.tight_layout()
     plt.savefig('images/shap_dependence_plot.png', dpi=300)
 
+    plt.figure(figsize=(12, 10))
+    shap.plots.scatter(shap_values[:, "cement"])
+    plt.tight_layout()
+    plt.savefig('images/shap_scatter_plot.png', dpi=300)
+
 def plot_dist(df: pd.DataFrame) -> None:
     """
     Creates and saves distribution and histogram plot over all
@@ -240,6 +245,26 @@ def plot_feature_effects(coef: pd.DataFrame, X: pd.DataFrame, idx: int) -> None:
     plt.savefig('images/feature_effects_boxplot.png', dpi=300)
     plt.show()
 
+def calculate_shap_contribution(coef: pd.DataFrame, shap_values: shap.Explanation, feature: str, idx: int):
+    """
+    Calculate the average contribution of the feature to the model prediction.
+
+    Args:
+        coef: A pandas Dataframe containing the coefficients of the linear regression model.
+        shap_values: A SHAP Explanation object containing the SHAP values for the model features.
+        feature: The name of the feature.
+        idx: The index of obersavtion to calculate the value for. 
+
+    Returns:
+    - The average SHAP contribution for the feature.
+    """
+    coef = coef.loc[feature].values[0]
+    feature_values = shap_values[:, feature].data
+    mean = np.mean(feature_values)
+    shap_contribution = coef * (feature_values[idx] - mean)
+    return shap_contribution
+
+
 df = load_data()
 
 df = df.rename(
@@ -281,7 +306,7 @@ perm_importance_train = permutation_importance(linreg, X_train, y_train)
 perm_importance_test = permutation_importance(linreg, X_test, y_test)
 plot_permutation_importance(perm_importance_train, perm_importance_test, X.columns)
 
-explainer = shap.Explainer(linreg, X_train)
+explainer = shap.Explainer(linreg.predict, X)
 shap_values = explainer(X_test)
 
 mae = mean_absolute_error(y_test, y_pred)
@@ -299,5 +324,8 @@ plot_coef(coef=coef)
 print(coef)
 plot_corr(df=df)
 plot_residuals(y_test=y_test, y_pred=y_pred)
+
 plot_shap(shap_values=shap_values, model=linreg, X=X_test, idx=0)
 plot_feature_effects(coef=coef, X=X_test, idx=0)
+
+print(calculate_shap_contribution(coef=coef, shap_values=shap_values, feature="cement", idx=0))

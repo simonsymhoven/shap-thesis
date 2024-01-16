@@ -7,21 +7,15 @@
 Der Ursprung der Shapley-Werte liegt in der kooperativen Spieltheorie, einem fundamentalen Zweig der Spieltheorie. 
 Dieser Bereich beschäftigt sich mit der Analyse von Situationen, in denen Akteure zusammenarbeiten, um gemeinsame Ziele zu erreichen. 
 Zentrales Anliegen ist dabei die gerechte Verteilung der entstehenden Gewinne unter den Akteuren. Ein Schlüsselkonzept dieser Theorie 
-ist die sogenannte \glqq{}Charakteristische Funktion\grqq{}, welche die Bewertung der Gewinnverteilung einer Koalition von Akteuren ermöglicht.
+ist die sogenannte charakteristische Funktion, welche die Bewertung der Gewinnverteilung einer Koalition von Akteuren ermöglicht \cite[S. 12]{Molnar_2023}.
 
 Die Shapley-Werte, entwickelt von Lloyd Shapley in den 1950er Jahren, bieten einen methodischen Ansatz, um den individuellen Beitrag 
-eines jeden Akteurs zur kooperativen Zusammenarbeit gerecht zu bewerten. Dies geschieht durch die Durchschnittsbewertung der Beiträge 
+eines jeden Akteurs zur kooperativen Zusammenarbeit gerecht zu bewerten\footnote{Erstmalige Veröffentlichung: \glqq{}A Value for n-PErson Games\grqq{}, \cite[S. 307-318]{Shapley+1953+307+318}}. Dies geschieht durch die Durchschnittsbewertung der Beiträge 
 über sämtliche mögliche Koalitionen hinweg. Diese Methode erweist sich als äußerst nützlich, um eine gerechte und rationale Verteilung 
 von Gewinnen in vielfältigen Szenarien zu ermöglichen, sei es in wirtschaftlichen Verhandlungen oder der Aufteilung von Ressourcen \cite[S. 215]{Molnar_2022}.
 
 Das Verständnis der kooperativen Spieltheorie und ihrer Anwendung in Form der Shapley-Werte ermöglicht es, dieses theoretische Konzept 
-auf den Bereich des maschinellen Lernens zu übertragen. In dieser Arbeit wird der Übergang von abstrakten Spieltheorie-Konzepten 
-zu konkreten Anwendungen in der Welt der datengetriebenen Modelle erforscht.
-
-Zur Erreichung dieses Ziels werden in den kommenden Abschnitten nicht nur die formalen Definitionen und Eigenschaften der Shapley-Werte 
-erläutert, sondern auch ihre Adaption und Anwendung auf Machine Learning-Modelle in Betracht gezogen. Die Anwendbarkeit wird durch die 
-praktische Anwendung auf einen realen Datensatz verdeutlicht.
-
+auf den Bereich des maschinellen Lernens zu übertragen.
 
 \section{Shapley-Werte, SHAP, SHAP-Werte und \textsf{shap}}
 
@@ -31,10 +25,13 @@ ist eine kurze Einordnung essenziell.
 Beginnend mit den Shapley-Werten, entstammt dieser Begriff der kooperativen Spieltheorie und beschreibt eine Methode, 
 um den fairen Beitrag eines Spielers zu der Gesamtauszahlung eines kooperativen Spiels zu bestimmen. 
 
-SHAP (SHapley Additive exPlanations) ist ein Interpretationsframework, das die Shapley-Werte in den Bereich des maschinellen Lernens überträgt. 
-Der Begriff wurde erstmals von Lundberg und Lee eingeführt \cite[S. 1]{NIPS2017_8a20a862}.
+SHAP (SHapley Additive exPlanations) ist ein Interpretationsframework für maschinelles Lernen, 
+das Shapley-Werte verwendet, um den Beitrag jeder Feature-Variable zur Modellvorhersage 
+zu quantifizieren. Dieses Konzept wurde erstmals von Lundberg und Lee 2017 eingeführt und 
+ermöglicht die Erklärung komplexer Modelle und die Interpretation von Vorhersagen \cite[S. 1]{NIPS2017_8a20a862}.
 
-Die SHAP-Werte sind dann die konkreten quantitativen Beiträge der einzelnen Merkmale zu einer bestimmten Vorhersage, berechnet basierend auf dem SHAP-Framework.
+Die SHAP-Werte sind dann die konkreten quantitativen Beiträge der einzelnen Merkmale 
+zu einer bestimmten Vorhersage, berechnet basierend auf dem SHAP-Framework.
 
 Das Python-Paket \textsf{shap} schließlich ist eine Implementierung, die es praktikabel macht, SHAP-Werte in der Anwendung zu berechnen 
 und zu visualisieren. Es stellt eine reiche Auswahl an Werkzeugen zur Verfügung, um diese Werte und ihre Auswirkungen zu interpretieren \cite[S. 14]{Molnar_2023}.
