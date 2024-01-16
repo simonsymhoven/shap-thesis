@@ -370,7 +370,20 @@ auf die Modellvorhersage zusammenfassen. \cite[S. 32]{Molnar_2023}.
 \label{sec:estimators}
 
 Die direkte Berechnung von SHAP-Werten kann bei Modellen mit einer 
-großen Anzahl an Merkmalen rechnerisch anspruchsvoll sein. Im Kontext linearer Modelle, 
+großen Anzahl an Merkmalen rechnerisch anspruchsvoll sein. Die Herausforderung bei der Berechnung von SHAP-Werten in realen Szenarien erwächst aus 
+zwei zentralen Problembereichen: der Anzahl der Merkmale und der Notwendigkeit, 
+über diese Merkmale zu integrieren. 
+
+Die Anzahl möglicher Koalitionen von Merkmalen wächst exponentiell mit \( 2^p \) an, 
+was bei einer großen Anzahl von Merkmalen \( p \) schnell zu einer nicht handhabbaren Berechnungskomplexität führt. 
+Hinzu kommt die Schwierigkeit, dass für eine exakte Berechnung der SHAP-Werte eine Integration 
+über die Merkmalsverteilungen erforderlich ist, was jedoch voraussetzt, dass die Verteilung der Merkmale bekannt ist. 
+In der Praxis verfügt man meist nur über eine Stichprobe der Daten, ohne genaue Kenntnis der zugrundeliegenden Verteilungen \cite[S. 33]{Molnar_2023}.
+
+\section{Linearer SHAP Estimator für lineare Modelle}
+\label{subsec:linear-shap-estimator}
+
+Im Kontext linearer Modelle, 
 wie dem in dieser Arbeit verwendeten Immobilienpreis-Beispiel, 
 ist die vollständige Ermittlung aller möglichen Kombinationen von Merkmalen und deren 
 Beiträgen jedoch nicht notwendig. 
@@ -386,86 +399,6 @@ Tabellen \ref{tab:shapley_marginal_features_x1} und \ref{tab:shapley_marginal_fe
 und die daraus ersichtlichen marginalen Beiträge, die über die jeweiligen Merkmale
 unabhängig der ihnen beigetretenen Koalition konstant sind. So ist der marginale Beitrag für Merkmal $x_1^{(1)}$
 zu allen möglichen Koalitionen stets $-125$.
-
-Die Herausforderung bei der Berechnung von SHAP-Werten in realen Szenarien erwächst aus 
-zwei zentralen Problembereichen: der Anzahl der Merkmale und der Notwendigkeit, 
-über diese Merkmale zu integrieren. 
-
-Die Anzahl möglicher Koalitionen von Merkmalen wächst exponentiell mit \( 2^p \) an, 
-was bei einer großen Anzahl von Merkmalen \( p \) schnell zu einer nicht handhabbaren Berechnungskomplexität führt. 
-Hinzu kommt die Schwierigkeit, dass für eine exakte Berechnung der SHAP-Werte eine Integration 
-über die Merkmalsverteilungen erforderlich ist, was jedoch voraussetzt, dass die Verteilung der Merkmale bekannt ist. 
-In der Praxis verfügt man meist nur über eine Stichprobe der Daten, ohne genaue Kenntnis der zugrundeliegenden Verteilungen \cite[S. 33]{Molnar_2023}.
-
-Um diesen Herausforderungen zu begegnen, wird in diesem Kapitel die Anwendung von Monte Carlo Integration 
-zur Schätzung von SHAP-Werten diskutiert. Diese Methoden ermöglichen es, durch Zufallsstichproben aus den vorhandenen Daten 
-eine Approximation der Verteilungen zu erstellen und dadurch die notwendigen Integrationen näherungsweise auszuführen \cite[S. 34]{Molnar_2023}. 
-Darüber hinaus werden Ansätze zur Stichprobenbildung von Koalitionen vorgestellt, die es erlauben, 
-die rechnerische Last zu reduzieren, indem nicht alle Koalitionen betrachtet, sondern repräsentative Stichproben gezogen werden. 
-
-\section{Approximation der marginalen Beiträge mittels Monte Carlo Integration}
-
-Statt das Integral über eine unbekannte Verteilung zu berechnen, wie in Gleichung \ref{eq:shap-value-func},
-nähert die Monte Carlo Integration dieses Integral durch den Durchschnitt einer großen Anzahl zufällig 
-ausgewählter Beobachtungen aus dem Eingaberaum an \cite[S. 34]{Molnar_2023}. Die Monte Carlo Integration kann als ein erwartungstreuer Schätzer 
-betrachtet werden, wenn die Anzahl der Zufallsstichproben $n$ hinreichend groß ist. Dies bedeutet, dass mit zunehmendem $n$ die Schätzung des Integrals 
-immer genauer wird und gegen den wahren Wert des Integrals konvergiert. Dies basiert auf dem Gesetz der großen Zahlen, 
-das besagt, dass der Durchschnitt einer großen Anzahl unabhängiger und identisch verteilter Zufallsvariablen gegen den Erwartungswert der Verteilung konvergiert \cite[S. 83]{Robert_Casella_2004}. 
-
-Die Zufallsvariable $X_{C}^{(k)}$, die Merkmale die nicht in der Koalition $\mathcal{S}$ enthalten sind, 
-entfällt und wird durch konkrete Beobachtungen $x_{C}^{(k)}$ aus der Datenbasis ersetzt, 
-was eine wünschenswerte Vereinfachung darstellt. Das Integral $\int$ wird dadurch zur Summe $\sum$ und die Verteilung $\mathbb{P}$ wird durch eine große Anzahl zufällig 
-ausgewählter Beobachtungen ersetzt und das Ergebnis anschließend über alle ausgewählten Beobachtungen $n$ gemittelt. 
-$\hat{v}_{x^{(i)}, f}(\mathcal{S})$ ist somit ein Schätzer für den Wert der Koalition $\mathcal{S}$ und definiert als: 
-
-\begin{align}
-    \label{eq:monte-value}
-    \hat{v}_{x^{(i)},f}(\mathcal{S}) = \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) - f(x^{(k)}) \Big)
-\end{align}
-
-Analog zu Gleichung \ref{eq:shap-marginal-func} ist dann zusammen mit Gleichung \ref{eq:monte-value} der marginale Beitrag 
-$\hat{\Delta}_{\mathcal{S}, j}$ von Merkmal $j$ zur Koalition $\mathcal{S}$ gegeben als: 
-
-\begin{align}
-    \label{eq:monte-mar}
-    \hat{\Delta}_{\mathcal{S}, j} &= \hat{v}_{x^{(i)},f}(\mathcal{S} \cup \{j\}) - \hat{v}_{x^{(i)},f}(\mathcal{S}) \\ \notag
-        &= \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup x^{(k)}_{C \setminus \{j\}}) - f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) \Big)
-\end{align}
-
-und die SHAP-Werte $\hat{\varphi}_{j}^{(i)}$ über alle möglichen Koalitionen analog zu Gleichung \ref{eq:shap-eq}:
-
-\begin{align}
-    \label{eq:monte-shap-eq}
-    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!}\hat{\Delta}_{\mathcal{S}, j},
-\end{align}
-
-\cite[S.36]{Molnar_2023}.
-
-\section{Schätzung von Koalitionen}
-
-Obwohl die Monte Carlo Integration aus Gleichung \ref{eq:monte-shap-eq} eine praktische Methode zur Approximation der benötigten marginalen Beiträge in der 
-SHAP-Wertberechnung bietet, bleibt die Herausforderung, alle möglichen Koalitionen der Merkmals zu evaluieren. 
-Die Anzahl der Koalitionen wächst exponentiell mit der Anzahl der Merkmals. Daher sind Ansätze gefragt, die eine effiziente Schätzung der SHAP-Werte erlauben, 
-ohne jede mögliche Koalition explizit zu berücksichtigen.
-
-Insbesondere für lineare Modelle ohne Interaktionsterme wurde in Kpaitel \ref{sec:estimators} bereits gezeigt,
-dass die Berechnung einer einzigen Koalition für jedes Merkmal ausreichend ist \cite[S. 38]{Molnar_2023}.
-In einem solchen Modell wird angenommen, dass die Beziehung zwischen den unabhängigen 
-Variablen und der abhängigen Variable additiv ist, das heißt, es gibt keine Terme im Modell, 
-die das Produkt von zwei oder mehr unabhängigen Variablen enthalten, um mögliche Interaktionseffekte 
-zwischen ihnen zu repräsentieren.
-
-Neben dem Linearen SHAP Estimator in Kapitel \ref{subsec:linear-shap-estimator} wird die Schätzung durch Permutationen in Kapitel 
-\ref{subsec:permutation} diskutirert. Anstelle der Iteration über alle Koallitionen, werden repräsentative Stichproben zur Berechnung
-herangezogen. 
-
-Beide Verfahren bieten Strategien zur Reduzierung der Berechnungskomplexität, 
-indem sie Annahmen über die Eigenschaften des Modells und der Daten treffen. 
-Weitere Ansätze werden in Kapitel \ref{sec:shap-package} angesprochen.
-
-
-\subsection{Linearer SHAP Estimator für lineare Modelle}
-\label{subsec:linear-shap-estimator}
 
 Für lineare Modelle bietet der lineare SHAP Estimator eine direkte und effiziente 
 Methode zur Berechnung der SHAP-Werte. Diese Methode beruht auf der Annahme 
@@ -514,7 +447,49 @@ schnelle und genaue Berechnung der SHAP-Werte für lineare Modelle und ist
 besonders nützlich, um die Auswirkungen einzelner Merkmals in einem solchen 
 Modell zu interpretieren. 
 
-\subsection{Schätzung durch Permutationen}
+\section{Approximation der marginalen Beiträge mittels Monte Carlo Integration}
+
+Um der Herausforderungen der Unkentniss der Verteilung zu begegnen, wird in diesem Kapitel die Anwendung von Monte Carlo Integration 
+zur Schätzung von SHAP-Werten diskutiert. Diese Methoden ermöglichen es, durch Zufallsstichproben aus den vorhandenen Daten 
+eine Approximation der Verteilungen zu erstellen und dadurch die notwendigen Integrationen näherungsweise auszuführen \cite[S. 34]{Molnar_2023}. 
+
+Statt das Integral über eine unbekannte Verteilung zu berechnen, wie in Gleichung \ref{eq:shap-value-func},
+nähert die Monte Carlo Integration dieses Integral durch den Durchschnitt einer großen Anzahl zufällig 
+ausgewählter Beobachtungen aus dem Eingaberaum an \cite[S. 34]{Molnar_2023}. Die Monte Carlo Integration kann als ein erwartungstreuer Schätzer 
+betrachtet werden, wenn die Anzahl der Zufallsstichproben $n$ hinreichend groß ist. Dies bedeutet, dass mit zunehmendem $n$ die Schätzung des Integrals 
+immer genauer wird und gegen den wahren Wert des Integrals konvergiert. Dies basiert auf dem Gesetz der großen Zahlen, 
+das besagt, dass der Durchschnitt einer großen Anzahl unabhängiger und identisch verteilter Zufallsvariablen gegen den Erwartungswert der Verteilung konvergiert \cite[S. 83]{Robert_Casella_2004}. 
+
+Die Zufallsvariable $X_{C}^{(k)}$, die Merkmale die nicht in der Koalition $\mathcal{S}$ enthalten sind, 
+entfällt und wird durch konkrete Beobachtungen $x_{C}^{(k)}$ aus der Datenbasis ersetzt, 
+was eine wünschenswerte Vereinfachung darstellt. Das Integral $\int$ wird dadurch zur Summe $\sum$ und die Verteilung $\mathbb{P}$ wird durch eine große Anzahl zufällig 
+ausgewählter Beobachtungen ersetzt und das Ergebnis anschließend über alle ausgewählten Beobachtungen $n$ gemittelt. 
+$\hat{v}_{x^{(i)}, f}(\mathcal{S})$ ist somit ein Schätzer für den Wert der Koalition $\mathcal{S}$ und definiert als: 
+
+\begin{align}
+    \label{eq:monte-value}
+    \hat{v}_{x^{(i)},f}(\mathcal{S}) = \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) - f(x^{(k)}) \Big)
+\end{align}
+
+Analog zu Gleichung \ref{eq:shap-marginal-func} ist dann zusammen mit Gleichung \ref{eq:monte-value} der marginale Beitrag 
+$\hat{\Delta}_{\mathcal{S}, j}$ von Merkmal $j$ zur Koalition $\mathcal{S}$ gegeben als: 
+
+\begin{align}
+    \label{eq:monte-mar}
+    \hat{\Delta}_{\mathcal{S}, j} &= \hat{v}_{x^{(i)},f}(\mathcal{S} \cup \{j\}) - \hat{v}_{x^{(i)},f}(\mathcal{S}) \\ \notag
+        &= \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup x^{(k)}_{C \setminus \{j\}}) - f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) \Big)
+\end{align}
+
+und die SHAP-Werte $\hat{\varphi}_{j}^{(i)}$ über alle möglichen Koalitionen analog zu Gleichung \ref{eq:shap-eq}:
+
+\begin{align}
+    \label{eq:monte-shap-eq}
+    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!}\hat{\Delta}_{\mathcal{S}, j},
+\end{align}
+
+\cite[S.36]{Molnar_2023}.
+
+\section{Schätzung durch Permutationen}
 \label{subsec:permutation}
 
 Der Einsatz von Permutationen zur Schätzung von SHAP-Werten bietet eine 
@@ -556,5 +531,4 @@ die Möglichkeit, die Effekte von Vorwärts- und Rückwärtspropagation zu unter
 indem die Reihenfolge der Merkmale sowohl in ihrer ursprünglichen als auch in umgekehrter 
 Abfolge betrachtet wird. Für eine detaillierte Darstellung dieser Technik und ihrer 
 Auswirkungen auf die SHAP-Wertberechnung sei auf die weiterführende Literatur verwiesen \cite[S. 39f]{Molnar_2023}.
-
-
+                                         

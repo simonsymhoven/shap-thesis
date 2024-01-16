@@ -53,7 +53,7 @@ Bedeutung hat, da es selten vorkommt, dass alle Variablen tatsächlich den Wert 
 Die wahre Aussagekraft des Achsenabschnitts tritt zutage, wenn die Daten so standardisiert wurden, 
 dass ihre Mittelwerte bei null und die Standardabweichung bei eins liegen. Unter diesen Umständen repräsentiert der Achsenabschnitt 
 die erwartete Zielvariable für einen hypothetischen Fall, in dem alle Merkmale ihren Durchschnittswert 
-aufweisen.
+aufweisen \cite[S. 39]{Molnar_2022}.
 
 Bei der Betrachtung einzelner Merkmale innerhalb des Modells sagt das Gewicht $\beta_j$ eines Merkmals, 
 um wie viel sich die Zielvariable $y^{(i)}$ ändert, wenn das Merkmal $x^{(i)}_j$ um eine Einheit erhöht wird – und zwar unter 
@@ -133,15 +133,15 @@ Langlebigkeit von Bauwerken von größter Bedeutung ist.
 Der Datensatz umfasst folgende Variablen:
 
 \begin{itemize}
-    \item \textbf{\texttt{cement} (Zement)}: Menge an Zement (kg in einem m³ Gemisch). Zement ist ein Hauptbestandteil von Beton und wesentlich für dessen Festigkeit.
-    \item \textbf{\texttt{blast} (Hochofenschlacke)}: Menge an Hochofenschlacke (kg in einem m³ Gemisch). Schlacke kann die Festigkeit und Haltbarkeit von Beton verbessern.
-    \item \textbf{\texttt{ash} (Flugasche)}: Menge an Flugasche (kg in einem m³ Gemisch). Flugasche wird als Ersatz für Zement verwendet und beeinflusst die Verarbeitbarkeit und Festigkeit.
-    \item \textbf{\texttt{water} (Wasser)}: Menge an Wasser (kg in einem m³ Gemisch). Wasser ist für die Hydratation des Zements und die Konsistenz des Betons notwendig.
-    \item \textbf{\texttt{superplasticizer} (Superplastifikator)}: Menge an Superplastifikator (kg in einem m³ Gemisch). Superplastifikatoren verbessern die Fließfähigkeit und Verarbeitbarkeit von Beton.
-    \item \textbf{\texttt{coarse} (Grober Zuschlag)}: Menge an grobem Zuschlag (kg in einem m³ Gemisch). Grober Zuschlag trägt zur Stabilität und Struktur des Betons bei.
-    \item \textbf{\texttt{fine} (Feiner Zuschlag)}: Menge an feinem Zuschlag (kg in einem m³ Gemisch). Feiner Zuschlag beeinflusst die Dichte und die Oberflächeneigenschaften des Betons.
-    \item \textbf{\texttt{age} (Alter)}: Alter des Betons in Tagen. Das Alter hat einen signifikanten Einfluss auf die Festigkeit des Betons.
-    \item \textbf{\texttt{strength} (Druckfestigkeit)}: Die tatsächliche Druckfestigkeit von Beton (MPa). Dies ist die Zielvariable, die modelliert wird.
+    \item \textbf{cement (Zement)}: Menge an Zement (kg in einem m³ Gemisch). Zement ist ein Hauptbestandteil von Beton und wesentlich für dessen Festigkeit.
+    \item \textbf{blast (Hochofenschlacke)}: Menge an Hochofenschlacke (kg in einem m³ Gemisch). Schlacke kann die Festigkeit und Haltbarkeit von Beton verbessern.
+    \item \textbf{ash (Flugasche)}: Menge an Flugasche (kg in einem m³ Gemisch). Flugasche wird als Ersatz für Zement verwendet und beeinflusst die Verarbeitbarkeit und Festigkeit.
+    \item \textbf{water (Wasser)}: Menge an Wasser (kg in einem m³ Gemisch). Wasser ist für die Hydratation des Zements und die Konsistenz des Betons notwendig.
+    \item \textbf{superplasticizer (Superplastifikator)}: Menge an Superplastifikator (kg in einem m³ Gemisch). Superplastifikatoren verbessern die Fließfähigkeit und Verarbeitbarkeit von Beton.
+    \item \textbf{coarse (Grober Zuschlag)}: Menge an grobem Zuschlag (kg in einem m³ Gemisch). Grober Zuschlag trägt zur Stabilität und Struktur des Betons bei.
+    \item \textbf{fine (Feiner Zuschlag)}: Menge an feinem Zuschlag (kg in einem m³ Gemisch). Feiner Zuschlag beeinflusst die Dichte und die Oberflächeneigenschaften des Betons.
+    \item \textbf{age (Alter)}: Alter des Betons in Tagen. Das Alter hat einen signifikanten Einfluss auf die Festigkeit des Betons.
+    \item \textbf{strength (Druckfestigkeit)}: Die tatsächliche Druckfestigkeit von Beton (MPa). Dies ist die Zielvariable, die modelliert wird.
 \end{itemize}
  
 Die Bedeutung dieses Themas liegt in der zentralen Rolle, die Beton im Bauwesen spielt. 
@@ -200,11 +200,12 @@ Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
 \end{table}
 
 Tabelle \ref{tab:statistics} offenbart eine signifikante Variabilität und Bandbreite 
-in den Werten aller Variablen. Um eine gleichmäßigere Verteilung für die Regressionsanalyse 
-zu erzielen und den Einfluss von Ausreißern zu reduzieren, wurde eine logarithmische Transformation 
-auf die Daten angewendet. Abbildung \ref{pic:box} zeigt das Minimum, das untere Quartil, den Median, das obere Quartil und das Maximum
-der jeweiligen Merkmale vor und nach der logarthimischen Transformation. 
-
+in den Werten aller Variablen. Um eine gleichmäßigere Verteilung zu erreichen und den 
+Einfluss von Ausreißern zu verringern, werden die Daten einer logarithmischen Transformation unterzogen. 
+Diese Methode dient dazu, die Skalierung der Variablen zu vereinheitlichen und ihre Verteilung zu normalsieren, 
+was die Genauigkeit und Stabilität des Regressionsmodells verbessert.
+Abbildung \ref{pic:box} zeigt einen Boxplot der jeweiligen Merkmale vor und 
+nach der logarthimischen Transformation.
 
 \begin{figure}[!h]
     \caption{Boxplot der Merkmale vor und nach der Log-Transformation.}
@@ -213,10 +214,16 @@ der jeweiligen Merkmale vor und nach der logarthimischen Transformation.
     \label{pic:box}
 \end{figure}
 
-Diese Transformation hilft, die Skalierung der Variablen zu vereinheitlichen 
-und die Datenverteilung zu normalisieren, was für die Effektivität des Regressionsmodells vorteilhaft ist.
+In einem Boxplot zeigt die zentrale Box die Interquartilspanne (IQR), 
+die die mittleren 50\% der Daten umfasst, mit dem unteren Rand als erstes Quartil 
+(25\% der Daten darunter) und dem oberen Rand als drittes Quartil (75\% der Daten darunter). 
+Der horizontale Strich in der Mitte ist der Median, der die Daten in zwei Hälften teilt. 
+Die Whiskers, die Linien, die von der Box ausgehen, stellen die Streuung außerhalb der Quartile dar und 
+erstrecken sich normalerweise bis zu den äußersten regulären Datenpunkten. 
+Datenpunkte außerhalb des Bereichs der Whiskers werden als Ausreißer betrachtet und separat markiert \cite[S. 43]{Molnar_2022}. 
 
-Abbildung \ref{pic:hist} zeigt die Häufigkeitsverteilung aller Merkmale des Datensatzes nach der logarithmischen Transformation. 
+Abbildung \ref{pic:hist} zeigt die Häufigkeitsverteilung aller Merkmale des Datensatzes 
+nach der logarithmischen Transformation. 
 
 \begin{figure}[!h]
     \caption{Verteilungen der Merkmale.}

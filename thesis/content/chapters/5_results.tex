@@ -13,10 +13,10 @@ wie SHAP-Werte eine tiefere und detailliertere Analyse ermöglichen.
 
 \section{Lineares Regressionmodell}
 
-Die Koeffizienten des Modells, die in Tabelle \ref{tab:model-coefficients} 
-aufgeführt sind, zeigen, wie stark sich eine Einheitänderung jedes unabhängigen Merkmals 
-auf die Beton-Druckfestigkeit auswirkt, unter der Vorraussetzung, dass alle anderen 
-Merkmale null sind. 
+Die Koeffizienten eines linearen Modells repräsentieren die Änderung der abhängigen 
+Variable (in diesem Fall die Druckfestigkeit von Beton) 
+für eine Einheitsänderung der unabhängigen Variablen, unter der Annahme, 
+dass alle anderen Variablen konstant gehalten werden.
 
 Positive Koeffizienten deuten auf eine Erhöhung der Beton-Druckfestigkeit 
 bei Zunahme der Variablen hin, während negative Koeffizienten eine Verringerung anzeigen. 
@@ -86,14 +86,9 @@ die auf eine Verletzung der Modellannahmen hindeuten könnten.
 
 \section{Interpretation der Koeffizienten \& Permutation der Merkmalrelevanz}
 
-In diesem Abschnitt wird die herkömmliche Interpretation der Modellkoeffizienten genauer betrachtet. 
-Die Koeffizienten eines linearen Modells repräsentieren die Änderung der abhängigen Variable (in diesem Fall die Druckfestigkeit von Beton) 
-für eine Einheitänderung der unabhängigen Variablen, unter der Annahme, dass alle anderen Variablen konstant gehalten werden.
-
-Es ist wichtig zu betonen, dass diese Koeffizienten eine bedingte Assoziation beschreiben. 
+Es ist wichtig zu betonen, dass die Koeffizienten eine bedingte Assoziation beschreiben. 
 Das bedeutet, sie quantifizieren die Variation der Druckfestigkeit, wenn eine bestimmte unabhängige Variable 
-verändert wird, während alle anderen unabhängigen Variablen konstant gehalten werden. 
-Diese Interpretation berücksichtigt die Wechselwirkungen zwischen den verschiedenen unabhängigen Variablen im Modell.
+verändert wird, während alle anderen unabhängigen Variablen konstant gehalten werden.
 
 Es ist entscheidend zu verstehen, dass die Koeffizienten nicht als marginale Beiträge betrachtet werden sollten. 
 Das bedeutet, sie beschreiben nicht die Beziehung zwischen den Variablen unabhängig von anderen Einflussfaktoren. 
@@ -115,11 +110,9 @@ von den spezifischen Werten der Merkmale und der Streuung der Merkmalsausprägun
 Die logarthimische Transformation der Merkmale hat dieses Problem bereits 
 teilweise gelöst, indem sie die Skalierung der Daten angepasst hat und alle Merkmale auf eine einheitlichen Skala transformiert hat.
 Daraus lassen sich erste Schlüsse der Merkmalsrelevanz ableiten. Im Vergleich zu allen anderen 
-Koeffizienten tragen die Merkmale ash, superplasticizer, blast und coarse nur wenig zur abhängigen
-Variable bei. 
-Das obige Diagramm gibt Aufschluss über die Abhängigkeiten zwischen einem bestimmten Merkmal und der Zielvariablen, 
-wenn alle anderen Merkmale konstant bleiben. Eine Erhöhung von cement führt zu einer Erhöhung der Druckfestigkeit. 
-Im Gegensatz dazu führt eine Erhöhung von water zu einer Verringerung der Druckfestigkeit, immer unter der Vorraussetzung, das alle
+Koeffizienten tragen die Merkmale Flugasche, Superplastifikator, Hochofenschlacke und grober Zuschlag nur wenig zur abhängigen
+Variable bei. Eine Erhöhung von Zement führt zu einer Erhöhung der Druckfestigkeit. Im Gegensatz dazu führt eine Erhöhung des Wasseranteils 
+zu einer Verringerung der Druckfestigkeit, immer unter der Vorraussetzung, das alle
 anderen Merkmale konstant bleiben.
 
 Abbildung \ref{pic:effect} zeigt einen Effektplot für die erste Beobachtung im Testdatensatz. Dieser 
@@ -137,17 +130,13 @@ Die horizontale Position des Kreuzes zeigt den Wert des Effekts, während die ve
     \label{pic:effect}
 \end{figure}
 
-Innerhalb des Boxplots zeigt die Box die Interquartilspanne (IQR), während der horizontale Strich in der Mitte der Box den Median repräsentiert. Die Whiskers 
-(die Linien oberhalb und unterhalb der Box) zeigen die Streuung der Daten, während Ausreißer als einzelne Punkte außerhalb der Whiskers 
-dargestellt werden. Dieser Teil des Plots ermöglicht es, den Effekt eines Merkmals in Bezug auf seine Verteilung innerhalb 
-des gesamten Datensatzes zu interpretieren.
+Der Effektplot ist ein nützliches Werkzeug, um zu verstehen, wie sich Änderungen in den Merkmalswerten auf die Vorhersage 
+auswirken und wie dieser individuelle Effekt im Vergleich zur gesamten Datenverteilung steht. Für ein vollständiges Verständnis 
+der Bedeutung jedes Merkmals im gesamten Datensatz, insbesondere im Kontext der Vorhersage der Druckfestigkeit von Beton, 
+erweist sich jedoch eine globale Betrachtung des Einflusses der Merkmale als unerlässlich.
 
-Der Effektplot ist ein nützliches Werkzeug, um zu verstehen, wie sich Änderungen in den Merkmalswerten auf die 
-Vorhersage auswirken und wie dieser individuelle Effekt im Vergleich zur gesamten Datenverteilung steht.
-
-Im Anschluss an die Analyse der Koeffizienten des linearen Regressionsmodells wird 
-die Merkmalsrelevanz näher betrachtet. Ein bewährtes Verfahren zur Bestimmung der 
-Merkmalsrelevanz ist die sogenannte Permutation Feature Importance (Permutation der Merkmalrelevanz). 
+Ein bewährtes Verfahren zur Bestimmung der 
+Merkmalsrelevanz ist die sogenannte Permutation der Merkmalrelevanz (engl. \textit{Permutation Feature Importance}, PFI). 
 Diese Methode misst die Veränderung im Vorhersagefehler des Modells nach der 
 zufälligen Vertauschung der Werte eines bestimmten Merkmals. 
 Ein Merkmal gilt als wichtig, wenn die Vertauschung seiner Werte den Modellfehler erhöht, 
@@ -165,18 +154,18 @@ anhand der Veränderung des mittleren quadratischen Fehlers des Modells:
     \label{pic:permutation}
 \end{figure}
 
-Es ist festzustellen, dass die Merkmale coarse, fine und ash keine erhebliche Veränderung im mittleren quadratischen
+Es ist festzustellen, dass die Merkmale grober Zuschlag, feiner Zuschlag und Flugasche keine erhebliche Veränderung im mittleren quadratischen
 Fehler des Modells hervorrufen und diese somit im Vergleich zu den anderen Merkmalen als eher irrelevant angesehen werden können.
 
 \section{Interpretation mit SHAP}
 
-Durch die Verwendung von SHAP-Werten wird 
-es möglich, die Beiträge der einzelnen Merkmale zur Vorhersageleistung des Modells nicht nur 
-auf globaler Ebene, sondern auch auf lokaler, individueller Ebene zu verstehen. 
 SHAP-Werte berücksichtigen die Wechselwirkungen zwischen den Merkmalen und 
 quantifizieren den Beitrag jedes Merkmals zur Abweichung der Prognose im Mittel. 
 Dies ermöglicht eine präzisere Interpretation, da die SHAP-Werte den Einfluss 
 eines Merkmals auf die Vorhersage unter Berücksichtigung aller anderen Merkmale anzeigen. 
+Durch die Verwendung von SHAP-Werten wird 
+es möglich, die Beiträge der einzelnen Merkmale zur Vorhersageleistung des Modells nicht nur 
+auf globaler Ebene, sondern auch auf lokaler, individueller Ebene zu verstehen. 
 
 \subsection{Lokale Interpretation}
 
@@ -191,14 +180,14 @@ für eine einzelne Beobachtung aus dem Datensatz.
 \end{figure}
 
 Im Partial Dependence Plot der Abbildung \ref{pic:shap_dependence} wird die Beziehung zwischen 
-dem Merkmal cement und der Zielvariable für die spezifische Beobachtung $x^{(0)}$ aus dem Testmenge visualisiert. 
+dem Merkmal Zement und der Zielvariable für die spezifische Beobachtung $x^{(0)}$ aus dem Testmenge visualisiert. 
 Das Histogramm zeigt die Verteilung der konkreten Merkmalsausprägungen über die Gesamtheit der Daten.
-Die blaue Linie im Diagramm repräsentiert die modellierte Abhängigkeit der Vorhersage vom Merkmal cement, 
+Die blaue Linie im Diagramm repräsentiert die modellierte Abhängigkeit der Vorhersage vom Merkmal Zement, 
 unter Konstanthaltung aller anderen Merkmale. Der schwarze Punkt markiert die tatsächliche Ausprägung des 
-Merkmals cement ($5.035$) für die betrachtete Beobachtung und die korrespondierende Vorhersage 
+Merkmals Zement ($5.035$) für die betrachtete Beobachtung und die korrespondierende Vorhersage 
 des linearen Regressionsmodells. Die rote Linie illustriert die marginale Abweichung der Vorhersage 
 von der durchschnittlichen Modellprognose $\mathbb{E}[f(X)] = 3.457$, ausgehend vom 
-beobachteten Wert von cement nach Gleichung \ref{eq:shap-single}:
+beobachteten Wert von Zement nach Gleichung \ref{eq:shap-single}:
 
 \begin{align}
     \label{eq:shap0}
@@ -208,7 +197,7 @@ beobachteten Wert von cement nach Gleichung \ref{eq:shap-single}:
 \end{align}
 
 Codeausschnitt \ref{code:shap-idx} zeigt die manuelle Berechnung der für $\varphi_{\text{cement}}^{(0)}(f, x)$ basierend
-auf den zur Verfügung stehenden Daten für das Merkmal cement\footnote{Die Anwendung des SHAP-Explainers, 
+auf den zur Verfügung stehenden Daten für das Merkmal Zement\footnote{Die Anwendung des SHAP-Explainers, 
 insbesondere im Kontext eines Train-Test-Splits, stößt aufgrund der aktuellen Implementierung im SHAP-Python-Paket 
 auf Herausforderungen. Die SHAP-Werte werden auf Basis des Datensatzes $X$ berechnet, 
 was bei der Verwendung von Teilmengen wie $X_{\text{test}}$ zu geringfügigen Abweichungen führen kann, wie Berechnung \ref{eq:shap0} zeigt.
@@ -222,11 +211,11 @@ findet sich in einem von mir verfassten Stack Overflow Beitrag, verfügbar unter
     caption={Berechnen der SHAP-Werte für ein Merkmal und eine Beobachtung, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 Die Anordnung des schwarzen Punktes entlang der funktionalen Beziehung gibt den spezifischen Wert 
-von cement an und reflektiert, wie dieser Wert in den Kontext des gesamten Wertebereichs dieses Merkmals 
+von Zement an und reflektiert, wie dieser Wert in den Kontext des gesamten Wertebereichs dieses Merkmals 
 eingeordnet wird. Die vertikale Distanz zwischen der durchschnittlichen Vorhersage (dargestellt durch die horizontale 
 gestrichelte Linie) und dem Punkt auf der funktionalen Abhängigkeit (blaue Linie) zeigt den Einfluss des Merkmals 
-cement auf die individuelle Vorhersage im Vergleich zum Modellmittelwert. Dieser Magnitude der roten Linie verkörpert den SHAP-Wert,
-den marginalen Beitrag des Merkmals cement zur Prognoseabweichung für die ausgewählte Beobachtung.
+Zement auf die individuelle Vorhersage im Vergleich zum Modellmittelwert. Dieser Magnitude der roten Linie verkörpert den SHAP-Wert,
+den marginalen Beitrag des Merkmals Zement zur Prognoseabweichung für die ausgewählte Beobachtung.
 
 Während der Partial Dependence Plot einen wertvollen Einblick in die Modellabhängigkeit von 
 einzelnen Merkmalen bietet, ist für ein umfassendes Verständnis der Modellvorhersage eine ganzheitliche 
@@ -249,14 +238,14 @@ der durchschnittlichen Vorhersage des Modells.
 
 Von diesem Wert ausgehend, illustrieren die Balken, wie jede Merkmalausprägung – 
 angezeigt durch die grauen Zahlen entlang der y-Achse – die Vorhersage $f(x_{j}^{(0)})$ beeinflusst. 
-So steigert beispielsweise blast mit einem Wert von $4.982$ die Vorhersage um $+0.18$, 
-wohingegen cement mit einem Wert von $5.035$ die Vorhersage um $-0.39$ verringert.
+So steigert beispielsweise die Hochofenschlacke mit einem Wert von $4.982$ die Vorhersage um $+0.18$, 
+wohingegen Zement mit einem Wert von $5.035$ die Vorhersage um $-0.39$ verringert.
 
 Rote Balken repräsentieren Merkmale, die die Vorhersage erhöhen, während blaue Balken solche 
 darstellen, die sie senken. Die Größe jedes Balkens zeigt das Ausmaß des jeweiligen Beitrags, 
 und die abschließende Vorhersage $f(x) = 3.257$ wird am Ende der Kette dieser Effekte erreicht. 
 
-Kleine positive und negative Beiträge von Merkmalen wie fine ($6.713$), coarse ($6.908$) und water ($5.188$)
+Kleine positive und negative Beiträge von Merkmalen wie feiner Zuschlag ($6.713$), grober Zuschlag ($6.908$) und dem Anteil von Wasser ($5.188$)
 zeigen, wie feingranulare Anpassungen der Merkmalsausprägungen die Vorhersage nicht verändern, leicht erhöhen oder senken können.
 
 Für die Beobachtung $x^{(0)}$ führt die kumulative Abweichung der Merkmal-Effekte 
@@ -285,16 +274,6 @@ des Modells über verschiedene Beobachtungen hinweg zu erfassen.
 
 \subsection{Globale Interpretation}
 
-Der folgende Abschnitt widmet sich dieser globalen Sichtweise und untersucht, 
-wie die Merkmalsa-Beiträge sich im Kontext des gesamten Datensatzes darstellen lassen.
-
-\begin{figure}[!h]
-    \caption{SHAP Beeswarm Plot.}
-    \includegraphics[width=1\textwidth]{../scripts/images/shap_beeswarm_plot.png}
-    Quelle: Eigene Darstellung, \ref{linreg}.
-    \label{pic:shap_beeswarm}
-\end{figure}
-
 Der SHAP Beeswarm Plot in Abbildung \ref{pic:shap_beeswarm} bietet eine globale 
 Sicht auf die Modellvorhersagen, indem er die Verteilung der SHAP-Werte für jedes Merkmals 
 über alle Beobachtungen hinweg darstellt. Jeder Punkt repräsentiert eine Beobachtung aus dem Datensatz.
@@ -303,12 +282,19 @@ Die Position auf der x-Achse gibt den Einfluss des Merkmals auf die Modellvorher
 Positive SHAP-Werte (rechts von der Nulllinie) zeigen eine Erhöhung der Vorhersage an, 
 während negative Werte (links von der Nulllinie) eine Verringerung bedeuten. 
 
-Das Merkmal age zeigt eine hohe Variabilität in seinem Einfluss auf die Modellvorhersage. 
-Höhere Werte cement age sind mit einer Zunahme der Vorhersage (positive SHAP-Werte) assoziiert, 
+\begin{figure}[!h]
+    \caption{SHAP Beeswarm Plot.}
+    \includegraphics[width=1\textwidth]{../scripts/images/shap_beeswarm_plot.png}
+    Quelle: Eigene Darstellung, \ref{linreg}.
+    \label{pic:shap_beeswarm}
+\end{figure}
+
+Das Merkmal Alter zeigt eine hohe Variabilität in seinem Einfluss auf die Modellvorhersage. 
+Höhere Werte von Zement sind mit einer Zunahme der Vorhersage (positive SHAP-Werte) assoziiert, 
 was durch die rechtsseitigen Punkte in der Grafik dargestellt wird. 
 Niedrigere Werte führen hingegen zu einer geringeren Vorhersage, 
 erkennbar an den linksseitigen Punkten. Diese Streuung der Punkte zeigt, 
-dass die Auswirkung von cement auf die Vorhersage stark von seiner quantitativen Ausprägung abhängt, 
+dass die Auswirkung von Zement auf die Vorhersage stark von seiner quantitativen Ausprägung abhängt, 
 wie Abbildung \ref{pic:shap_scatter} verdeutlicht. 
 
 \begin{figure}[!h]
@@ -318,11 +304,11 @@ wie Abbildung \ref{pic:shap_scatter} verdeutlicht.
     \label{pic:shap_scatter}
 \end{figure}
 
-Der Scatter Plot zeigt die SHAP-Werte für cement bezüglich ihrer quantitivaten Ausprägung über alle 
-Daten. Steigende Merkmalsausprägungen von cement führen zu größeren SHAP-Werte und somit zu einer Erhöhung der 
-Modellprognose, was die ersten Analysen der Korrelationsmatrix aus Abbildung \ref{pic:corr} bestätigen. Der Einfluss von
-water ist invers. Steigende Werte von water führen zu geringeren SHAP-Werten und reduzieren somit die 
-Modellprognose. 
+Der Scatter Plot zeigt die SHAP-Werte für Zement bezüglich ihrer quantitivaten Ausprägung über alle 
+Daten. Steigende Merkmalsausprägungen von Zement führen zu größeren SHAP-Werte und somit zu einer Erhöhung der 
+Modellprognose, was die ersten Analysen der Korrelationsmatrix aus Abbildung \ref{pic:corr} bestätigen. Der Einfluss des Wasseranteils
+ist invers. Eine Erhöhung des Wasseranteils resultiert in geringeren SHAP-Werten und reduziert somit die 
+Druckfestigkeit. 
 
 Diese Darstellungen ermöglichen es, die Merkmale zu identifizieren, 
 die den größten Einfluss auf das Modell haben und wie dieser Einfluss über 
@@ -339,7 +325,7 @@ Der SHAP Bar Plot in Abbildung \ref{pic:shap_bar} illustriert die durchschnittli
 Auswirkung jedes Merkmals auf das Modell, gemessen an der absoluten Größe der SHAP-Werte 
 über alle Beobachtungen hinweg. Die Balken zeigen die durchschnittlichen Beiträge der 
 Merkmale zur Vorhersage: Je länger der Balken, desto größer ist der Einfluss des jeweiligen Merkmals. 
-Hier ist das Merkmal age mit dem höchsten durchschnittlichen SHAP-Wert ($+0.27$) das einflussreichste 
+Hier ist das Merkmal Alter mit dem höchsten durchschnittlichen SHAP-Wert ($+0.27$) das einflussreichste 
 Merkmal, was auf eine starke positive Beziehung zur Zielvariablen hinweist. Die weiteren Merkmale 
 folgen in absteigender Reihenfolge ihrer Bedeutung.
 

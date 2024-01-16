@@ -85,7 +85,7 @@ def plot_corr(df: pd.DataFrame) -> None:
     Args:
         df (pd.DataFrame): The feature matrix.
     """
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(12, 6))
     sns.heatmap(df.corr(), annot=True, cmap="YlGnBu", fmt=".2f")
     plt.savefig('images/corr.png', dpi=300)
 
@@ -99,22 +99,22 @@ def plot_shap(shap_values: shap.Explanation, model: LinearRegression, X: pd.Data
         X (pd.DataFrame): The background data for partial dependence plot.
         idx (int): Index for the SHAP waterfall plot.
     """
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(12, 6))
     shap.plots.beeswarm(shap_values)
     plt.tight_layout()
     plt.savefig('images/shap_beeswarm_plot.png', dpi=300)
 
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(12, 6))
     shap.plots.bar(shap_values)
     plt.tight_layout()
     plt.savefig('images/shap_bar_plot.png', dpi=300)
 
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(12, 6))
     shap.plots.waterfall(shap_values[idx])
     plt.tight_layout()
     plt.savefig('images/shap_waterfall_plot.png', dpi=300)
 
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(12, 6))
     shap.plots.partial_dependence("cement", model.predict, X, 
                                   model_expected_value=True, 
                                   feature_expected_value=True,
@@ -123,7 +123,7 @@ def plot_shap(shap_values: shap.Explanation, model: LinearRegression, X: pd.Data
     plt.tight_layout()
     plt.savefig('images/shap_dependence_plot.png', dpi=300)
 
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(12, 6))
     shap.plots.scatter(shap_values[:, "cement"])
     plt.tight_layout()
     plt.savefig('images/shap_scatter_plot.png', dpi=300)
@@ -136,7 +136,7 @@ def plot_dist(df: pd.DataFrame) -> None:
     Args:
         df (pd.DataFrame): The feature matrix.
     """
-    _, axes = plt.subplots(3, 3, figsize=(15, 10))
+    _, axes = plt.subplots(3, 3, figsize=(15, 12))
     axes = axes.flatten()
 
     for i, var in enumerate(df.columns):
@@ -157,7 +157,7 @@ def plot_coef(coef: pd.DataFrame) -> None:
     """
     coef = coef.drop('Intercept', errors='ignore')
     coef = coef.sort_values(by='Coefficients', ascending=True)
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(12, 6))
     plt.barh(coef.index, coef['Coefficients'])
     plt.axvline(0)
     plt.xlabel('Coefficients')
