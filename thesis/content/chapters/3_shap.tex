@@ -30,7 +30,7 @@ Modellen übertragen, wobei jedes Merkmal als \glqq{}Spieler\grqq{} betrachtet w
     Quelle: \cite[S. 26]{Molnar_2023}.
 \end{table}
 
-Die Koalitionsfunktion $v_{f, x^{(i)}}(\mathcal{S})$ für ein gegebenes Model $f$ und eine Beobachtung $x^{(i)}$ ist definiert als:
+Die Koalitionsfunktion $v_{f, x^{(i)}}(\mathcal{S})$ für ein gegebenes Modell $f$ und eine Beobachtung $x^{(i)}$ ist definiert als:
 
 \begin{align}
     \label{eq:shap-value-func}
@@ -44,7 +44,7 @@ die nicht in $\mathcal{S}$ enthalten sind ($X_C$), gewichtet durch deren Wahrsch
 Die Differenz zum Erwartungswert der Vorhersagen über alle Merkmale $\mathbb{E}(f(X))$ zeigt, 
 wie viel die spezifische Menge an Merkmalen $\mathcal{S}$ zur Vorhersage beiträgt \cite[S. 221, S. 27]{Molnar_2022, Molnar_2023}.
 
-Der marginale Beitrag eines Merkmals $j$ zu einer Koalition $\mathcal{S}$ ist dann:
+Der marginale Beitrag eines Merkmals $j$ zu einer Koalition $\mathcal{S}$ ist somit:
 
 \begin{align}
     \label{eq:shap-marginal-func}
@@ -73,7 +73,7 @@ Beobachtung $x^{(i)}$ \cite[S. 29, 30]{Molnar_2023}.
 
 Die Integration in der SHAP-Formel ist ein zentraler Schritt, um den erwarteten Beitrag jedes Merkmals unter 
 Berücksichtigung der gesamten Verteilung der Daten zu ermitteln. 
-In diesem Ansatz werden die Merkmale als Zufallsvariablen behandelt, und die Integration erfolgt über 
+In diesem Ansatz werden die Merkmale als Zufallsvariablen behandelt. Die Integration erfolgt über 
 die Wahrscheinlichkeitsverteilungen dieser Zufallsvariablen. Durch das Berechnen der erwarteten Vorhersagewerte mit 
 und ohne des jeweiligen Merkmals, unter Einbeziehung der Verteilung aller anderen Merkmale, 
 ermöglicht SHAP eine präzise und umfassende Einschätzung des Einflusses jedes einzelnen Merkmals. 
@@ -106,7 +106,7 @@ und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtunge
     Quelle: Eigene Darstellung.
 \end{table}
 
-Angenommen das Modell $f(x^{(i)})$ prognostiziert den Preis eines Hauses in Euro als eine lineare Kombination der Merkmale:
+Angenommen, das Modell $f(x^{(i)})$ prognostiziert den Preis eines Hauses in Euro als eine lineare Kombination der Merkmale:
 
 \begin{equation}
     f(x^{(i)}) = 5x_1^{(i)} + 20x_2^{(i)} - 2x_3^{(i)}.
@@ -156,16 +156,16 @@ Daten und der Formel \ref{eq:shap-eq} berechnet:
 \end{align}
 
 wobei $p = |\mathcal{N}| = 3$ die Anzahl der Merkmale ist und $X_C$ die Menge der Merkmale 
-außerhalb der Koalition $\mathcal{S}$ repräsentiert. Die Integrale repräsentieren die erwartete 
+außerhalb der Koalition $\mathcal{S}$ darstellt. Die Integrale repräsentieren die erwartete 
 Vorhersage des Modells über die Verteilung der nicht in der Koalition enthaltenen Merkmale.
 
 In linearen Modellen, unter der Prämisse, dass die Merkmale unabhängig voneinander und identisch verteilt sind, 
 ist es möglich, die Berechnung der SHAP-Werte zu vereinfachen. Anstelle der komplexen Integration 
 über die Verteilungen aller Merkmale, kann der Fokus auf die Unterschiede in den Modellvorhersagen gelegt werden, 
 die sich aus dem Hinzufügen oder Entfernen einzelner Merkmale ergeben. 
-Hierbei wird anstelle der spezifischen Werte der nicht in der betrachteten Koalition enthaltenen Merkmale 
+Hierbei werden anstelle der spezifischen Werte der nicht in der betrachteten Koalition enthaltenen Merkmale, 
 die Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
-die Modellvorhersage auf eine direktere und rechnerisch weniger aufwendige Weise zu erfassen.
+die Modellvorhersage auf eine direkter und rechnerisch weniger aufwendige Weise zu erfassen.
 Diese Vereinfachung ist für lineare Modelle angemessen, da die Auswirkungen jedes Merkmals 
 auf die Vorhersage des Modells additiv und unabhängig sind \cite[S. 48]{Molnar_2023}. Bei komplexeren, 
 nichtlinearen Modellen ist eine detailliertere Berechnung erforderlich, 
@@ -248,7 +248,7 @@ wie in Tabelle \ref{tab:shapley_marginal_features_x2} dargestellt.
 \end{table}
 
 Die in den Tabellen \ref{tab:shapley_marginal_features_x1} und \ref{tab:shapley_marginal_features_x2} 
-dargestellten SHAP-Werte für die Beobachtungen \( x^{(1)} \) und \( x^{(2)} \) zeigen eine interessante Symmetrie. 
+abgebildeten SHAP-Werte für die Beobachtungen \( x^{(1)} \) und \( x^{(2)} \) zeigen eine interessante Symmetrie. 
 Für jedes Merkmal entspricht der SHAP-Wert für \( x^{(2)} \) genau dem negativen Wert für \( x^{(1)} \). 
 Die beobachtete Inversion der SHAP-Werte zwischen den Beobachtungen \( x^{(1)} \) und \( x^{(2)} \) 
 lässt sich durch die zentrale Rolle des Erwartungswerts des Modells erklären. 
@@ -289,14 +289,14 @@ des Preises für die Immobilie $x^{(1)}$ um insgesamt 135 \euro{}, während die 
 
 Die in Tabellen \ref{tab:shapley_marginal_features_x1} und \ref{tab:shapley_marginal_features_x2} präsentierten Ergebnisse bieten eine Grundlage, 
 um die Konformität der SHAP-Werte mit den etablierten Axiomen der Shapley-Werte, wie sie im 
-Kapitel \ref{sec:axiome-shapley} diskutiert wurden, zu beurteilen. Die Axiome der SHAP-Werte stellen 
+Kapitel \ref{sec:axiome-shapley} erläutert wurden, zu beurteilen. Die Axiome der SHAP-Werte stellen 
 eine adaptierte und kontextualisierte Anwendung dieser Prinzipien auf die Interpretation von 
 Modellvorhersagen dar \cite[S. 16f]{Algaba2019HandbookOT}.
 
 
 \paragraph{Effizienz}
 
-Das Effizienzaxiom besagt, dass die Summe der SHAP-Werte aller Merkmals für eine gegebene Beobachtung $x^{(i)}$ 
+Das Effizienzaxiom besagt, dass die Summe der SHAP-Werte aller Merkmale für eine gegebene Beobachtung $x^{(i)}$ 
 gleich der Differenz zwischen der Modellvorhersage für diese Beobachtung $f(x^{(i)})$ 
 und der durchschnittlichen Modellvorhersage $\mathbb{E}(f(X))$ sein muss:
 
@@ -322,8 +322,8 @@ Modellvorhersage wird auf alle Merkmale verteilt.
 Das Symmetrieaxiom fordert, dass zwei Merkmale $i$ und $j$, die 
 in jeder Koalition denselben Beitrag leisten, auch denselben SHAP-Wert 
 erhalten müssen. In dem hier betrachteten Fall der Immobilienpreisprognose 
-würde dies bedeuten, dass wenn zwei Merkmale, beispielsweise die Größe einer 
-Wohnung und die Anzahl der Zimmer, immer den gleichen Einfluss auf den Preis hätten, 
+würde dies bedeuten, dass zwei Merkmale, beispielsweise die Größe einer 
+Wohnung und die Anzahl der Zimmer, die immer den gleichen Einfluss auf den Preis hätten, 
 unabhängig von der Kombination anderer Merkmale, ihre SHAP-Werte identisch 
 sein müssen:
 
@@ -338,9 +338,9 @@ was die Anwendung dieses Axioms in diesem speziellen Fall ausschließt.
 \paragraph{Null-Spieler-Eigenschaft (Dummy-Spieler-Eigenschaft)}
 
 Ein Merkmal $i$, das keinen Einfluss auf die Modellvorhersage hat, erhält gemäß der 
-Null-Spieler-Eigenschaft einen SHAP-Wert von Null. 
+Null-Spieler-Eigenschaft einen SHAP-Wert von null. 
 Im Kontext des Beispiels würde ein Merkmal, das keine Veränderung in der Vorhersage 
-bewirkt, unabhängig von den anderen Merkmalen, einen SHAP-Wert von Null erhalten:
+bewirkt, unabhängig von den anderen Merkmalen, einen SHAP-Wert von null erhalten:
 
 \begin{equation}
     v(\mathcal{S} \cup \{i\}) =  v(\mathcal{S}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i\} \Rightarrow \varphi_i (\mathcal{N}, v) = 0,
@@ -462,7 +462,7 @@ das besagt, dass der Durchschnitt einer großen Anzahl unabhängiger und identis
 
 Die Zufallsvariable $X_{C}^{(k)}$, die Merkmale die nicht in der Koalition $\mathcal{S}$ enthalten sind, 
 entfällt und wird durch konkrete Beobachtungen $x_{C}^{(k)}$ aus der Datenbasis ersetzt, 
-was eine wünschenswerte Vereinfachung darstellt. Das Integral $\int$ wird dadurch zur Summe $\sum$ und die Verteilung $\mathbb{P}$ wird durch eine große Anzahl zufällig 
+was eine wünschenswerte Vereinfachung darstellt. Das Integral $\int$ wird dadurch zur Summe $\sum$. Die Verteilung $\mathbb{P}$ wird durch eine große Anzahl zufällig 
 ausgewählter Beobachtungen ersetzt und das Ergebnis anschließend über alle ausgewählten Beobachtungen $n$ gemittelt. 
 $\hat{v}_{x^{(i)}, f}(\mathcal{S})$ ist somit ein Schätzer für den Wert der Koalition $\mathcal{S}$ und definiert als: 
 
@@ -522,7 +522,7 @@ Die geschätzten marginalen Beiträge $\hat{\Delta}_{o(k), j}$ werden dann über
 \end{align}
 
 Durch diese Methodik wird der Berechnungsaufwand bei der Ermittlung von SHAP-Werten 
-signifikant verringert, was besonders bei Modellen mit einer großen Anzahl von Merkmalen von 
+signifikant verringert, was besonders bei Modellen mit einer großen Menge von Merkmalen von 
 Bedeutung ist. Der hier vorgestellte Ansatz ermöglicht es, mit einer begrenzten Anzahl von 
 Permutationen eine aussagekräftige Schätzung der SHAP-Werte zu erhalten \cite[S. 39]{Molnar_2023}.
 

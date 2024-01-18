@@ -41,7 +41,7 @@ entsprechenden unabhängigen Variablen auf die abhängige Variable beschreiben.
 
 Der Fehlerterm $\epsilon^{(i)}$ steht für die Residuen, also die Differenzen zwischen den beobachteten 
 und durch das Modell geschätzten Werten von $y^{(i)}$. Es wird angenommen, dass diese Fehler normalverteilt sind, 
-was bedeutet, dass Abweichungen in beiden Richtungen um den Mittelwert (hier Null) 
+was bedeutet, dass Abweichungen in beiden Richtungen um den Mittelwert (hier null) 
 mit abnehmender Wahrscheinlichkeit für größere Fehler auftreten \cite[S. 37]{Molnar_2022}.
 
 In einem linearen Modell stellt der Achsenabschnitt die Basislinie dar, an der die Auswirkungen aller 
@@ -90,8 +90,8 @@ von Modellvorhersagen zu dienen.
 Die Kernfunktion des \textsf{shap}-Pakets ist die Berechnung von SHAP-Werten, welche die Auswirkung der 
 Einzelmerkmale auf die Modellvorhersage quantifizieren. Jeder SHAP-Wert ist ein Maß dafür, wie viel jedes Merkmal 
 zur Vorhersage beigetragen hat, im Vergleich zu einer durchschnittlichen Vorhersage über den gesamten Datensatz. 
-Diese Werte sind besonders wertvoll, weil sie ein Maß für die Bedeutung jedes Merkmals liefern, 
-das sowohl lokal (für einzelne Vorhersagen) als auch global (über das gesamte Modell) interpretiert werden kann.
+Diese Werte sind besonders wertvoll, da sie ein Maß für die Bedeutung jedes Merkmals bieten. Diese Bedeutung kann 
+sowohl lokal für einzelne Vorhersagen als auch global über das gesamte Modell interpretiert werden
 
 Mit \textsf{shap} können Benutzer die Vorhersagen einer Vielzahl von Modellen interpretieren, 
 von linearen Modellen bis hin zu komplexen Konstrukten wie tiefe neuronale Netzwerke. 
@@ -200,7 +200,7 @@ Tabelle \ref{tab:df-head} zeigt die ersten fünf Beobachtungen des Datensatzes:
 \end{table}
 
 Tabelle \ref{tab:statistics} offenbart eine signifikante Variabilität und Bandbreite 
-in den Werten aller Variablen. Um eine gleichmäßigere Verteilung zu erreichen und den 
+in den Werten aller Variablen. Um eine gleichmäßige Verteilung zu erreichen und den 
 Einfluss von Ausreißern zu verringern, werden die Daten einer logarithmischen Transformation unterzogen. 
 Diese Methode dient dazu, die Skalierung der Variablen zu vereinheitlichen und ihre Verteilung zu normalsieren, 
 was die Genauigkeit und Stabilität des Regressionsmodells verbessert.
@@ -218,7 +218,7 @@ In einem Boxplot zeigt die zentrale Box die Interquartilspanne (IQR),
 die die mittleren 50\% der Daten umfasst, mit dem unteren Rand als erstes Quartil 
 (25\% der Daten darunter) und dem oberen Rand als drittes Quartil (75\% der Daten darunter). 
 Der horizontale Strich in der Mitte ist der Median, der die Daten in zwei Hälften teilt. 
-Die Whiskers, die Linien, die von der Box ausgehen, stellen die Streuung außerhalb der Quartile dar und 
+Die Whiskers, die Linien, welche von der Box ausgehen, stellen die Streuung außerhalb der Quartile dar und 
 erstrecken sich normalerweise bis zu den äußersten regulären Datenpunkten. 
 Datenpunkte außerhalb des Bereichs der Whiskers werden als Ausreißer betrachtet und separat markiert \cite[S. 43]{Molnar_2022}. 
 
@@ -300,7 +300,7 @@ und die ursprünglichen Merkmalsausprägungen (.data), die für die Berechnung d
 Dies bildet die Grundlage für den nächsten entscheidenden Schritt: 
 die Visualisierung und tiefere Analyse dieser Werte. Die SHAP-Bibliothek bietet eine 
 Reihe von leistungsstarken Visualisierungswerkzeugen, die es ermöglichen, die Auswirkungen 
-der einzelnen Merkmale auf die Modellvorhersagen intuitiv und verständlich darzustellen. 
+der einzelnen Merkmale auf die Modellvorhersagen intuitiv und verständlich abzubilden. 
 
 Im folgenden Kapitel \ref{chapter:results} werden diese Visualisierungen im Detail vorgestellt. 
 Anhand von Beeswarm-Plots, Dependence-Plots und Bar-Plots werden die Ergebnisse der 

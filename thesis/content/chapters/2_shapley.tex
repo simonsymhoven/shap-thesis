@@ -81,18 +81,18 @@ ausgehend von Bens individuellem Gewinn.
 
 Tabelle \ref{tab:shapley_marginal} illustriert den Gewinn jeder möglichen Koalition ohne den 
 betrachteten Spieler und den neuen Gesamtgewinn, sobald dieser Spieler der Koalition beitritt. 
-Der marginale Beitrag jedes Spielers wird dann als die Differenz zwischen diesen beiden Werten 
+Der marginale Beitrag jedes Spielers wird als Differenz zwischen diesen beiden Werten 
 berechnet und gibt Aufschluss über den individuellen Wertbeitrag zum gemeinschaftlichen Erfolg.
 
 Nachdem die marginalen Beiträge jedes Teilnehmers für die verschiedenen Koalitionen festgestellt wurden, 
 ist der nächste Schritt, die Shapley-Werte zu bestimmen, welche eine faire Aufteilung des Gesamtgewinns 
 erlauben. Hierzu wird jede mögliche Permutation betrachtet, in der die Spieler der 
 Koalition beitreten könnten. Jede dieser Permutationen liefert unterschiedliche marginale Beiträge 
-für die Spieler, je nach der Reihenfolge ihres Beitritts, wie \ref{tab:shapley_marginal} zeigt \cite[S. 19]{Molnar_2023}.
+für die Spieler, je nach der Reihenfolge ihres Beitritts, wie Tabelle \ref{tab:shapley_marginal} zeigt \cite[S. 19]{Molnar_2023}.
 
-Im Falle dieses Beispiels mit Anna, Ben und Carla bedeutet dies, dass alle möglichen Reihenfolgen 
+Im Falle des Beispiels mit Anna, Ben und Carla bedeutet dies, dass alle möglichen Reihenfolgen 
 berücksichtigt werden müssen, in denen sie zum ersten Platz beigetragen haben könnten. 
-Die Shapley-Werte werden dann als Durchschnitt der marginalen Beiträge über alle Permutationen berechnet. 
+Die Shapley-Werte werden als Durchschnitt der marginalen Beiträge über alle Permutationen berechnet. 
 Dies gewährleistet, dass jeder Spieler einen Anteil des Preisgeldes erhält, der seinem durchschnittlichen 
 Beitrag zum Erfolg entspricht \cite[S. 20]{Molnar_2023}.
 
@@ -116,27 +116,27 @@ hinzugefügt.
 Zusammen mit Tabelle \ref{tab:shapley_marginal} lässt sich nun der Shapley-Wert mit den gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
 
 \begin{equation}
-  \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,34 \text{\euro}.  
+  \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,33 \text{\euro}.  
 \label{eq:marginal_anna}
 \end{equation}
 
 Analog gilt dies für Ben:
 
 \begin{equation}
-  \frac{1}{6} ( \underbrace{2 \cdot 750 \text{\euro}}_{\text{B $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot 500 \text{\euro}}_{\text{B $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A, C$\}}} ) \approx 458,34 \text{\euro},  
+  \frac{1}{6} ( \underbrace{2 \cdot 750 \text{\euro}}_{\text{B $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot 500 \text{\euro}}_{\text{B $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A, C$\}}} ) \approx 458,33 \text{\euro},  
   \label{eq:marginal_ben}
 \end{equation}
 
 und Carla:
 
 \begin{equation}
-  \frac{1}{6} ( \underbrace{2 \cdot 0 \text{\euro}}_{\text{C $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot (-250) \text{\euro}}_{\text{C $\rightarrow$ $\{B$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A, B$\}}} ) \approx 83,34 \text{\euro}  
+  \frac{1}{6} ( \underbrace{2 \cdot 0 \text{\euro}}_{\text{C $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot (-250) \text{\euro}}_{\text{C $\rightarrow$ $\{B$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A, B$\}}} ) \approx 83,33 \text{\euro}  
   \label{eq:marginal_carla}
 \end{equation}
 
 Auf Basis der gewichteten durchschnittlichen marginalen Beiträge lässt sich feststellen, 
-dass Anna und Ben jeweils einen Shapley-Wert von ungefähr 458,34 \euro{} erhalten, 
-während Carla einen Shapley-Wert von etwa 83,34 \euro{} zugewiesen bekommt. 
+dass Anna und Ben jeweils einen Shapley-Wert von ungefähr 458,33 \euro{} erhalten, 
+während Carla einen Shapley-Wert von etwa 83,33 \euro{} zugewiesen bekommt. 
 Diese Werte spiegeln den fairen Anteil jedes Teilnehmers an der Gesamtprämie wider, 
 basierend auf ihrem individuellen Beitrag zum Erfolg des Teams \cite[S. 20]{Molnar_2023}. Mit dieser konkreten Anwendung der Shapley-Werte 
 auf ein alltagsnahes Beispiel wird nun die zugrunde liegende Theorie und die formale Definition 
@@ -144,7 +144,7 @@ der Shapley-Werte, die diese Berechnungen ermöglichen, detaillierter betrachtet
 
 \section{Formale Definition}
 
-Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\mathcal{N}|$ Elementen. Sei $v$ die Koalitionsfunktion, die jeder Teilmenge von $\mathcal{N}$ eine reele Zahl zuweist und insbesondere der leeren Koalition den Wert $0$ gibt. 
+Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\mathcal{N}|$ Elementen. Sei $v$ die Koalitionsfunktion, die jeder Teilmenge von $\mathcal{N}$ eine reelle Zahl zuweist und insbesondere der leeren Koalition den Wert $0$ gibt. 
 
 \[
 \begin{array}{rcccl}
@@ -153,7 +153,7 @@ Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\math
 \end{array}
 \]
 
-Eine nicht leere Teilmenge der Spieler $\mathcal{S} \subseteq \mathcal{N}$ heißt Koalition. $\mathcal{N}$ selbst bezichnet die große Koalition. Den Ausdruck $v(\mathcal{S})$ nennt man den Wert der Koalition $\mathcal{S}$.
+Eine nicht leere Teilmenge der Spieler $\mathcal{S} \subseteq \mathcal{N}$ heißt Koalition. $\mathcal{N}$ selbst bezeichnet die große Koalition. Den Ausdruck $v(\mathcal{S})$ nennt man den Wert der Koalition $\mathcal{S}$.
 Der Shapley-Wert ordnet nun jedem Spieler aus $\mathcal{N}$ eine Auszahlung für das Spiel $v$ zu.
 
 Der marginale Beitag eines Spielers $i \in \mathcal{N}$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
@@ -175,10 +175,10 @@ Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der
 \end{equation}
 
 Die Summationsnotation \(\sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}}\) erfasst die marginalen Beiträge, 
-die der Spieler \( i \) zu allen Koalitionen leistet, die diesen noch nicht einschließen. Die Verwendung von 
+die der Spieler \( i \) zu allen Koalitionen leistet, welche diesen noch nicht einschließen. Die Verwendung von 
 \(\mathcal{N} \setminus \{i\}\) stellt sicher, dass Spieler \( i \) nur für jene Koalitionen berücksichtigt wird, 
 zu denen er noch beitragen kann. Im Falle von Anna etwa, beziehen sich die Berechnungen auf die Koalitionen bestehend 
-aus der der leeren Koalition \(\emptyset\), aus \(\{\text{Ben}\}\), \(\{\text{Carla}\}\), oder beiden 
+aus der leeren Koalition \(\emptyset\), aus \(\{\text{Ben}\}\), \(\{\text{Carla}\}\), oder beiden 
 zusammen \(\{\text{Ben, Carla}\}\) (vgl. Berechnung \ref{eq:marginal_anna}).
 
 Die Formel \(\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}\) in der Shapley-Wert-Berechnung 
@@ -199,7 +199,7 @@ Anna keine weiteren Spieler übrig sind. Der Normalisierungsfaktor ist \(n! = 3!
 \end{equation}
 
 Dies bedeutet, dass unter allen möglichen Permutationen der Spielerreihenfolge, Annas Beitritt zu der Koalition \{Ben, Carla\} 
-genau ein Drittel der Zeit am Ende geschieht. Somit wird ihr marginaler Beitrag mit diesem Faktor gewichtet, 
+nach genau ein Drittel der Zeit geschieht. Somit wird ihr marginaler Beitrag mit diesem Faktor gewichtet, 
 um den Shapley-Wert zu berechnen (vgl. Berechnung \ref{eq:marginal_anna}) \cite[S. 21f]{Molnar_2023}.
 
 
@@ -230,13 +230,14 @@ berechnet in den Gleichungen \ref{eq:marginal_anna}, \ref{eq:marginal_ben} und \
 dem kollektiven Ertrag der großen Koalition:
 
 \begin{equation}
-  458,34 \text{\euro} + 458,34 \text{\euro} + 83,32 \text{\euro} \approx 1000 \text{\euro} 
+  458,33 \text{\euro} + 458,33 \text{\euro} + 83,33 \text{\euro} \approx 1000 \text{\euro} 
 \end{equation}
 
 
 \paragraph{Symmetrie}
 
-Zwei Spieler $i$ und $j$, die die gleichen marginalen Beiträgen zu jeder Koalition haben erhalten das Gleiche:
+Zwei Spieler $i$ und $j$, die die gleichen marginalen Beiträgen zu jeder Koalition haben, bekommen den gleichen Wert
+zugewiesen:
 
 \begin{equation}
 v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i, j\} \Rightarrow \varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v).
@@ -251,7 +252,7 @@ zwischen den beiden Spielern resultiert.
 
 \paragraph{Null-Spieler-Eigenschaft (Dummy-Spieler-Eigenschaft)}
 
-Ein Spieler $i$ der zu jeder Koalition nichts beiträgt erhält den Wert Null:
+Ein Spieler $i$, der zu jeder Koalition nichts beiträgt, erhält den Wert Null:
 
 \begin{equation}
   v(\mathcal{S} \cup \{i\}) =  v(\mathcal{S}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i\} \Rightarrow \varphi_i (\mathcal{N}, v) = 0.
@@ -259,7 +260,7 @@ Ein Spieler $i$ der zu jeder Koalition nichts beiträgt erhält den Wert Null:
 
 Dies stell sicher, dass ein Spieler, der keinen Beitrag leistet, auch nicht belohnt wird. 
 
-\paragraph{Additivität}
+\paragraph{Additivität} 
 
 Wenn das Spiel in zwei unabhängige Spiele mit Koalitionsfunktionen $v$ und $w$ zerlegt werden kann, dann ist die Auszahlung jedes Spielers im 
 zusammengesetzten Spiel die Summe der Auszahlungen in den aufgeteilten Spielen:

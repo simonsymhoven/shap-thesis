@@ -11,17 +11,16 @@ und die Präzision der Vorhersagen. Zunächst werden die Koeffizienten
 des linearen Modells auf herkömmliche Weise interpretiert. Anschließend wird gezeigt, 
 wie SHAP-Werte eine tiefere und detailliertere Analyse ermöglichen.
 
-\section{Lineares Regressionmodell}
+\section{Lineares Regressionsmodell}
 
-Die Koeffizienten eines linearen Modells repräsentieren die Änderung der abhängigen 
-Variable (in diesem Fall die Druckfestigkeit von Beton) 
-für eine Einheitsänderung der unabhängigen Variablen, unter der Annahme, 
-dass alle anderen Variablen konstant gehalten werden.
+Die Koeffizienten eines linearen Modells stellen die Änderung der abhängigen Variable dar, 
+in diesem Fall die Druckfestigkeit von Beton. Diese Änderung erfolgt für eine Einheitsänderung der 
+unabhängigen Variablen, unter der Annahme, dass alle anderen Variablen konstant bleiben.
 
 Positive Koeffizienten deuten auf eine Erhöhung der Beton-Druckfestigkeit 
 bei Zunahme der Variablen hin, während negative Koeffizienten eine Verringerung anzeigen. 
 Der Intercept-Wert repräsentiert die geschätzte Beton-Druckfestigkeit, 
-wenn alle unabhängigen Variablen den Wert Null annehmen. 
+wenn alle unabhängigen Variablen den Wert null annehmen. 
 
 Daraus ergibt sich zusammen mit Gleichung \ref{eq:reg-model} die Regressionsgerade für das Modell.
 
@@ -70,10 +69,10 @@ Die $R^2$-Werte zeigen, wie gut das Modell die Varianz der Zielvariable erklärt
 \end{table}
 
 Darüber hinaus wurden die tatsächlichen gegen die vorhergesagten Werte
-in Abbildung \ref{pic:residuals} visualisiert, die eine allgemeine Einschätzung der 
+in Abbildung \ref{pic:residuals} visualisiert, welche eine allgemeine Einschätzung der 
 Modellgenauigkeit ermöglicht. Ein weiterer wichtiger Aspekt sind die Residuen des Modells. 
 Die Residuen, also die Differenzen zwischen den tatsächlichen und vorhergesagten Werten, 
-sollten idealerweise zufällig um Null verteilt sein und keine Muster aufweisen, 
+sollten idealerweise zufällig um null verteilt sein und keine Muster aufweisen, 
 die auf eine Verletzung der Modellannahmen hindeuten könnten.
 
 \begin{figure}[!h]
@@ -108,10 +107,10 @@ von den spezifischen Werten der Merkmale und der Streuung der Merkmalsausprägun
 \end{figure}
 
 Die logarthimische Transformation der Merkmale hat dieses Problem bereits 
-teilweise gelöst, indem sie die Skalierung der Daten angepasst hat und alle Merkmale auf eine einheitlichen Skala transformiert hat.
+teilweise gelöst, indem sie die Skalierung der Daten angepasst hat und alle Merkmale auf eine einheitliche Skala transformiert hat.
 Daraus lassen sich erste Schlüsse der Merkmalsrelevanz ableiten. Im Vergleich zu allen anderen 
 Koeffizienten tragen die Merkmale Flugasche, Superplastifikator, Hochofenschlacke und grober Zuschlag nur wenig zur abhängigen
-Variable bei. Eine Erhöhung von Zement führt zu einer Erhöhung der Druckfestigkeit. Im Gegensatz dazu führt eine Erhöhung des Wasseranteils 
+Variable bei. Eine Erhöhung von Zement führt zu einer Steigerung der Druckfestigkeit. Im Gegensatz dazu führt eine Erhöhung des Wasseranteils 
 zu einer Verringerung der Druckfestigkeit, immer unter der Vorraussetzung, das alle
 anderen Merkmale konstant bleiben.
 
@@ -119,8 +118,8 @@ Abbildung \ref{pic:effect} zeigt einen Effektplot für die erste Beobachtung im 
 ermöglicht es, den individuellen Effekt eines Merkmals auf die Vorhersage in Relation zur gesamten 
 Verteilung aller Beobachtungen zu veranschaulichen. Die graphische Darstellung zeigt die Auswirkungen 
 der Merkmale auf die Vorhersage für diese spezielle Beobachtung. 
-Jedes Merkmal wird durch ein rotes Kreuz markiert, das den Effekt (Koeffizient multipliziert mit der Merkmalsausprägung) dieses 
-Merkmals auf die Vorhersage darstellt. 
+Jedes Merkmal wird durch ein rotes Kreuz markiert. Dieses Kreuz stellt den Effekt des Merkmals auf die Vorhersage dar, 
+welcher sich aus dem Produkt des Koeffizienten und der Merkmalsausprägung ergibt.
 Die horizontale Position des Kreuzes zeigt den Wert des Effekts, während die vertikale Position das entsprechende Merkmal repräsentiert.
 
 \begin{figure}[!h]
@@ -145,7 +144,7 @@ Umgekehrt wird ein Merkmal als unwichtig betrachtet, wenn die Vertauschung seine
 den Modellfehler unverändert lässt, da das Modell das Merkmal für seine Vorhersagen ignoriert \cite[S. 157]{Molnar_2022}. 
 
 Abbildung \ref{pic:permutation} zeigt die Merkmalsrelevanz auf der Test- und Trainingsmenge 
-anhand der Veränderung des mittleren quadratischen Fehlers des Modells:
+anhand der Veränderung des mittleren quadratischen Fehlers des Modells.
 
 \begin{figure}[!h]
     \caption{Permutation der Merkmalrelevanz.}
@@ -180,7 +179,7 @@ für eine einzelne Beobachtung aus dem Datensatz.
 \end{figure}
 
 Im Partial Dependence Plot der Abbildung \ref{pic:shap_dependence} wird die Beziehung zwischen 
-dem Merkmal Zement und der Zielvariable für die spezifische Beobachtung $x^{(0)}$ aus dem Testmenge visualisiert. 
+dem Merkmal Zement und der Zielvariable für die spezifische Beobachtung $x^{(0)}$ aus der Testmenge visualisiert. 
 Das Histogramm zeigt die Verteilung der konkreten Merkmalsausprägungen über die Gesamtheit der Daten.
 Die blaue Linie im Diagramm repräsentiert die modellierte Abhängigkeit der Vorhersage vom Merkmal Zement, 
 unter Konstanthaltung aller anderen Merkmale. Der schwarze Punkt markiert die tatsächliche Ausprägung des 
@@ -196,7 +195,7 @@ beobachteten Wert von Zement nach Gleichung \ref{eq:shap-single}:
                         &\approx -0.40
 \end{align}
 
-Codeausschnitt \ref{code:shap-idx} zeigt die manuelle Berechnung der für $\varphi_{\text{cement}}^{(0)}(f, x)$ basierend
+Codeausschnitt \ref{code:shap-idx} zeigt die manuelle Berechnung der für $\varphi_{\text{cement}}^{(0)}(f, x)$, basierend
 auf den zur Verfügung stehenden Daten für das Merkmal Zement\footnote{Die Anwendung des SHAP-Explainers, 
 insbesondere im Kontext eines Train-Test-Splits, stößt aufgrund der aktuellen Implementierung im SHAP-Python-Paket 
 auf Herausforderungen. Die SHAP-Werte werden auf Basis des Datensatzes $X$ berechnet, 
@@ -245,8 +244,9 @@ Rote Balken repräsentieren Merkmale, die die Vorhersage erhöhen, während blau
 darstellen, die sie senken. Die Größe jedes Balkens zeigt das Ausmaß des jeweiligen Beitrags, 
 und die abschließende Vorhersage $f(x) = 3.257$ wird am Ende der Kette dieser Effekte erreicht. 
 
-Kleine positive und negative Beiträge von Merkmalen wie feiner Zuschlag ($6.713$), grober Zuschlag ($6.908$) und dem Anteil von Wasser ($5.188$)
-zeigen, wie feingranulare Anpassungen der Merkmalsausprägungen die Vorhersage nicht verändern, leicht erhöhen oder senken können.
+Kleine positive und negative Beiträge der Merkmale wie feiner Zuschlag ($6.713$), grober Zuschlag ($6.908$) und dem Anteil von Wasser ($5.188$) 
+in der Zusammensetzung des Betons zeigen, wie feingranulare Anpassungen der Merkmalsausprägungen die Vorhersage nicht verändern, 
+leicht erhöhen oder senken können.
 
 Für die Beobachtung $x^{(0)}$ führt die kumulative Abweichung der Merkmal-Effekte 
 vom Basiswert $\mathbb{E}[f(X)] = 3.457$ zu einem tatsächlichen Modelloutput von $f(x) = 3.257$, 
@@ -305,7 +305,7 @@ wie Abbildung \ref{pic:shap_scatter} verdeutlicht.
 \end{figure}
 
 Der Scatter Plot zeigt die SHAP-Werte für Zement bezüglich ihrer quantitivaten Ausprägung über alle 
-Daten. Steigende Merkmalsausprägungen von Zement führen zu größeren SHAP-Werte und somit zu einer Erhöhung der 
+Daten. Steigende Merkmalsausprägungen von Zement führen zu größeren SHAP-Werten und somit zu einer Erhöhung der 
 Modellprognose, was die ersten Analysen der Korrelationsmatrix aus Abbildung \ref{pic:corr} bestätigen. Der Einfluss des Wasseranteils
 ist invers. Eine Erhöhung des Wasseranteils resultiert in geringeren SHAP-Werten und reduziert somit die 
 Druckfestigkeit. 
@@ -336,7 +336,7 @@ besteht, obwohl die zugrundeliegenden Interpretationen dieser beiden Methoden de
 Die Permutation der Merkmalrelevanz konzentriert sich darauf, die Veränderungen im Vorhersagefehler des Modells, 
 speziell den mittleren quadratischen Fehler, zu messen, die eintreten, wenn die Werte eines Merkmals zufällig vertauscht werden. 
 Diese Methode gibt Aufschluss darüber, wie stark das Modell auf das jeweilige Merkmal für seine Vorhersagegenauigkeit angewiesen ist. 
-Ein wesentliches Merkmal dieser Methode ist, dass sie nicht direkt die Wechselwirkungen zwischen den Merkmalen berücksichtigt. 
+Ein wesentlicher Aspekt dieser Methode ist, dass sie nicht direkt die Wechselwirkungen zwischen den Merkmalen berücksichtigt. 
 Sie zeigt vielmehr, wie wichtig ein Merkmal isoliert für die Gesamtleistung des Modells ist.
 
 Im Gegensatz dazu bieten die SHAP-Werte einen tieferen Einblick in die Beiträge jedes Merkmals zur Vorhersageleistung des Modells. 
@@ -359,8 +359,8 @@ SHAP-Werte, die sie von anderen Methoden abhebt.
 Die Druckfestigkeit von Beton ist das Ergebnis einer komplexen Interaktion verschiedener 
 Materialkomponenten und Eigenschaften wie Zementgehalt, Wasser-Zement-Verhältnis, 
 Zuschlagstoffe und Alter des Betons. Jede dieser Komponenten trägt unterschiedlich 
-zur Endfestigkeit bei, und ihre Effekte können nicht isoliert betrachtet werden, 
-da sie interdependent sind. Hier ermöglichen SHAP-Werte eine faire und ausgewogene 
+zur Endfestigkeit bei. Ihre Effekte können nicht isoliert betrachtet werden, 
+da sie aufeinander abgestimmt werden müssen. Hier ermöglichen SHAP-Werte eine faire und ausgewogene 
 Zurechnung der Einflüsse jedes Merkmals auf die Vorhersage, indem sie die marginalen 
 Beiträge jedes Merkmals unter Berücksichtigung aller möglichen Kombinationen von Merkmalen 
 im Modell kalkulieren.
