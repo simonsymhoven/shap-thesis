@@ -37,28 +37,6 @@
 \tableofcontents
 \cleardoubleemptypage
 
-\mainmatter
-
-\include{content/chapters/0_introduction}
-\include{content/chapters/1_basics}
-\include{content/chapters/2_shapley}
-\include{content/chapters/3_shap}
-\include{content/chapters/4_model}
-\include{content/chapters/5_results}
-\include{content/chapters/6_conclusion}
-
-% Schalgwortverzeichnis (Index)
-%\printindex
-
-% Literaturverzeichnis
-%\nocite{*}
-\bibliographystyle{alphaurl}
-\cleardoublepage
-\phantomsection
-\addcontentsline{toc}{chapter}{Literaturverzeichnis}
-\bibliography{bibtex.bib}
-\cleardoubleemptypage
-
 % Abbildungsverzeichnis einbinden und ins Inhaltsverzeichnis
 % WORKAROUND: tocloft und KOMA funktionieren zusammen nicht
 % korrekt\phantomsection
@@ -100,7 +78,29 @@
 \settowidth{\codeLength}{\bfseries\lstlistingname\cftlistingsaftersnum}
 \addtolength{\codeLength}{5mm}
 \setlength{\cftlistingsnumwidth}{\codeLength}
-\lstlistoflistings
+\lstlistoflistings 
+\cleardoubleemptypage
+
+\mainmatter
+
+\include{content/chapters/0_introduction}
+\include{content/chapters/1_basics}
+\include{content/chapters/2_shapley}
+\include{content/chapters/3_shap}
+\include{content/chapters/4_model}
+\include{content/chapters/5_results}
+\include{content/chapters/6_conclusion}
+
+% Schalgwortverzeichnis (Index)
+%\printindex
+
+% Literaturverzeichnis
+%\nocite{*}
+\bibliographystyle{alphaurl}
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+\bibliography{bibtex.bib}
 \cleardoubleemptypage
 
 

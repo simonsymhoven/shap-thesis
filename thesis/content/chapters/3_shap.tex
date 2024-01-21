@@ -85,7 +85,7 @@ zur Vorhersage des Modells \cite[S. 28]{Molnar_2023}.
 \section{Berechnung der SHAP-Werte unter Berücksichtigung der zugrundeliegenden Verteilung}
 \label{sec:example}
 
-Ein einfaches Beispiel soll helfen, die Anwendung von SHAP-Werten im 
+Ein Beispiel soll helfen, die Anwendung von SHAP-Werten im 
 Kontext des maschinellen Lernens zu illustrieren\footnote{In Anlehnung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. Betrachtet wird ein fiktiver 
 Immobilien-Datensatz mit drei Merkmalen: Größe des Hauses in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
 und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtungen in diesem Datensatz:
@@ -165,7 +165,7 @@ ist es möglich, die Berechnung der SHAP-Werte zu vereinfachen. Anstelle der kom
 die sich aus dem Hinzufügen oder Entfernen einzelner Merkmale ergeben. 
 Hierbei werden anstelle der spezifischen Werte der nicht in der betrachteten Koalition enthaltenen Merkmale, 
 die Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
-die Modellvorhersage auf eine direkter und rechnerisch weniger aufwendige Weise zu erfassen.
+die Modellvorhersage auf eine direktere und rechnerisch weniger aufwendige Weise zu erfassen.
 Diese Vereinfachung ist für lineare Modelle angemessen, da die Auswirkungen jedes Merkmals 
 auf die Vorhersage des Modells additiv und unabhängig sind \cite[S. 48]{Molnar_2023}. Bei komplexeren, 
 nichtlinearen Modellen ist eine detailliertere Berechnung erforderlich, 
@@ -324,8 +324,7 @@ in jeder Koalition denselben Beitrag leisten, auch denselben SHAP-Wert
 erhalten müssen. In dem hier betrachteten Fall der Immobilienpreisprognose 
 würde dies bedeuten, dass zwei Merkmale, beispielsweise die Größe einer 
 Wohnung und die Anzahl der Zimmer, die immer den gleichen Einfluss auf den Preis hätten, 
-unabhängig von der Kombination anderer Merkmale, ihre SHAP-Werte identisch 
-sein müssen:
+unabhängig von der Kombination anderer Merkmale, auch identische SHAP-Werte haben müssen:
 
 \begin{equation}
     v(\mathcal{S} \cup \{i\}) = v(\mathcal{S} \cup \{j\}), \; \forall\, \mathcal{S} \subseteq \mathcal{N} \setminus \{i, j\} \Rightarrow \varphi_i (\mathcal{N}, v) = \varphi_j (\mathcal{N}, v),
@@ -429,7 +428,7 @@ Aufgrund der Unabhängigkeit der Eingabemerkmale, kann das arithmetische Mittel 
     \varphi_j^{(i)}(f, x) = \beta_j \Big(x_j^{(i)} - \frac{1}{n} \sum_{k=1}^{n} (x_j^{(k)})\Big),
 \end{align}
 
-Das Effizienzaxiom aus Gleichung \ref{eq:eff} is erfüllt:
+Das Effizienzaxiom aus Gleichung \ref{eq:eff} ist erfüllt:
 
 \begin{align}
     \sum_{j=1}^p \varphi_j^{(i)}(f, x) &= \sum_{j=1}^p  \Big( \beta_j x_j^{(i)} - \mathbb{E}[\beta_j X_j]\Big) \\ \notag
@@ -444,12 +443,12 @@ des Modelloutputs, die durch das Abweichen eines Merkmals von seinem
 Erwartungswert entsteht, direkt durch den entsprechenden Gewichtungskoeffizienten 
 des linearen Modells beschrieben werden kann. Dieser Ansatz ermöglicht eine 
 schnelle und genaue Berechnung der SHAP-Werte für lineare Modelle und ist 
-besonders nützlich, um die Auswirkungen einzelner Merkmals in einem solchen 
+besonders nützlich, um die Auswirkungen einzelner Merkmale in einem solchen 
 Modell zu interpretieren. 
 
 \section{Approximation der marginalen Beiträge mittels Monte Carlo Integration}
 
-Um der Herausforderungen der Unkentniss der Verteilung zu begegnen, wird in diesem Kapitel die Anwendung von Monte Carlo Integration 
+Um der Herausforderung der Unkentniss der Verteilung zu begegnen, wird in diesem Kapitel die Anwendung von Monte Carlo Integration 
 zur Schätzung von SHAP-Werten diskutiert. Diese Methoden ermöglichen es, durch Zufallsstichproben aus den vorhandenen Daten 
 eine Approximation der Verteilungen zu erstellen und dadurch die notwendigen Integrationen näherungsweise auszuführen \cite[S. 34]{Molnar_2023}. 
 

@@ -128,7 +128,7 @@ groben Zuschlag und feinen Zuschlag \cite{misc_concrete_compressive_strength_165
 \textbf{Ziel der Regression:} Das Ziel ist es, die Druckfestigkeit von Beton in Megapascal basierend 
 auf seiner Zusammensetzung und dem Alter vorherzusagen. Diese Vorhersage ist entscheidend, 
 da Beton das Fundament der modernen Welt bildet und seine Festigkeit für die Sicherheit und 
-Langlebigkeit von Bauwerken von größter Bedeutung ist.
+Langlebigkeit von Bauwerken und damit für den Schutz von Menschenleben von größter Bedeutung ist.
 
 Der Datensatz umfasst folgende Variablen:
 
@@ -254,7 +254,7 @@ Mischungsbestandteile einen bedeutenden Einfluss auf die Betondruckfestigkeit ha
 
 Um die Beziehung zwischen den unabhängigen Variablen und der Zielvariablen  zu untersuchen, 
 wurde ein lineares Regressionsmodell aufgestellt. 
-Zur Bewertung der Vorhersageleistung des Modells und zur Vermeidung von Overfitting wurde der 
+Zur Bewertung der Vorhersageleistung des Modells und zur Vermeidung von Überanpassung wurde der 
 Datensatz in zwei Teile aufgeteilt: 80\% der Daten dienten als Trainingsset zur 
 Anpassung des Modells, während die restlichen 20\% als Testset verwendet wurden, 
 um die Modellleistung anhand neuer, unbekannter Daten zu evaluieren. 
@@ -287,7 +287,7 @@ zu analysieren. Der Typ des Explainers wird durch die Art des übergebenen Model
 Da in diesem Beispiel ein lineares Modell verwendet wird, wird automatisch ein geeigneter Explainer 
 für lineare Modelle ausgewählt.
 
-Das folgende Codeausschnitt \ref{code:shap} zeigt die Initialisierung des SHAP-Explainers und die Berechnung der SHAP-Werte:
+Der folgende Codeausschnitt \ref{code:shap} zeigt die Initialisierung des SHAP-Explainers und die Berechnung der SHAP-Werte:
 
 \lstinputlisting[language=Python,label=code:shap, firstline=309, lastline=310, 
     caption={Berechnung von SHAP-Werten für das lineare Regressionsmodell, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}

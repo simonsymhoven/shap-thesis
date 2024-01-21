@@ -70,7 +70,7 @@ Die $R^2$-Werte zeigen, wie gut das Modell die Varianz der Zielvariable erklärt
 
 Darüber hinaus wurden die tatsächlichen gegen die vorhergesagten Werte
 in Abbildung \ref{pic:residuals} visualisiert, welche eine allgemeine Einschätzung der 
-Modellgenauigkeit ermöglicht. Ein weiterer wichtiger Aspekt sind die Residuen des Modells. 
+Modellgenauigkeit ermöglichen. Ein weiterer Aspekt sind die Residuen des Modells. 
 Die Residuen, also die Differenzen zwischen den tatsächlichen und vorhergesagten Werten, 
 sollten idealerweise zufällig um null verteilt sein und keine Muster aufweisen, 
 die auf eine Verletzung der Modellannahmen hindeuten könnten.
@@ -85,14 +85,14 @@ die auf eine Verletzung der Modellannahmen hindeuten könnten.
 
 \section{Interpretation der Koeffizienten \& Permutation der Merkmalrelevanz}
 
-Es ist wichtig zu betonen, dass die Koeffizienten eine bedingte Assoziation beschreiben. 
-Das bedeutet, sie quantifizieren die Variation der Druckfestigkeit, wenn eine bestimmte unabhängige Variable 
+Die Koeffizienten beschreiben eine bedingte Assoziation. Das bedeutet, sie quantifizieren die 
+Variation der Druckfestigkeit, wenn eine bestimmte unabhängige Variable 
 verändert wird, während alle anderen unabhängigen Variablen konstant gehalten werden.
 
-Es ist entscheidend zu verstehen, dass die Koeffizienten nicht als marginale Beiträge betrachtet werden sollten. 
+Die Koeffizienten sollten somit nicht als marginale Beiträge betrachtet werden. 
 Das bedeutet, sie beschreiben nicht die Beziehung zwischen den Variablen unabhängig von anderen Einflussfaktoren. 
 Stattdessen zeigen sie, wie sich die Druckfestigkeit ändert, wenn eine bestimmte unabhängige Variable variiert wird, 
-ährend alle anderen konstant gehalten werden.
+während alle anderen konstant gehalten werden.
 
 Abbildung \ref{pic:coef} zeigt die Koeffizienten des Regressionsmodells. Die Stärke des Einflusses einer 
 unabhängigen Variable auf die abhängige Variable hängt von der Größe der Merkmalsausprägung ab. 
@@ -292,8 +292,7 @@ während negative Werte (links von der Nulllinie) eine Verringerung bedeuten.
 Das Merkmal Alter zeigt eine hohe Variabilität in seinem Einfluss auf die Modellvorhersage. 
 Höhere Werte von Zement sind mit einer Zunahme der Vorhersage (positive SHAP-Werte) assoziiert, 
 was durch die rechtsseitigen Punkte in der Grafik dargestellt wird. 
-Niedrigere Werte führen hingegen zu einer geringeren Vorhersage, 
-erkennbar an den linksseitigen Punkten. Diese Streuung der Punkte zeigt, 
+Niedrigere Werte führen hingegen zu einer geringeren Vorhersage. Diese Streuung der Punkte zeigt, 
 dass die Auswirkung von Zement auf die Vorhersage stark von seiner quantitativen Ausprägung abhängt, 
 wie Abbildung \ref{pic:shap_scatter} verdeutlicht. 
 
@@ -378,12 +377,8 @@ Eigenschaften des Betons zu erreichen.
 
 Im Kontext von industriellen Anwendungen und Forschung, wo Entscheidungen auf Grundlage 
 der Modellvorhersagen getroffen werden, gewährleisten SHAP-Werte somit eine transparente 
-und gerechtfertigte Grundlage. Dies ist nicht nur für die Entwicklung von Betonmischungen 
+und objektive Grundlage. Dies ist nicht nur für die Entwicklung von Betonmischungen 
 von Bedeutung, sondern auch für die Einhaltung von Bauvorschriften und die Gewährleistung 
 der Sicherheit. Durch die Verwendung von SHAP-Werten kann die Forschung im Bereich 
 der Materialwissenschaften fundierter und zielgerichteter gestaltet werden, was zu einer 
 effizienteren und effektiveren Materialentwicklung führt.
-
-Im abschließenden Kapitel dieser Arbeit werden die wichtigsten Erkenntnisse zusammengefasst 
-und diskutiert.
-
