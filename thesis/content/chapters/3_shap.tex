@@ -65,22 +65,22 @@ Der Beitrag $\varphi_j^{(i)}(\mathcal{N}, f)$ eines Merkmals $j$ für eine Beoba
     \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} \right) 
 \end{align}
 
-Diese Formel ist die zentrale Berechnung der SHAP-Werte im maschinellen Lernen. 
+Diese Formel ist die zentrale Berechnung der SHAP-Werte im maschinellen Lernen \cite[S. 29]{Molnar_2023}. 
 Sie summiert den gewichteten, marginalen Beitrag des Merkmals $j$ über alle möglichen Kombinationen der anderen Merkmale. 
 Die Gewichtung berücksichtigt die Anzahl der Merkmale in der Koalition $\mathcal{S}$ und die Anzahl der verbleibenden Merkmale, 
 die noch hinzugefügt werden können. Dies ergibt den durchschnittlichen Beitrag des Merkmals $j$ zur Vorhersage für die 
-Beobachtung $x^{(i)}$ \cite[S. 29, 30]{Molnar_2023}.
+Beobachtung $x^{(i)}$ \cite[S. 30]{Molnar_2023}.
 
 Die Integration in der SHAP-Formel ist ein zentraler Schritt, um den erwarteten Beitrag jedes Merkmals unter 
 Berücksichtigung der gesamten Verteilung der Daten zu ermitteln. 
 In diesem Ansatz werden die Merkmale als Zufallsvariablen behandelt. Die Integration erfolgt über 
-die Wahrscheinlichkeitsverteilungen dieser Zufallsvariablen. Durch das Berechnen der erwarteten Vorhersagewerte mit 
+die Wahrscheinlichkeitsverteilungen dieser Zufallsvariablen \cite[S. 28]{Molnar_2023}. 
+Durch das Berechnen der erwarteten Vorhersagewerte mit 
 und ohne des jeweiligen Merkmals, unter Einbeziehung der Verteilung aller anderen Merkmale, 
 ermöglicht SHAP eine präzise und umfassende Einschätzung des Einflusses jedes einzelnen Merkmals. 
 Dieser Prozess der Marginalisierung, bei dem man über die Wahrscheinlichkeitsverteilungen der Merkmale integriert, 
 erlaubt es, den Beitrag eines jeden Merkmals zu isolieren und unabhängig von der spezifischen Zusammensetzung 
-der anderen Merkmale zu bewerten. Dies führt zu einer fairen und ganzheitlichen Bewertung der Beiträge aller Merkmale 
-zur Vorhersage des Modells \cite[S. 28]{Molnar_2023}.
+der anderen Merkmale zu bewerten \cite[S. 29]{Molnar_2023}.
 
 \section{Berechnung der SHAP-Werte unter Berücksichtigung der zugrundeliegenden Verteilung}
 \label{sec:example}

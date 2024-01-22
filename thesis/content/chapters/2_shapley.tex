@@ -82,7 +82,7 @@ ausgehend von Bens individuellem Gewinn.
 Tabelle \ref{tab:shapley_marginal} illustriert den Gewinn jeder möglichen Koalition ohne den 
 betrachteten Spieler und den neuen Gesamtgewinn, sobald dieser Spieler der Koalition beitritt. 
 Der marginale Beitrag jedes Spielers wird als Differenz zwischen diesen beiden Werten 
-berechnet und gibt Aufschluss über den individuellen Wertbeitrag zum gemeinschaftlichen Erfolg.
+berechnet und gibt Aufschluss über den individuellen Wertbeitrag zum gemeinschaftlichen Erfolg \cite[S. 18]{Molnar_2023}.
 
 Nachdem die marginalen Beiträge jedes Teilnehmers für die verschiedenen Koalitionen festgestellt wurden, 
 ist der nächste Schritt, die Shapley-Werte zu bestimmen, welche eine faire Aufteilung des Gesamtgewinns 
@@ -177,19 +177,19 @@ Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der
 Die Summationsnotation \(\sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}}\) erfasst die marginalen Beiträge, 
 die der Spieler \( i \) zu allen Koalitionen leistet, welche diesen noch nicht einschließen. Die Verwendung von 
 \(\mathcal{N} \setminus \{i\}\) stellt sicher, dass Spieler \( i \) nur für jene Koalitionen berücksichtigt wird, 
-zu denen er noch beitragen kann. Im Falle von Anna etwa, beziehen sich die Berechnungen auf die Koalitionen bestehend 
+zu denen er noch beitragen kann \cite[S. 22]{Molnar_2023}. Im Falle von Anna etwa, beziehen sich die Berechnungen auf die Koalitionen bestehend 
 aus der leeren Koalition \(\emptyset\), aus \(\{\text{Ben}\}\), \(\{\text{Carla}\}\), oder beiden 
 zusammen \(\{\text{Ben, Carla}\}\) (vgl. Berechnung \ref{eq:marginal_anna}).
 
-Die Formel \(\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}\) in der Shapley-Wert-Berechnung 
+Der Ausdruck \(\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}\) in der Shapley-Wert-Berechnung 
 reflektiert den Gewichtungsfaktor für die marginalen Beiträge eines Spielers. Hierbei gibt \(|\mathcal{S}|!\) die Permutationen 
 der Spieler innerhalb der Koalition \(\mathcal{S}\) an, während \((n - 1 - |\mathcal{S}|)!\) die Anordnungen der 
 außenstehenden Spieler repräsentiert, nachdem der betrachtete Spieler beigetreten ist. 
 Der Bruchteil \(\frac{1}{n!}\) normalisiert diesen Wert über alle möglichen Koalitionszusammensetzungen, 
-wodurch die Wahrscheinlichkeit der Bildung einer spezifischen Koalition ausgedrückt wird.
+wodurch die Wahrscheinlichkeit der Bildung einer spezifischen Koalition ausgedrückt wird \cite[S. 22]{Molnar_2023}.
 
 Betrachten wir Anna als den Spieler $i$ und die Koalition \(\mathcal{S} = \{\text{Ben, Carla}\}\). 
-Die Formel \(\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}\) berechnet den Gewichtungsfaktor 
+Der Ausdruck \(\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}\) berechnet den Gewichtungsfaktor 
 für Annas marginalen Beitrag zur Koalition \(\mathcal{S}\). In diesem Fall ist \(|\mathcal{S}| = 2\) und \(n = 3\). 
 Somit ergibt sich \(|\mathcal{S}|! = 2!\) und \(n - 1 - |\mathcal{S}| = 0!\), da nach dem Beitritt von 
 Anna keine weiteren Spieler übrig sind. Der Normalisierungsfaktor ist \(n! = 3! = 6\). Daraus folgt:
