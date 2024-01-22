@@ -2,12 +2,12 @@
 
 In diesem Kapitel wird der Einsatz des SHAP-Frameworks zur Interpretation linearer Modelle im 
 Kontext des maschinellen Lernens untersucht. Lineare Modelle, gekennzeichnet durch ihre Transparenz 
-und einfache Struktur, bilden oft die Basis für das Verständnis komplexerer Algorithmen. 
+und einfache Struktur, bilden oft die Basis für das Verständnis komplexerer Algorithmen \cite[S. 37]{Molnar_2022}. 
 Dennoch bleibt die Herausforderung bestehen, die Beiträge individueller Merkmale zur Modellvorhersage zu 
 quantifizieren und zu interpretieren.
 
 Die Anwendung von SHAP-Werten ermöglicht es, diesen Herausforderungen zu begegnen und Einblicke in 
-die Modellvorhersagen zu gewähren, die über traditionelle Methoden hinausgehen. 
+die Modellvorhersagen zu gewähren, die über traditionelle Methoden hinausgehen \cite[S. 224]{Molnar_2022}. 
 Dieses Kapitel führt in die Grundlagen des \textsf{shap}-Pakets ein, demonstriert dessen Anwendung auf einen 
 spezifischen Datensatz und diskutiert die Berechnung sowie Interpretation der resultierenden SHAP-Werte.
 
@@ -61,7 +61,7 @@ der Annahme, dass alle anderen Merkmale unverändert bleiben.
 Dies ermöglicht es, den isolierten Effekt eines jeden Merkmals auf die Vorhersage zu verstehen \cite[S. 39]{Molnar_2022}.
 
 Die optimalen Gewichte, oder Koeffizienten, eines linearen Regressionsmodells werden üblicherweise durch ein Verfahren bestimmt, 
-das als Methode der kleinsten Quadrate (engl. \textit{Ordinary Least Squares}, OLS) bekannt ist. 
+das als Methode der kleinsten Quadrate (engl. \textit{Ordinary Least Squares}, OLS) bekannt ist \cite[S. 37]{Molnar_2022}. 
 Diese Methode sucht die Koeffizienten \( \beta_0, \ldots, \beta_p \), welche die Summe der quadrierten 
 Differenzen zwischen den beobachteten Werten der Zielvariablen \( y^{(i)} \) und den von dem Modell 
 vorhergesagten Werten minimieren:
@@ -129,25 +129,23 @@ groben Zuschlag und feinen Zuschlag \cite{misc_concrete_compressive_strength_165
 auf seiner Zusammensetzung und dem Alter vorherzusagen. Diese Vorhersage ist entscheidend, 
 da Beton das Fundament der modernen Welt bildet und seine Festigkeit für die Sicherheit und 
 Langlebigkeit von Bauwerken und damit für den Schutz von Menschenleben von größter Bedeutung ist.
+Beton spielt eine zentrale Rolle im Bauwesen. Als eines der am meisten verwendeten Materialien weltweit, 
+ist die genaue Vorhersage seiner Festigkeit von entscheidender 
+Bedeutung für die Planung und den Bau sicherer und langlebiger Strukturen \cite[S. 1]{Nandhini2021}.
 
 Der Datensatz umfasst folgende Variablen:
 
 \begin{itemize}
-    \item \textbf{cement (Zement)}: Menge an Zement (kg in einem m³ Gemisch). Zement ist ein Hauptbestandteil von Beton und wesentlich für dessen Festigkeit.
-    \item \textbf{blast (Hochofenschlacke)}: Menge an Hochofenschlacke (kg in einem m³ Gemisch). Schlacke kann die Festigkeit und Haltbarkeit von Beton verbessern.
-    \item \textbf{ash (Flugasche)}: Menge an Flugasche (kg in einem m³ Gemisch). Flugasche wird als Ersatz für Zement verwendet und beeinflusst die Verarbeitbarkeit und Festigkeit.
-    \item \textbf{water (Wasser)}: Menge an Wasser (kg in einem m³ Gemisch). Wasser ist für die Hydratation des Zements und die Konsistenz des Betons notwendig.
-    \item \textbf{superplasticizer (Superplastifikator)}: Menge an Superplastifikator (kg in einem m³ Gemisch). Superplastifikatoren verbessern die Fließfähigkeit und Verarbeitbarkeit von Beton.
-    \item \textbf{coarse (Grober Zuschlag)}: Menge an grobem Zuschlag (kg in einem m³ Gemisch). Grober Zuschlag trägt zur Stabilität und Struktur des Betons bei.
-    \item \textbf{fine (Feiner Zuschlag)}: Menge an feinem Zuschlag (kg in einem m³ Gemisch). Feiner Zuschlag beeinflusst die Dichte und die Oberflächeneigenschaften des Betons.
-    \item \textbf{age (Alter)}: Alter des Betons in Tagen. Das Alter hat einen signifikanten Einfluss auf die Festigkeit des Betons.
+    \item \textbf{cement (Zement)}: Menge an Zement (kg in einem m³ Gemisch).
+    \item \textbf{blast (Hochofenschlacke)}: Menge an Hochofenschlacke (kg in einem m³ Gemisch). 
+    \item \textbf{ash (Flugasche)}: Menge an Flugasche (kg in einem m³ Gemisch). 
+    \item \textbf{water (Wasser)}: Menge an Wasser (kg in einem m³ Gemisch).
+    \item \textbf{superplasticizer (Superplastifikator)}: Menge an Superplastifikator (kg in einem m³ Gemisch).
+    \item \textbf{coarse (Grober Zuschlag)}: Menge an grobem Zuschlag (kg in einem m³ Gemisch).
+    \item \textbf{fine (Feiner Zuschlag)}: Menge an feinem Zuschlag (kg in einem m³ Gemisch).
+    \item \textbf{age (Alter)}: Alter des Betons in Tagen.
     \item \textbf{strength (Druckfestigkeit)}: Die tatsächliche Druckfestigkeit von Beton (MPa). Dies ist die Zielvariable, die modelliert wird.
 \end{itemize}
- 
-Die Bedeutung dieses Themas liegt in der zentralen Rolle, die Beton im Bauwesen spielt. 
-Als eines der am meisten verwendeten Materialien weltweit, ist die genaue Vorhersage seiner Festigkeit von entscheidender 
-Bedeutung für die Planung und den Bau sicherer und langlebiger Strukturen. Dieser Datensatz bietet daher wertvolle Einblicke für Ingenieure und Forscher, 
-um die Eigenschaften und das Verhalten von Beton besser zu verstehen und zu optimieren.
 
 \section{Explorative Datenanalyse \& Datenaufbereitung}
 
@@ -203,9 +201,9 @@ Tabelle \ref{tab:statistics} offenbart eine signifikante Variabilität und Bandb
 in den Werten aller Variablen. Um eine gleichmäßige Verteilung zu erreichen und den 
 Einfluss von Ausreißern zu verringern, werden die Daten einer logarithmischen Transformation unterzogen. 
 Diese Methode dient dazu, die Skalierung der Variablen zu vereinheitlichen und ihre Verteilung zu normalsieren, 
-was die Genauigkeit und Stabilität des Regressionsmodells verbessert.
-Abbildung \ref{pic:box} zeigt einen Boxplot der jeweiligen Merkmale vor und 
-nach der logarthimischen Transformation.
+was die Genauigkeit und Stabilität des Regressionsmodells verbessert \cite[S. 105f]{Feng2014LogTransformation}.
+Abbildung \ref{pic:box} zeigt diese Normalisierung in Form eines Boxplots der jeweiligen Merkmale vor und 
+nach der logarithmischen Transformation.
 
 \begin{figure}[!h]
     \caption{Boxplot der Merkmale vor und nach der Log-Transformation.}
@@ -213,14 +211,6 @@ nach der logarthimischen Transformation.
     Quelle: Eigene Darstellung, \ref{linreg}.
     \label{pic:box}
 \end{figure}
-
-In einem Boxplot zeigt die zentrale Box die Interquartilspanne (IQR), 
-die die mittleren 50\% der Daten umfasst, mit dem unteren Rand als erstes Quartil 
-(25\% der Daten darunter) und dem oberen Rand als drittes Quartil (75\% der Daten darunter). 
-Der horizontale Strich in der Mitte ist der Median, der die Daten in zwei Hälften teilt. 
-Die Whiskers, die Linien, welche von der Box ausgehen, stellen die Streuung außerhalb der Quartile dar und 
-erstrecken sich normalerweise bis zu den äußersten regulären Datenpunkten. 
-Datenpunkte außerhalb des Bereichs der Whiskers werden als Ausreißer betrachtet und separat markiert \cite[S. 43]{Molnar_2022}. 
 
 Abbildung \ref{pic:hist} zeigt die Häufigkeitsverteilung aller Merkmale des Datensatzes 
 nach der logarithmischen Transformation. 
@@ -257,7 +247,7 @@ wurde ein lineares Regressionsmodell aufgestellt.
 Zur Bewertung der Vorhersageleistung des Modells und zur Vermeidung von Überanpassung wurde der 
 Datensatz in zwei Teile aufgeteilt: 80\% der Daten dienten als Trainingsset zur 
 Anpassung des Modells, während die restlichen 20\% als Testset verwendet wurden, 
-um die Modellleistung anhand neuer, unbekannter Daten zu evaluieren. 
+um die Modellleistung anhand neuer, unbekannter Daten zu evaluieren \cite[S. 51]{Molnar_2023}. 
 Diese Aufteilung erfolgte zufällig, aber reproduzierbar, durch Festlegen eines Seed-Werts 
 für den Zufallszahlengenerator, der eine konsistente Teilung des Datensatzes ermöglicht.
 
@@ -265,7 +255,7 @@ Das Trainingsset wurde dazu verwendet, die Koeffizienten der linearen Regression
 die den Einfluss jeder unabhängigen Variablen auf die Zielvariable quantifizieren. 
 Anschließend wurde das Modell mit dem Testset geprüft, um seine Vorhersagegenauigkeit zu bewerten. 
 Die Leistung des Modells wurde anhand von Metriken wie dem mittleren quadratischen Fehler (Mean Squared Error, MSE) gemessen, 
-die ein Maß für die Abweichung der Modellvorhersagen von den tatsächlichen Werten darstellen.
+die ein Maß für die Abweichung der Modellvorhersagen von den tatsächlichen Werten darstellen \cite[S. 40]{Molnar_2022}.
 
 Codeauschnitt \ref{code:model} und \ref{code:model-train} zeigen das Trainieren und Testen der zugrundeliegenden Daten 
 eines linearen Regressionsmodells:

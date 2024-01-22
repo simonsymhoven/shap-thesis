@@ -159,36 +159,25 @@ wobei $p = |\mathcal{N}| = 3$ die Anzahl der Merkmale ist und $X_C$ die Menge de
 außerhalb der Koalition $\mathcal{S}$ darstellt. Die Integrale repräsentieren die erwartete 
 Vorhersage des Modells über die Verteilung der nicht in der Koalition enthaltenen Merkmale.
 
-In linearen Modellen, unter der Prämisse, dass die Merkmale unabhängig voneinander und identisch verteilt sind, 
-ist es möglich, die Berechnung der SHAP-Werte zu vereinfachen. Anstelle der komplexen Integration 
-über die Verteilungen aller Merkmale, kann der Fokus auf die Unterschiede in den Modellvorhersagen gelegt werden, 
-die sich aus dem Hinzufügen oder Entfernen einzelner Merkmale ergeben. 
-Hierbei werden anstelle der spezifischen Werte der nicht in der betrachteten Koalition enthaltenen Merkmale, 
-die Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
-die Modellvorhersage auf eine direktere und rechnerisch weniger aufwendige Weise zu erfassen.
-Diese Vereinfachung ist für lineare Modelle angemessen, da die Auswirkungen jedes Merkmals 
-auf die Vorhersage des Modells additiv und unabhängig sind \cite[S. 48]{Molnar_2023}. Bei komplexeren, 
-nichtlinearen Modellen ist eine detailliertere Berechnung erforderlich, 
-die oft auf numerischen Methoden oder Annäherungen basiert, mehr dazu in Kapitel \ref{sec:estimators}.
-
 Der Beitrag durch das Hinzufügen des Merkmals $x_1$ zur bestehenden Koalition $\mathcal{S} = \{x_2\}$ wird
-nach Formel \ref{eq:shap-formular} berechnet als:
+nach Gleichung \ref{eq:shap-formular} berechnet als:
 
 \begin{align}
     \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1! \cdot (3 - 1 - 1)!}{3!} \\ \notag
-        &\quad \cdot \int f(x_1, x_2 , X_3) d\mathbb{P}(X_3) - \int f(X_1, x_2, X_3) d\mathbb{P}(X_1, X_3)
-\end{align}
-
-Da \( X_1 \) und \( X_3 \) unabhängig und identisch verteilt sind, können \( X_2 \) und \( X_3 \) durch ihre Erwartungswerte (Gleichung \ref{eq:e}) ersetzt werden:
-
-\begin{align}
-    \varphi^{(1)}_{1}(\{x_2\}, f) &= \frac{1}{6} \Big(f(x_1, x_2, \mathbb{E}(X_3)) - f(\mathbb{E}(X_1), x_2, \mathbb{E}(X_3))\Big) \\ \notag
+        &\quad \cdot \int f(x_1, x_2 , X_3) d\mathbb{P}(X_3) - \int\int f(X_1, x_2, X_3) d\mathbb{P}(X_1, X_3) \\ \notag
+         &= \frac{1}{6} \Big(f(x_1, x_2, \mathbb{E}(X_3)) - f(\mathbb{E}(X_1), x_2, \mathbb{E}(X_3))\Big) \\ \notag
         &= \frac{1}{6} \Big( f(100, 3, 7.5) - f(125, 3, 7.5) \Big) \\ \notag
         &= \frac{1}{6} \Big( (5 \cdot 100 + 20 \cdot 3 - 2 \cdot 7,5) - (5 \cdot 125 + 20 \cdot 3 - 2 \cdot 7,5) \Big) \\ \notag
         &= \frac{1}{6} (545 - 670) \\ \notag
         &= \frac{1}{6} (-125)
 \end{align}
- 
+
+Im Ausdruck $\int f(x_1, x_2, X_3) d\mathbb{P}(X_3)$ wird das Modell $f$ über die Verteilung von $X_3$ integriert, 
+während $x_1$ und $x_2$ konstant gehalten werden. In einem linearen Modell kann diese Integration durch Einsetzen des 
+Erwartungswertes von $X_3$ vereinfacht werden, da der Beitrag von $X_3$ zum Gesamtergebnis des Modells linear ist und 
+somit durch den Erwartungswert repräsentiert werden kann. Ähnlich wird im Term $\int f(X_1, x_2, X_3) d\mathbb{P}(X_1, X_3)$ $X_1$ und $X_3$ 
+durch ihre Erwartungswerte ersetzt.
+
 Die in Tabelle \ref{tab:shapley_marginal_features_x1} dargestellten Kombinationen illustrieren die marginalen Beiträge und SHAP-Werte 
 für jedes Merkmal in jeder möglichen Koalition von Merkmalen, bezogen auf die Beobachtung $x^{(1)}$. 
 
@@ -361,9 +350,9 @@ Merkmals über beide Spiele seinem SHAP-Wert im kombinierten Spiel entspricht:
 
 In Machine Learning-Modellen wie dem Random Forest, besonders bei Ensemble-Modellen, 
 ist die Additivität relevant. Ein Random Forest besteht aus unabhängigen Entscheidungsbäumen, 
-die zusammenarbeiten, um Vorhersagen zu treffen. Die SHAP-Werte der einzelnen Bäume 
+die zusammenarbeiten, um Vorhersagen zu treffen \cite[S. 97]{Molnar_2023}. Die SHAP-Werte der einzelnen Bäume 
 können als additive Beiträge betrachtet werden, die den Gesamteinfluss eines Merkmals 
-auf die Modellvorhersage zusammenfassen. \cite[S. 32]{Molnar_2023}.
+auf die Modellvorhersage zusammenfassen \cite[S. 32]{Molnar_2023}.
 
 \chapter{Komplexitätsbewältigung bei der Berechnung von SHAP-Werten}
 \label{sec:estimators}
@@ -387,23 +376,21 @@ wie dem in dieser Arbeit verwendeten Immobilienpreis-Beispiel,
 ist die vollständige Ermittlung aller möglichen Kombinationen von Merkmalen und deren 
 Beiträgen jedoch nicht notwendig. 
 
-In einem linearen Modell sind die Beiträge der einzelnen Merkmale zur Vorhersage additiv 
-und unabhängig voneinander. Dies ermöglicht eine direkte Ableitung der Beiträge 
-jedes Merkmals aus den Modellkoeffizienten. Aufgrund dieser Eigenschaft 
-liefert jedes Merkmal einen konstanten marginalen Beitrag, 
-unabhängig von der Zusammensetzung der restlichen Koalition von Merkmalen. 
+Anstelle der komplexen Integration 
+über die Verteilungen aller Merkmale, kann der Fokus auf die Unterschiede in den Modellvorhersagen gelegt werden, 
+die sich aus dem Hinzufügen oder Entfernen einzelner Merkmale ergeben. 
+Hierbei werden anstelle der spezifischen Werte der nicht in der betrachteten Koalition enthaltenen Merkmale, 
+die Erwartungswerte herangezogen. Diese Vereinfachung ermöglicht es, den Einfluss jedes Merkmals auf 
+die Modellvorhersage auf eine direktere und rechnerisch weniger aufwendige Weise zu erfassen.
+Diese Vereinfachung ist für lineare Modelle angemessen, da die Auswirkungen jedes Merkmals 
+auf die Vorhersage des Modells additiv und unabhängig sind \cite[S. 48]{Molnar_2023}.
+
 Theoretisch könnte daher für jedes Merkmal nur eine Koalition berechnet werden, 
 um den SHAP-Wert zu bestimmen \cite[S. 38]{Molnar_2023}. Dies bestätigen die
 Tabellen \ref{tab:shapley_marginal_features_x1} und \ref{tab:shapley_marginal_features_x2}
 und die daraus ersichtlichen marginalen Beiträge, die über die jeweiligen Merkmale
 unabhängig der ihnen beigetretenen Koalition konstant sind. So ist der marginale Beitrag für Merkmal $x_1^{(1)}$
 zu allen möglichen Koalitionen stets $-125$.
-
-Für lineare Modelle bietet der lineare SHAP Estimator eine direkte und effiziente 
-Methode zur Berechnung der SHAP-Werte. Diese Methode beruht auf der Annahme 
-der Unabhängigkeit der Eingabemerkmale. Unter dieser Voraussetzung können 
-die SHAP-Werte direkt aus den Gewichtungskoeffizienten des linearen Modells 
-abgeleitet werden.
 
 Ein lineares Modell wird typischerweise in der Form 
 \( f(x) = \sum_{j=1}^{p} \beta_j x_j + b \) ausgedrückt, wobei \( \beta_j \) der 
@@ -437,97 +424,3 @@ Das Effizienzaxiom aus Gleichung \ref{eq:eff} ist erfüllt:
 \end{align}                 
 
 \cite[S. 48]{Molnar_2023}.
-
-Diese Berechnung der SHAP-Werte basiert auf der Idee, dass die Änderung 
-des Modelloutputs, die durch das Abweichen eines Merkmals von seinem 
-Erwartungswert entsteht, direkt durch den entsprechenden Gewichtungskoeffizienten 
-des linearen Modells beschrieben werden kann. Dieser Ansatz ermöglicht eine 
-schnelle und genaue Berechnung der SHAP-Werte für lineare Modelle und ist 
-besonders nützlich, um die Auswirkungen einzelner Merkmale in einem solchen 
-Modell zu interpretieren. 
-
-\section{Approximation der marginalen Beiträge mittels Monte Carlo Integration}
-
-Um der Herausforderung der Unkentniss der Verteilung zu begegnen, wird in diesem Kapitel die Anwendung von Monte Carlo Integration 
-zur Schätzung von SHAP-Werten diskutiert. Diese Methoden ermöglichen es, durch Zufallsstichproben aus den vorhandenen Daten 
-eine Approximation der Verteilungen zu erstellen und dadurch die notwendigen Integrationen näherungsweise auszuführen \cite[S. 34]{Molnar_2023}. 
-
-Statt das Integral über eine unbekannte Verteilung zu berechnen, wie in Gleichung \ref{eq:shap-value-func},
-nähert die Monte Carlo Integration dieses Integral durch den Durchschnitt einer großen Anzahl zufällig 
-ausgewählter Beobachtungen aus dem Eingaberaum an \cite[S. 34]{Molnar_2023}. Die Monte Carlo Integration kann als ein erwartungstreuer Schätzer 
-betrachtet werden, wenn die Anzahl der Zufallsstichproben $n$ hinreichend groß ist. Dies bedeutet, dass mit zunehmendem $n$ die Schätzung des Integrals 
-immer genauer wird und gegen den wahren Wert des Integrals konvergiert. Dies basiert auf dem Gesetz der großen Zahlen, 
-das besagt, dass der Durchschnitt einer großen Anzahl unabhängiger und identisch verteilter Zufallsvariablen gegen den Erwartungswert der Verteilung konvergiert \cite[S. 83]{Robert_Casella_2004}. 
-
-Die Zufallsvariable $X_{C}^{(k)}$, die Merkmale die nicht in der Koalition $\mathcal{S}$ enthalten sind, 
-entfällt und wird durch konkrete Beobachtungen $x_{C}^{(k)}$ aus der Datenbasis ersetzt, 
-was eine wünschenswerte Vereinfachung darstellt. Das Integral $\int$ wird dadurch zur Summe $\sum$. Die Verteilung $\mathbb{P}$ wird durch eine große Anzahl zufällig 
-ausgewählter Beobachtungen ersetzt und das Ergebnis anschließend über alle ausgewählten Beobachtungen $n$ gemittelt. 
-$\hat{v}_{x^{(i)}, f}(\mathcal{S})$ ist somit ein Schätzer für den Wert der Koalition $\mathcal{S}$ und definiert als: 
-
-\begin{align}
-    \label{eq:monte-value}
-    \hat{v}_{x^{(i)},f}(\mathcal{S}) = \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) - f(x^{(k)}) \Big)
-\end{align}
-
-Analog zu Gleichung \ref{eq:shap-marginal-func} ist dann zusammen mit Gleichung \ref{eq:monte-value} der marginale Beitrag 
-$\hat{\Delta}_{\mathcal{S}, j}$ von Merkmal $j$ zur Koalition $\mathcal{S}$ gegeben als: 
-
-\begin{align}
-    \label{eq:monte-mar}
-    \hat{\Delta}_{\mathcal{S}, j} &= \hat{v}_{x^{(i)},f}(\mathcal{S} \cup \{j\}) - \hat{v}_{x^{(i)},f}(\mathcal{S}) \\ \notag
-        &= \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup x^{(k)}_{C \setminus \{j\}}) - f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) \Big)
-\end{align}
-
-und die SHAP-Werte $\hat{\varphi}_{j}^{(i)}$ über alle möglichen Koalitionen analog zu Gleichung \ref{eq:shap-eq}:
-
-\begin{align}
-    \label{eq:monte-shap-eq}
-    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!}\hat{\Delta}_{\mathcal{S}, j},
-\end{align}
-
-\cite[S.36]{Molnar_2023}.
-
-\section{Schätzung durch Permutationen}
-\label{subsec:permutation}
-
-Der Einsatz von Permutationen zur Schätzung von SHAP-Werten bietet eine 
-praktikable Alternative zur vollständigen Auswertung aller Merkmalskoalitionen. 
-Dieses Verfahren ist insbesondere in Szenarien mit einer hohen Anzahl von Merkmalen von Vorteil, 
-da es die Berechnungslast reduziert, ohne die Genauigkeit der Schätzung wesentlich zu beeinträchtigen. 
-Im Folgenden wird die Methode anhand eines Beispiels illustriert und die Anwendung im Kontext des in 
-Kapitel \ref{sec:example} eingeführten linearen Modells beschrieben.
-
-In einem ersten Schritt wird eine zufällige $k$-te Permutation der Merkmale $o(k)$ gewählt.
-Beispielsweise könnte $o(k) = (x_2, x_3, x_1)$ eine solche Permutation darstellen.
-Wird das Merkmal $j$, für das der SHAP-Wert berechnet werden soll, als das dritte Merkmal $j=3$ angenommen, 
-ergibt sich der marginale Beitrag $\hat{\Delta}_{o(k), j}$ analog zu Gleichung \ref{eq:monte-mar} 
-aus der Differenz der Koalitionen mit und ohne dem betrachteten Merkmal:
-
-\begin{align}
-    \hat{\Delta}_{o(k), j} = \hat{v}(\{x_2, x_3\}) - \hat{v}(\{x_2\})
-\end{align}
-
-Dieser Prozess wird für eine Anzahl von $m$ Permutationen durchgeführt. Die Wahl von $m$,
-die kleiner als die Gesamtzahl der Merkmale sein kann, hängt von der gewünschten Approximationsgenauigkeit
-ab. Eine größere Anzahl von Permutationen $m$ führt zu einer präziseren Annäherung an den tatsächlichen SHAP-Wert.
-
-Die geschätzten marginalen Beiträge $\hat{\Delta}_{o(k), j}$ werden dann über die $m$ Permutationen analog zu Gleichung
-\ref{eq:monte-shap-eq} gemittelt:
-
-\begin{align}
-    \label{eq:permu-shap-eq}
-    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \frac{1}{m}\sum_{k=1}^{m}\hat{\Delta}_{o(k), j},
-\end{align}
-
-Durch diese Methodik wird der Berechnungsaufwand bei der Ermittlung von SHAP-Werten 
-signifikant verringert, was besonders bei Modellen mit einer großen Menge von Merkmalen von 
-Bedeutung ist. Der hier vorgestellte Ansatz ermöglicht es, mit einer begrenzten Anzahl von 
-Permutationen eine aussagekräftige Schätzung der SHAP-Werte zu erhalten \cite[S. 39]{Molnar_2023}.
-
-Zusätzlich zur Mittelung der geschätzten marginalen Beiträge bietet die Methode der Permutationen 
-die Möglichkeit, die Effekte von Vorwärts- und Rückwärtspropagation zu untersuchen, 
-indem die Reihenfolge der Merkmale sowohl in ihrer ursprünglichen als auch in umgekehrter 
-Abfolge betrachtet wird. Für eine detaillierte Darstellung dieser Technik und ihrer 
-Auswirkungen auf die SHAP-Wertberechnung sei auf die weiterführende Literatur verwiesen \cite[S. 39f]{Molnar_2023}.
-                                         

@@ -4,11 +4,11 @@
 In diesem Kapitel werden die Resultate der angewandten linearen Regressionsanalyse 
 zur Vorhersage der Druckfestigkeit von Beton dargestellt. 
 Die Analyse berücksichtigt sowohl die geschätzten Koeffizienten des linearen Modells 
-als auch verschiedene Evaluierungsmetriken wie den mittleren absoluten Fehler (MAE), 
-den mittleren quadratischen Fehler (MSE) sowie die Bestimmtheitsmaße ($R^2$) 
+als auch verschiedene Evaluierungsmetriken wie den mittleren absoluten Fehler (engl. \textit{Mean Absolut Error}, MAE), 
+den mittleren quadratischen Fehler (engl. \textit{Mean Squared Error}, MSE), sowie den  sowie die Bestimmtheitsmaße ($R^2$) 
 für Trainings- und Testdaten. Diese Metriken liefern Aufschluss über die Güte des Modells 
 und die Präzision der Vorhersagen. Zunächst werden die Koeffizienten 
-des linearen Modells auf herkömmliche Weise interpretiert. Anschließend wird gezeigt, 
+des linearen Modells interpretiert. Anschließend wird gezeigt, 
 wie SHAP-Werte eine tiefere und detailliertere Analyse ermöglichen.
 
 \section{Lineares Regressionsmodell}
@@ -47,9 +47,23 @@ Daraus ergibt sich zusammen mit Gleichung \ref{eq:reg-model} die Regressionsgera
 
 Die Modellmetriken, dargestellt in Tabelle \ref{tab:model-metrics}, 
 geben Auskunft über die Vorhersagegenauigkeit und die Anpassungsgüte des Modells. 
-Der MAE und RMSE liefern dabei Informationen über die durchschnittliche Größe 
-der Fehler in den Vorhersagen. Im Mittel weicht die Prognose um $0.19$ vom tatsächlichen Wert ab.
-Die $R^2$-Werte zeigen, wie gut das Modell die Varianz der Zielvariable erklärt.
+
+Der mittlere absolute Fehler (MAE) von $0.19$ zeigt an, dass die Vorhersagen des Modells im Durchschnitt um $0.19$ 
+Einheiten vom tatsächlichen Wert abweichen. In Relation zu dem betrachteten Wertebereich (vgl. Abbildung \ref{pic:residuals}) der Zielvariablen stellt dies einen kleinen Prozentsatz 
+der möglichen maximalen Abweichung dar, was auf eine zufriedenstellende Vorhersagegenauigkeit des Modells hindeutet.
+
+Der mittlere quadratische Fehler (MSE) von $0.06$ misst die durchschnittliche quadratische Abweichung der Vorhersagen 
+vom tatsächlichen Wert. Ein niedriger MSE-Wert wie $0.06$ deutet auf eine geringe Fehlervarianz und somit auf eine 
+hohe Konsistenz der Modellvorhersagen hin.
+
+Die Wurzel des mittleren quadratischen Fehlers (engl. \textit{Root Mean Squared Error}, RMSE) von $0.24$, bietet eine noch präzisere Darstellung 
+der durchschnittlichen Fehlergröße. Da größere Fehler stärker gewichte werden, deutet ein Wert von $0.24$ darauf hin, 
+dass das Modell tendenziell genaue Vorhersagen liefert, wobei größere Abweichungen seltener auftreten.
+
+Die R²-Werte für Training und Test von $0.7852$ bzw. $0.8155$ sind ein Maß für die Güte der Modellanpassung. 
+Ein R²-Wert nahe 1 deutet auf eine hohe Erklärungskraft des Modells hin. In diesem Fall erklären die R²-Werte von $0.7852$ und $0.8155$, 
+dass das Modell einen signifikanten Anteil der Varianz in den Daten erfasst, 
+was auf eine effektive Modellierung der Zusammenhänge in den Daten hindeutet.
 
 \begin{table}[!h]
     \caption{Modellmetriken des linearen Regressionsmodells.}
@@ -73,7 +87,8 @@ in Abbildung \ref{pic:residuals} visualisiert, welche eine allgemeine Einschätz
 Modellgenauigkeit ermöglichen. Ein weiterer Aspekt sind die Residuen des Modells. 
 Die Residuen, also die Differenzen zwischen den tatsächlichen und vorhergesagten Werten, 
 sollten idealerweise zufällig um null verteilt sein und keine Muster aufweisen, 
-die auf eine Verletzung der Modellannahmen hindeuten könnten.
+die auf eine Verletzung der Modellannahmen hindeuten könnten. Die Residuen aus Abbildung \ref{pic:residuals} 
+erfüllen diese wünschenswerten Eigenschaften.
 
 \begin{figure}[!h]
     \caption{Residuenanalyse: Beziehung zwischen Vorhersagen und Abweichungen.}
@@ -333,7 +348,7 @@ der Permutation der Merkmalrelevanz aus Abbildung \ref{pic:permutation} und den 
 besteht, obwohl die zugrundeliegenden Interpretationen dieser beiden Methoden deutlich verschieden sind. 
 
 Die Permutation der Merkmalrelevanz konzentriert sich darauf, die Veränderungen im Vorhersagefehler des Modells, 
-speziell den mittleren quadratischen Fehler, zu messen, die eintreten, wenn die Werte eines Merkmals zufällig vertauscht werden. 
+speziell den mittleren quadratischen Fehler, zu messen, die eintreten, wenn die Werte eines Merkmals zufällig vertauscht werden \cite[S. 157]{Molnar_2022}. 
 Diese Methode gibt Aufschluss darüber, wie stark das Modell auf das jeweilige Merkmal für seine Vorhersagegenauigkeit angewiesen ist. 
 Ein wesentlicher Aspekt dieser Methode ist, dass sie nicht direkt die Wechselwirkungen zwischen den Merkmalen berücksichtigt. 
 Sie zeigt vielmehr, wie wichtig ein Merkmal isoliert für die Gesamtleistung des Modells ist.
@@ -359,10 +374,7 @@ Die Druckfestigkeit von Beton ist das Ergebnis einer komplexen Interaktion versc
 Materialkomponenten und Eigenschaften wie Zementgehalt, Wasser-Zement-Verhältnis, 
 Zuschlagstoffe und Alter des Betons. Jede dieser Komponenten trägt unterschiedlich 
 zur Endfestigkeit bei. Ihre Effekte können nicht isoliert betrachtet werden, 
-da sie aufeinander abgestimmt werden müssen. Hier ermöglichen SHAP-Werte eine faire und ausgewogene 
-Zurechnung der Einflüsse jedes Merkmals auf die Vorhersage, indem sie die marginalen 
-Beiträge jedes Merkmals unter Berücksichtigung aller möglichen Kombinationen von Merkmalen 
-im Modell kalkulieren.
+da sie aufeinander abgestimmt werden müssen [S. 2]\cite{Nandhini2021}.
 
 Andere Methoden, wie beispielsweise die Betrachtung von Regressionskoeffizienten, 
 geben zwar Aufschluss über die Richtung und Stärke des Zusammenhangs zwischen Merkmalen 

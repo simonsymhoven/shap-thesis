@@ -1,0 +1,95 @@
+\section{Approximation der marginalen Beiträge mittels Monte Carlo Integration}
+
+Um der Herausforderung der Unkentniss der Verteilung zu begegnen, wird in diesem Kapitel die Anwendung von Monte Carlo Integration 
+zur Schätzung von SHAP-Werten diskutiert. Diese Methoden ermöglichen es, durch Zufallsstichproben aus den vorhandenen Daten 
+eine Approximation der Verteilungen zu erstellen und dadurch die notwendigen Integrationen näherungsweise auszuführen \cite[S. 34]{Molnar_2023}. 
+
+Statt das Integral über eine unbekannte Verteilung zu berechnen, wie in Gleichung \ref{eq:shap-value-func},
+nähert die Monte Carlo Integration dieses Integral durch den Durchschnitt einer großen Anzahl zufällig 
+ausgewählter Beobachtungen aus dem Eingaberaum an \cite[S. 34]{Molnar_2023}. Die Monte Carlo Integration kann als ein erwartungstreuer Schätzer 
+betrachtet werden, wenn die Anzahl der Zufallsstichproben $n$ hinreichend groß ist. Dies bedeutet, dass mit zunehmendem $n$ die Schätzung des Integrals 
+immer genauer wird und gegen den wahren Wert des Integrals konvergiert. Dies basiert auf dem Gesetz der großen Zahlen, 
+das besagt, dass der Durchschnitt einer großen Anzahl unabhängiger und identisch verteilter Zufallsvariablen gegen den Erwartungswert der Verteilung konvergiert \cite[S. 83]{Robert_Casella_2004}. 
+
+Die Zufallsvariable $X_{C}^{(k)}$, die Merkmale die nicht in der Koalition $\mathcal{S}$ enthalten sind, 
+entfällt und wird durch konkrete Beobachtungen $x_{C}^{(k)}$ aus der Datenbasis ersetzt, 
+was eine wünschenswerte Vereinfachung darstellt. Das Integral $\int$ wird dadurch zur Summe $\sum$. Die Verteilung $\mathbb{P}$ wird durch eine große Anzahl zufällig 
+ausgewählter Beobachtungen ersetzt und das Ergebnis anschließend über alle ausgewählten Beobachtungen $n$ gemittelt \cite[S. 36]{Molnar_2023}. 
+$\hat{v}_{x^{(i)}, f}(\mathcal{S})$ ist somit ein Schätzer für den Wert der Koalition $\mathcal{S}$ und definiert als: 
+
+\begin{align}
+    \label{eq:monte-value}
+    \hat{v}_{x^{(i)},f}(\mathcal{S}) = \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) - f(x^{(k)}) \Big)
+\end{align}
+
+Analog zu Gleichung \ref{eq:shap-marginal-func} ist dann zusammen mit Gleichung \ref{eq:monte-value} der marginale Beitrag 
+$\hat{\Delta}_{\mathcal{S}, j}$ von Merkmal $j$ zur Koalition $\mathcal{S}$ gegeben als: 
+
+\begin{align}
+    \label{eq:monte-mar}
+    \hat{\Delta}_{\mathcal{S}, j} &= \hat{v}_{x^{(i)},f}(\mathcal{S} \cup \{j\}) - \hat{v}_{x^{(i)},f}(\mathcal{S}) \\ \notag
+        &= \frac{1}{n} \sum_{k=1}^{n} \Big(f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup x^{(k)}_{C \setminus \{j\}}) - f(x^{(i)}_{\mathcal{S}} \cup x^{(k)}_{C}) \Big)
+\end{align}
+
+und die SHAP-Werte $\hat{\varphi}_{j}^{(i)}$ über alle möglichen Koalitionen analog zu Gleichung \ref{eq:shap-eq}:
+
+\begin{align}
+    \label{eq:monte-shap-eq}
+    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!}\hat{\Delta}_{\mathcal{S}, j},
+\end{align}
+
+\cite[S.36]{Molnar_2023}.
+
+\section{Schätzung durch Permutationen}
+\label{subsec:permutation}
+
+Der Einsatz von Permutationen zur Schätzung von SHAP-Werten bietet eine 
+praktikable Alternative zur vollständigen Auswertung aller Merkmalskoalitionen. 
+Dieses Verfahren ist insbesondere in Szenarien mit einer hohen Anzahl von Merkmalen von Vorteil, 
+da es die Berechnungslast reduziert, ohne die Genauigkeit der Schätzung wesentlich zu beeinträchtigen. 
+Im Folgenden wird die Methode anhand eines Beispiels illustriert und die Anwendung im Kontext des in 
+Kapitel \ref{sec:example} eingeführten linearen Modells beschrieben.
+
+In einem ersten Schritt wird eine zufällige $k$-te Permutation der Merkmale $o(k)$ gewählt.
+Beispielsweise könnte $o(k) = (x_2, x_3, x_1)$ eine solche Permutation darstellen.
+Wird das Merkmal $j$, für das der SHAP-Wert berechnet werden soll, als das dritte Merkmal $j=3$ angenommen, 
+ergibt sich der marginale Beitrag $\hat{\Delta}_{o(k), j}$ analog zu Gleichung \ref{eq:monte-mar} 
+aus der Differenz der Koalitionen mit und ohne dem betrachteten Merkmal:
+
+\begin{align}
+    \hat{\Delta}_{o(k), j} = \hat{v}(\{x_2, x_3\}) - \hat{v}(\{x_2\})
+\end{align}
+
+Dieser Prozess wird für eine Anzahl von $m$ Permutationen durchgeführt. Die Wahl von $m$,
+die kleiner als die Gesamtzahl der Merkmale sein kann, hängt von der gewünschten Approximationsgenauigkeit
+ab. Eine größere Anzahl von Permutationen $m$ führt zu einer präziseren Annäherung an den tatsächlichen SHAP-Wert.
+
+Die geschätzten marginalen Beiträge $\hat{\Delta}_{o(k), j}$ werden dann über die $m$ Permutationen analog zu Gleichung
+\ref{eq:monte-shap-eq} gemittelt:
+
+\begin{align}
+    \label{eq:permu-shap-eq}
+    \hat{\varphi}^{(i)}_{j} (\mathcal{N}, f) &= \frac{1}{m}\sum_{k=1}^{m}\hat{\Delta}_{o(k), j},
+\end{align}
+
+Durch diese Methodik wird der Berechnungsaufwand bei der Ermittlung von SHAP-Werten 
+signifikant verringert, was besonders bei Modellen mit einer großen Menge von Merkmalen von 
+Bedeutung ist. Der hier vorgestellte Ansatz ermöglicht es, mit einer begrenzten Anzahl von 
+Permutationen eine aussagekräftige Schätzung der SHAP-Werte zu erhalten \cite[S. 39]{Molnar_2023}.
+
+Zusätzlich zur Mittelung der geschätzten marginalen Beiträge bietet die Methode der Permutationen 
+die Möglichkeit, die Effekte von Vorwärts- und Rückwärtspropagation zu untersuchen, 
+indem die Reihenfolge der Merkmale sowohl in ihrer ursprünglichen als auch in umgekehrter 
+Abfolge betrachtet wird. Für eine detaillierte Darstellung dieser Technik und ihrer 
+Auswirkungen auf die SHAP-Wertberechnung sei auf die weiterführende Literatur verwiesen \cite[S. 39f]{Molnar_2023}.
+                                         
+
+
+
+In einem Boxplot zeigt die zentrale Box die Interquartilspanne (IQR), 
+die die mittleren 50\% der Daten umfasst, mit dem unteren Rand als erstes Quartil 
+(25\% der Daten darunter) und dem oberen Rand als drittes Quartil (75\% der Daten darunter). 
+Der horizontale Strich in der Mitte ist der Median, der die Daten in zwei Hälften teilt. 
+Die Whiskers, die Linien, welche von der Box ausgehen, stellen die Streuung außerhalb der Quartile dar und 
+erstrecken sich normalerweise bis zu den äußersten regulären Datenpunkten. 
+Datenpunkte außerhalb des Bereichs der Whiskers werden als Ausreißer betrachtet und separat markiert \cite[S. 43]{Molnar_2022}. 
