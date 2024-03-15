@@ -31,6 +31,13 @@ Modellen übertragen, wobei jedes Merkmal als \glqq{}Spieler\grqq{} betrachtet w
     Quelle: \cite[S. 26]{Molnar_2023}.
 \end{table}
 
+Um diesen Beitrag präzise zu quantifizieren, greift man auf den Prozess der Marginalisierung zurück. 
+Dieser besteht darin, über die Wahrscheinlichkeitsverteilungen der Merkmale zu integrieren, wodurch der Einfluss eines jeden Merkmals 
+auf die Vorhersage isoliert und unabhängig von der spezifischen Zusammensetzung der anderen Merkmale bewertet werden kann. 
+Diese Methodik ermöglicht es nicht nur, diskrete Merkmale, sondern auch solche mit kontinuierlichen Verteilungen zu berücksichtigen. 
+Die Integration über kontinuierliche Verteilungen ist ein fundamentaler Schritt, um den tatsächlichen Beitrag der Merkmale in einer Vielzahl von 
+Anwendungsfällen im maschinellen Lernen zu erfassen \cite[S. 29]{Molnar_2023}.
+
 Die Koalitionsfunktion $v_{f, x^{(i)}}(\mathcal{S})$ für ein gegebenes Modell $f$ und eine Beobachtung $x^{(i)}$ ist definiert als:
 
 \begin{align}
@@ -75,20 +82,18 @@ Beobachtung $x^{(i)}$ \cite[S. 30]{Molnar_2023}.
 Die Integration in der SHAP-Formel ist ein zentraler Schritt, um den erwarteten Beitrag jedes Merkmals unter 
 Berücksichtigung der gesamten Verteilung der Daten zu ermitteln. 
 In diesem Ansatz werden die Merkmale als Zufallsvariablen behandelt. Die Integration erfolgt über 
-die Wahrscheinlichkeitsverteilungen dieser Zufallsvariablen \cite[S. 28]{Molnar_2023}. 
+die Wahrscheinlichkeitsverteilungen dieser Zufallsvariablen.
 Durch das Berechnen der erwarteten Vorhersagewerte mit 
 und ohne des jeweiligen Merkmals, unter Einbeziehung der Verteilung aller anderen Merkmale, 
-ermöglicht SHAP eine präzise und umfassende Einschätzung des Einflusses jedes einzelnen Merkmals. 
-Dieser Prozess der Marginalisierung, bei dem man über die Wahrscheinlichkeitsverteilungen der Merkmale integriert, 
-erlaubt es, den Beitrag eines jeden Merkmals zu isolieren und unabhängig von der spezifischen Zusammensetzung 
-der anderen Merkmale zu bewerten \cite[S. 29]{Molnar_2023}.
+ermöglicht SHAP eine präzise und umfassende Einschätzung des Einflusses jedes einzelnen Merkmals \cite[S. 28]{Molnar_2023}.
+
 
 \section{Berechnung der SHAP-Werte unter Berücksichtigung der zugrundeliegenden Verteilung}
 \label{sec:example}
 
 Ein Beispiel soll helfen, die Anwendung von SHAP-Werten im 
 Kontext des maschinellen Lernens zu illustrieren, indem gezeigt wird, wie SHAP-Werte berechnet werden.\footnote{In Anlehnung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. 
-Betrachtet wird ein fiktiver Immobilien-Datensatz mit drei Merkmalen: Größe des Hauses in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
+Betrachtet wird ein fiktiver Immobilien-Datensatz mit drei Merkmalen: Größe der Immobilie in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
 und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtungen in diesem Datensatz:
 
 \begin{table}[!h]
@@ -104,10 +109,10 @@ und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtunge
     \end{tabularx}
     \label{tab:example}
     \normalsize\\
-    Quelle: Eigene Darstellung.
+    Quelle: Eigene Darstellung. Daten sind hypothetisch zu Illustrationszwecken frei erfunden.
 \end{table}
 
-Angenommen, das Modell $f(x^{(i)})$ prognostiziert den Preis eines Hauses in Euro als eine lineare Kombination der Merkmale:
+Angenommen, das Modell $f(x^{(i)})$ prognostiziert den Preis einer Immobilie in Euro als eine lineare Kombination der Merkmale:
 
 \begin{equation}
     f(x^{(i)}) = 5x_1^{(i)} + 20x_2^{(i)} - 2x_3^{(i)}.
@@ -262,9 +267,9 @@ Zuverlässigkeit der SHAP-Wert-Berechnung unterstreicht.
 Das Modell $f(x^{(i)})$
 prognostiziert im Mittel einen Immobilienpreis von 680 \euro{}. Im Vergleich zur
 Verteilung des jeweiligen Merkmals, reduziert die Größe der 
-Wohnung ($x_1^{(1)}$) und die Anzahl der Zimmer ($x_2^{(1)}$) die Prognose 
+Immobilie ($x_1^{(1)}$) und die Anzahl der Zimmer ($x_2^{(1)}$) die Prognose 
 des Preises für die Immobilie $x^{(1)}$ um insgesamt 135 \euro{}, während die Entfernung zum Stadtzentrum
-($x_3^{(1)}$) den Preis der Wohnung um 5 \euro{} erhöht, wie in Abbildung 
+($x_3^{(1)}$) den Preis der Immobilie um 5 \euro{} erhöht, wie in Abbildung 
 \ref{pic:model-fx1} veranschaulicht. Abbildung \ref{pic:model-fx2} visualisiert die SHAP-Werte für die Immobilie $x^{(2)}$:
 
 \begin{figure}[!h]
@@ -313,7 +318,7 @@ Das Symmetrieaxiom fordert, dass zwei Merkmale $i$ und $j$, die
 in jeder Koalition denselben Beitrag leisten, auch denselben SHAP-Wert 
 erhalten müssen. In dem hier betrachteten Fall der Immobilienpreisprognose 
 würde dies bedeuten, dass zwei Merkmale, beispielsweise die Größe einer 
-Wohnung und die Anzahl der Zimmer, die immer den gleichen Einfluss auf den Preis hätten, 
+Immobilie und die Anzahl der Zimmer, die immer den gleichen Einfluss auf den Preis hätten, 
 unabhängig von der Kombination anderer Merkmale, auch identische SHAP-Werte haben müssen:
 
 \begin{equation}
