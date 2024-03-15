@@ -20,6 +20,7 @@ Modellen übertragen, wobei jedes Merkmal als \glqq{}Spieler\grqq{} betrachtet w
     Koalition & Menge von Merkmalen & $\mathcal{S} \subseteq \mathcal{N}$ \\
     Größe der Koalition & Anzahl der Merkmale in der Koalition $\mathcal{S}$ & $|\mathcal{S}|$\\
     Spieler, die nicht in der Koalition sind & Merkmale, die nicht in der Koalition enthalten sind & $C: C = \mathcal{N} \setminus \mathcal{S}$ \\
+    - & Modell, Vorhersagefunktion & $f$ \\ 
     Koalitionsfunktion & Vorhersage für Merkmalswerte in der Koalition $\mathcal{S}$ abzüglich der Vorhersage im Mittel & $v_{f, x^{(i)}}(\mathcal{S}$)\\
     Auszahlung & Vorhersage für eine Beobachtung $x^{(i)}$ abzüglich der Vorhersage im Mittel & $f(x^{(i)}) -  \mathbb{E}(f(X))$\\
     Shapley-Wert & Beitrag des Merkmals $j$ zur Auszahlung des Modells für eine Beobachtung $x^{(i)}$& $\varphi_j^{(i)}(\mathcal{N}, f)$\\
@@ -86,8 +87,8 @@ der anderen Merkmale zu bewerten \cite[S. 29]{Molnar_2023}.
 \label{sec:example}
 
 Ein Beispiel soll helfen, die Anwendung von SHAP-Werten im 
-Kontext des maschinellen Lernens zu illustrieren\footnote{In Anlehnung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. Betrachtet wird ein fiktiver 
-Immobilien-Datensatz mit drei Merkmalen: Größe des Hauses in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
+Kontext des maschinellen Lernens zu illustrieren, indem gezeigt wird, wie SHAP-Werte berechnet werden.\footnote{In Anlehnung an das Beispiel aus Kapitel 8.5.1 \glqq{}General Idea\grqq{} \cite[S.215f]{Molnar_2022}.}. 
+Betrachtet wird ein fiktiver Immobilien-Datensatz mit drei Merkmalen: Größe des Hauses in Quadratmetern ($x_1$), Anzahl der Zimmer ($x_2$) 
 und Entfernung zum Stadtzentrum in Kilometern ($x_3$). Es gibt zwei Beobachtungen in diesem Datensatz:
 
 \begin{table}[!h]

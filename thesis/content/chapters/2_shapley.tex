@@ -116,21 +116,21 @@ hinzugefügt.
 Zusammen mit Tabelle \ref{tab:shapley_marginal} lässt sich nun der Shapley-Wert mit den gewichteten durchschnittlichen marginalen Beiträge für Anna berechnen:
 
 \begin{equation}
-  \frac{1}{6} ( \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0 \text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750 \text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500 \text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,33 \text{\euro}.  
+  \frac{1}{6} ( \underbrace{2 \cdot 500\;\text{\euro}}_{\text{A $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 0\;\text{\euro}}_{\text{A $\rightarrow$ $\{B$\}}} + \underbrace{1 \cdot 750\;\text{\euro}}_{\text{A $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 500\;\text{\euro}}_{\text{A $\rightarrow$ $\{B, C$\}}} ) \approx 458,33\;\text{\euro}.  
 \label{eq:marginal_anna}
 \end{equation}
 
 Analog gilt dies für Ben:
 
 \begin{equation}
-  \frac{1}{6} ( \underbrace{2 \cdot 750 \text{\euro}}_{\text{B $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot 500 \text{\euro}}_{\text{B $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{B $\rightarrow$ $\{A, C$\}}} ) \approx 458,33 \text{\euro},  
+  \frac{1}{6} ( \underbrace{2 \cdot 750\;\text{\euro}}_{\text{B $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250\;\text{\euro}}_{\text{B $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot 500\;\text{\euro}}_{\text{B $\rightarrow$ $\{C$\}}} + \underbrace{2 \cdot 250\;\text{\euro}}_{\text{B $\rightarrow$ $\{A, C$\}}} ) \approx 458,33\;\text{\euro},  
   \label{eq:marginal_ben}
 \end{equation}
 
 und Carla:
 
 \begin{equation}
-  \frac{1}{6} ( \underbrace{2 \cdot 0 \text{\euro}}_{\text{C $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot (-250) \text{\euro}}_{\text{C $\rightarrow$ $\{B$\}}} + \underbrace{2 \cdot 250 \text{\euro}}_{\text{C $\rightarrow$ $\{A, B$\}}} ) \approx 83,33 \text{\euro}  
+  \frac{1}{6} ( \underbrace{2 \cdot 0\;\text{\euro}}_{\text{C $\rightarrow$ $\{\emptyset$\}}} + \underbrace{1 \cdot 250\;\text{\euro}}_{\text{C $\rightarrow$ $\{A$\}}} + \underbrace{1 \cdot (-250)\;\text{\euro}}_{\text{C $\rightarrow$ $\{B$\}}} + \underbrace{2 \cdot 250\;\text{\euro}}_{\text{C $\rightarrow$ $\{A, B$\}}} ) \approx 83,33\;\text{\euro}.  
   \label{eq:marginal_carla}
 \end{equation}
 
@@ -144,17 +144,21 @@ der Shapley-Werte, die diese Berechnungen ermöglichen, detaillierter betrachtet
 
 \section{Formale Definition}
 
-Sei $\mathcal{N} = \{1, \ldots, n\}$ eine endliche Spielermenge mit $n := |\mathcal{N}|$ Elementen. Sei $v$ die Koalitionsfunktion, die jeder Teilmenge von $\mathcal{N}$ eine reelle Zahl zuweist und insbesondere der leeren Koalition den Wert $0$ gibt. 
+Die Menge $\mathcal{N} = \{1, \ldots, n\}$ repräsentiert eine endliche Anzahl von Spielern, wobei $n := |\mathcal{N}|$ für die Gesamtzahl der 
+Elemente in dieser Menge steht. Die Koalitionsfunktion $v$ ordnet jeder Teilmenge von $\mathcal{N}$ eine reelle Zahl zu, 
+wobei die leere Menge den Wert $0$ zugewiesen bekommt:
 
 \[
 \begin{array}{rcccl}
   v &:  &\mathcal P(\mathcal{N}) &\longrightarrow &\mathbb{R}\\
-  &: &v(\emptyset) &\mapsto &0\\
+  &: &v(\emptyset) &\mapsto &0.\\
 \end{array}
 \]
 
-Eine nicht leere Teilmenge der Spieler $\mathcal{S} \subseteq \mathcal{N}$ heißt Koalition. $\mathcal{N}$ selbst bezeichnet die große Koalition. Den Ausdruck $v(\mathcal{S})$ nennt man den Wert der Koalition $\mathcal{S}$.
-Der Shapley-Wert ordnet nun jedem Spieler aus $\mathcal{N}$ eine Auszahlung für das Spiel $v$ zu.
+Eine nicht leere Teilmenge der Spieler $\mathcal{S} \subseteq \mathcal{N}$ heißt Koalition. $\mathcal{N}$ selbst bezeichnet die 
+große Koalition.
+Der Term $v(\mathcal{S})$ wird als der Wert der Koalition $\mathcal{S}$ bezeichnet. Der Shapley-Wert weist jedem Mitglied der Spielermenge $\mathcal{N}$ eine 
+spezifische Auszahlung im Rahmen des Spiels $v$ zu.
 
 Der marginale Beitag eines Spielers $i \in \mathcal{N}$, also der Wertbeitrag eines Spielers zu einer Koalition $\mathcal{S} \subseteq \mathcal{N}$, durch seinen Beitritt, ist
 
@@ -167,8 +171,8 @@ v(\mathcal{S} \cup \{i\}) - v(\mathcal{S}).
 Sei $i = \text{Anna}$ und $\mathcal{S} = \{\text{Ben}\}$, dann ist $v(\mathcal{\{\text{Ben}\}} \cup \{\text{Anna}\}) - v(\mathcal{\{\text{Ben}\}})$ das
 zusätzliche Preisgeld, welches gewonnen wird, wenn Anna der Koalition mit Ben beitritt. 
 
-
-Der Shapley-Wert eines Spielers $i$ errechnet sich als das gewichtete Mittel der marginalen Beiträge zu allen möglichen Koalitionen:
+Der Wert eines Spielers $i$ nach Shapley wird durch das gewichtete Mittel seiner marginalen Beiträge 
+über alle möglichen Koalitionen bestimmt:
 
 \begin{equation}
 \varphi_i (\mathcal{N}, v) = \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{i\}} \underbrace{\frac{|\mathcal{S}|! \cdot (n - 1 - |\mathcal{S}|)!}{n!}}_{\text{Gewicht}} \underbrace{v(\mathcal{S} \cup \{i\}) - v(\mathcal{S})}_{\substack{\text{marginaler Beitrag von} \\ \text{Spieler $i$ zur Koalition $\mathcal{S}$}}}.
@@ -212,7 +216,8 @@ sondern auch durch eine Reihe von Axiomen charakterisiert, die seine Fairness un
 Lloyd Shapley leitete den Shapley-Wert ursprünglich aus diesen Axiomen ab und bewies, 
 dass dieser der einzige ist, der den Axiomen genügt\footnote{Eine detaillierte Darstellung dieser Axiome und des Beweises 
 ihrer Einzigartigkeit findet sich in Shapleys Originalarbeit, deren umfassende Behandlung jedoch den Rahmen dieser Arbeit überschreiten würde \cite[S. 307-318]{Shapley+1953+307+318}.}. 
-Diese Axiome sind wesentliche Bestandteile, die die Einzigartigkeit und die wünschenswerten Eigenschaften des Shapley-Werts als Lösungskonzept definieren \cite[S. 22]{Molnar_2023}. 
+Dies Axiome der Effizienz, Symmetrie, Null-Spieler-Eigenschaft und der Additivität sind wesentliche Bestandteile, 
+die die Einzigartigkeit und die wünschenswerten Eigenschaften des Shapley-Werts als Lösungskonzept definieren \cite[S. 22]{Molnar_2023}. 
 
 \paragraph{\rmfamily\bfseries Effizienz}
 
@@ -262,8 +267,8 @@ Dies stell sicher, dass ein Spieler, der keinen Beitrag leistet, auch nicht belo
 
 \paragraph{\rmfamily\bfseries Additivität} 
 
-Wenn das Spiel in zwei unabhängige Spiele mit Koalitionsfunktionen $v$ und $w$ zerlegt werden kann, dann ist die Auszahlung jedes Spielers im 
-zusammengesetzten Spiel die Summe der Auszahlungen in den aufgeteilten Spielen:
+Falls sich das Spiel in zwei separate Spiele mit den Koalitionsfunktionen $v$ und $w$ aufspalten lässt, 
+ergibt sich die Auszahlung eines jeden Spielers im kombinierten Spiel aus der Addition seiner Auszahlungen aus den einzelnen Spielen:
 
 \begin{equation}
 \varphi_i (\mathcal{N}, v + w) = \varphi_i (\mathcal{N}, v) + \varphi_i (\mathcal{N}, w).
