@@ -3,7 +3,8 @@ from typing import List
 
 plt.rcParams.update({
     'text.usetex': True,
-    'text.latex.preamble': r'\usepackage{amsfonts}'
+    'text.latex.preamble': r'\usepackage{amsfonts}',
+    'font.size': 15
 })
 
 def plot_waterfall(expected_value_model: float, observation_values: List[float], 

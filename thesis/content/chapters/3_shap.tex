@@ -42,7 +42,7 @@ Die Koalitionsfunktion $v_{f, x^{(i)}}(\mathcal{S})$ für ein gegebenes Modell $
 
 \begin{align}
     \label{eq:shap-value-func}
-    v_{f, x^{(i)}}(\mathcal{S}) = \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} - \mathbb{E}(f(X))
+    v_{f, x^{(i)}}(\mathcal{S}) = \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} - \mathbb{E}(f(X)).
 \end{align}
 
 Diese Funktion berechnet den erwarteten Wert der Vorhersage des Modells $f$, wenn nur eine Teilmenge $\mathcal{S}$ der 
@@ -59,7 +59,7 @@ Der marginale Beitrag eines Merkmals $j$ zu einer Koalition $\mathcal{S}$ ist so
     v_{f, x^{(i)}}(\mathcal{S} \cup \{j\}) - v_{f, x^{(i)}}(\mathcal{S}) &= \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} - \mathbb{E}(f(X)) \\ \notag
     &\quad - \left( \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} - \mathbb{E}(f(X)) \right) \\ \notag
     &= \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} \\ \notag
-    &\quad - \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}}
+    &\quad - \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}}.
 \end{align}
 
 Diese Gleichung beschreibt, wie sich der erwartete Wert der Vorhersage ändert, wenn das Merkmal $j$ zu der Menge der Merkmale $\mathcal{S}$ hinzugefügt wird \cite[S. 29]{Molnar_2023}.
@@ -70,7 +70,7 @@ Der Beitrag $\varphi_j^{(i)}(\mathcal{N}, f)$ eines Merkmals $j$ für eine Beoba
     \label{eq:shap-eq}
     \varphi^{(i)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!} \\ \notag
     &\quad \cdot \left( \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} -
-    \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} \right) 
+    \int_{\mathbb{R}} f(x^{(i)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} \right).
 \end{align}
 
 Diese Formel ist die zentrale Berechnung der SHAP-Werte im maschinellen Lernen \cite[S. 29]{Molnar_2023}. 
@@ -124,7 +124,7 @@ Die Vorhersagen für die beiden Beobachtungen lauten dann:
     \label{eq:fx1}
     f(x^{(1)}) &= 5x_1^{(1)} + 20x_2^{(1)} - 2x_3^{(1)} \\ \notag
         &= 5 \cdot 100 + 20 \cdot 3 - 2 \cdot 5 \\ \notag
-        &= 550\,\text{\euro} 
+        &= 550\,\text{\euro},
 \end{align}
 
 und 
@@ -158,7 +158,7 @@ Daten und der Formel \ref{eq:shap-eq} berechnet:
     \label{eq:shap-formular}
     \varphi^{(1)}_{j} (\mathcal{N}, f) &= \sum_{\mathcal{S} \subseteq \mathcal{N} \setminus \{j\}} \frac{|\mathcal{S}|! \cdot (p - 1 - |\mathcal{S}|)!}{p!} \\ \notag
     &\quad \cdot \left( \int_{\mathbb{R}} f(x^{(1)}_{\mathcal{S} \cup \{j\}} \cup X_{C \setminus \{j\}}) d\mathbb{P}_{X_{C \setminus \{j\}}} -
-    \int_{\mathbb{R}} f(x^{(1)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} \right) 
+    \int_{\mathbb{R}} f(x^{(1)}_{\mathcal{S}} \cup X_{C}) d\mathbb{P}_{X_{C}} \right), 
 \end{align}
 
 wobei $p = |\mathcal{N}| = 3$ die Anzahl der Merkmale ist und $X_C$ die Menge der Merkmale 
@@ -175,7 +175,7 @@ nach Gleichung \ref{eq:shap-formular} berechnet als:
         &= \frac{1}{6} \Big( f(100, 3, 7.5) - f(125, 3, 7.5) \Big) \\ \notag
         &= \frac{1}{6} \Big( (5 \cdot 100 + 20 \cdot 3 - 2 \cdot 7,5) - (5 \cdot 125 + 20 \cdot 3 - 2 \cdot 7,5) \Big) \\ \notag
         &= \frac{1}{6} (545 - 670) \\ \notag
-        &= \frac{1}{6} (-125)
+        &= \frac{1}{6} (-125).
 \end{align}
 
 Im Ausdruck $\int f(x_1, x_2, X_3) d\mathbb{P}(X_3)$ wird das Modell $f$ über die Verteilung von $X_3$ integriert, 
@@ -194,18 +194,18 @@ für jedes Merkmal in jeder möglichen Koalition von Merkmalen, bezogen auf die 
     \toprule
     $x_{j}$ & $\mathcal{S}$ & $v_{f, x^{(1)}}(\mathcal{S})$ & $v_{f, x^{(1)}}(\mathcal{S} \cup \{j\})$ & $v_{f, x^{(1)}}(\mathcal{S} \cup \{j\}) - v_{f, x^{(1)}}(\mathcal{S})$ & Gewicht & $\varphi_{j}^{(1)}(\mathcal{S}, f)$\\
     \midrule
-    $x_1$ & $\emptyset$ & 680 & 555 & -125 & $\frac{1}{3}$ & -41,67 \\
-    $x_1$ & $\{x_2\}$ & 670 & 545 & -125 & $\frac{1}{6}$ & -20.83 \\
-    $x_1$ & $\{x_3\}$ & 685 & 560 & -125 & $\frac{1}{6}$ & -20.83 \\
-    $x_1$ & $\{x_2, x_3\}$ & 675 & 550 & -125 & $\frac{1}{3}$ & -41,67 \\
-    $x_2$ & $\emptyset$ & 680 & 670 & -10 & $\frac{1}{3}$ & -3,33 \\
-    $x_2$ & $\{x_1\}$ & 555 & 545 & -10 & $\frac{1}{6}$ & -1,67 \\
-    $x_2$ & $\{x_3\}$ & 685 & 675 & -10 & $\frac{1}{6}$ & -1,67 \\
-    $x_2$ & $\{x_1, x_3\}$ & 560 & 550 & -10 & $\frac{1}{3}$ & -3,33 \\
-    $x_3$ & $\emptyset$ & 680 & 685 & 5 & $\frac{1}{3}$ & 1,67 \\
-    $x_3$ & $\{x_1\}$ & 555 & 560 & 5 & $\frac{1}{6}$ & 0,83 \\
-    $x_3$ & $\{x_2\}$ & 670 & 675 & 5 & $\frac{1}{6}$ & 0,83 \\
-    $x_3$ & $\{x_1, x_2\}$ & 545 & 550 & 5 & $\frac{1}{3}$ & 1,67 \\
+    $x_1$ & $\emptyset$ & 680\,\euro{} & 555\,\euro{} & -125\,\euro{} & $\frac{1}{3}$ & -41,67\,\euro{} \\
+    $x_1$ & $\{x_2\}$ & 670\,\euro{} & 545\,\euro{} & -125\,\euro{} & $\frac{1}{6}$ & -20.83\,\euro{} \\
+    $x_1$ & $\{x_3\}$ & 685\,\euro{} & 560\,\euro{} & -125\,\euro{} & $\frac{1}{6}$ & -20.83\,\euro{} \\
+    $x_1$ & $\{x_2, x_3\}$ & 675\,\euro{} & 550\,\euro{} & -125\,\euro{} & $\frac{1}{3}$ & -41,67\,\euro{} \\
+    $x_2$ & $\emptyset$ & 680\,\euro{} & 670\,\euro{} & -10\,\euro{} & $\frac{1}{3}$ & -3,33\,\euro{} \\
+    $x_2$ & $\{x_1\}$ & 555\,\euro{} & 545\,\euro{} & -10\,\euro{} & $\frac{1}{6}$ & -1,67\,\euro{} \\
+    $x_2$ & $\{x_3\}$ & 685\,\euro{} & 675\,\euro{} & -10\,\euro{} & $\frac{1}{6}$ & -1,67\,\euro{} \\
+    $x_2$ & $\{x_1, x_3\}$ & 560\,\euro{} & 550\,\euro{} & -10\,\euro{} & $\frac{1}{3}$ & -3,33\,\euro{} \\
+    $x_3$ & $\emptyset$ & 680\,\euro{} & 685\,\euro{} & 5\,\euro{} & $\frac{1}{3}$ & 1,67\,\euro{} \\
+    $x_3$ & $\{x_1\}$ & 555\,\euro{} & 560\,\euro{} & 5\,\euro{} & $\frac{1}{6}$ & 0,83\,\euro{} \\
+    $x_3$ & $\{x_2\}$ & 670\,\euro{} & 675\,\euro{} & 5\,\euro{} & $\frac{1}{6}$ & 0,83\,\euro{} \\
+    $x_3$ & $\{x_1, x_2\}$ & 545\,\euro{} & 550\,\euro{} & 5\,\euro{} & $\frac{1}{3}$ & 1,6\,\euro{} \\
     \bottomrule
     \end{tabularx}
     \label{tab:shapley_marginal_features_x1}
@@ -223,18 +223,18 @@ wie in Tabelle \ref{tab:shapley_marginal_features_x2} dargestellt.
     \toprule
     $x_{j}$ & $\mathcal{S}$ & $v_{f, x^{(2)}}(\mathcal{S})$ & $v_{f, x^{(2)}}(\mathcal{S} \cup \{j\})$ & $v_{f, x^{(2)}}(\mathcal{S} \cup \{j\}) - v_{f, x^{(2)}}(\mathcal{S})$ & Gewicht & $\varphi_{j}^{(2)}(\mathcal{S}, f)$\\
     \midrule
-    $x_1$ & $\emptyset$ & 680 & 805 & 125 & $\frac{1}{3}$ & 41,67 \\
-    $x_1$ & $\{x_2\}$ & 690 & 815 & 125 & $\frac{1}{6}$ & 20.83 \\
-    $x_1$ & $\{x_3\}$ & 675 & 800 & 125 & $\frac{1}{6}$ & 20.83 \\
-    $x_1$ & $\{x_2, x_3\}$ & 685 & 810 & 125 & $\frac{1}{3}$ & 41,67 \\
-    $x_2$ & $\emptyset$ & 680 & 690 & 10 & $\frac{1}{3}$ & 3,33 \\
-    $x_2$ & $\{x_1\}$ & 805 & 815 & 10 & $\frac{1}{6}$ & 1,67 \\
-    $x_2$ & $\{x_3\}$ & 675 & 685 & 10 & $\frac{1}{6}$ & 1,67 \\
-    $x_2$ & $\{x_1, x_3\}$ & 800 & 810 & 10 & $\frac{1}{3}$ & 3,33 \\
-    $x_3$ & $\emptyset$ & 680 & 675 & -5 & $\frac{1}{3}$ & -1,67 \\
-    $x_3$ & $\{x_1\}$ & 805 & 800 & -5 & $\frac{1}{6}$ & -0,83 \\
-    $x_3$ & $\{x_2\}$ & 690 & 685 & -5 & $\frac{1}{6}$ & -0,83 \\
-    $x_3$ & $\{x_1, x_2\}$ & 815 & 810 & -5 & $\frac{1}{3}$ & -1,67 \\
+    $x_1$ & $\emptyset$ & 680\,\euro{} & 805\,\euro{} & 125\,\euro{} & $\frac{1}{3}$ & 41,67\,\euro{} \\
+    $x_1$ & $\{x_2\}$ & 690\,\euro{} & 815\,\euro{} & 125\,\euro{} & $\frac{1}{6}$ & 20.83\,\euro{} \\
+    $x_1$ & $\{x_3\}$ & 675\,\euro{} & 800\,\euro{} & 125\,\euro{} & $\frac{1}{6}$ & 20.83\,\euro{} \\
+    $x_1$ & $\{x_2, x_3\}$ & 685\,\euro{} & 810\,\euro{} & 125\,\euro{} & $\frac{1}{3}$ & 41,67\,\euro{} \\
+    $x_2$ & $\emptyset$ & 680\,\euro{} & 690\,\euro{} & 10\,\euro{} & $\frac{1}{3}$ & 3,33\,\euro{} \\
+    $x_2$ & $\{x_1\}$ & 805\,\euro{} & 815\,\euro{} & 10\,\euro{} & $\frac{1}{6}$ & 1,67\,\euro{} \\
+    $x_2$ & $\{x_3\}$ & 675\,\euro{} & 685 \,\euro{}& 10\,\euro{} & $\frac{1}{6}$ & 1,67\,\euro{} \\
+    $x_2$ & $\{x_1, x_3\}$ & 800\,\euro{} & 810\,\euro{} & 10\,\euro{} & $\frac{1}{3}$ & 3,33\,\euro{} \\
+    $x_3$ & $\emptyset$ & 680\,\euro{} & 675\,\euro{} & -5\,\euro{} & $\frac{1}{3}$ & -1,67\,\euro{} \\
+    $x_3$ & $\{x_1\}$ & 805\,\euro{} & 800\,\euro{} & -5\,\euro{} & $\frac{1}{6}$ & -0,83\,\euro{} \\
+    $x_3$ & $\{x_2\}$ & 690\,\euro{} & 685\,\euro{} & -5\,\euro{} & $\frac{1}{6}$ & -0,83\,\euro{} \\
+    $x_3$ & $\{x_1, x_2\}$ & 815\,\euro{} & 810\,\euro{} & -5\,\euro{} & $\frac{1}{3}$ & -1,67\,\euro{} \\
     \bottomrule
     \end{tabularx}
     \label{tab:shapley_marginal_features_x2}
@@ -304,8 +304,8 @@ und der durchschnittlichen Modellvorhersage $\mathbb{E}(f(X))$ sein muss:
 für $f(x^{(1)})$ (Gleichung \ref{eq:fx1}), sowie $\mathbb{E}(f(X))$ (Gleichung \ref{eq:efx}) ergibt sich:
 
 \begin{align}
-    \sum_{j=1}^{3}\varphi_j^{(1)}(\mathcal{N}, f) &=  -130 \\ \notag
-    f(x^{(1)}) - \mathbb{E}(f(X)) &= 550 - 680 = -130,   
+    \sum_{j=1}^{3}\varphi_j^{(1)}(\mathcal{N}, f) &=  -130\text{\,\euro{}} \\ \notag
+    f(x^{(1)}) - \mathbb{E}(f(X)) &= 550\text{\,\euro{}} - 680\text{\,\euro{}} = -130\text{\,\euro{}},   
 \end{align}
 
 womit das Effizienzaxiom erfüllt ist. Die Differenz der Vohersage 

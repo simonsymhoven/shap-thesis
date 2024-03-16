@@ -260,11 +260,11 @@ die ein Maß für die Abweichung der Modellvorhersagen von den tatsächlichen We
 Codeauschnitt \ref{code:model} und \ref{code:model-train} zeigen das Trainieren und Testen der zugrundeliegenden Daten 
 eines linearen Regressionsmodells:
 
-\lstinputlisting[language=Python,label=code:model, firstline=35, lastline=53, 
+\lstinputlisting[language=Python,label=code:model, firstline=36, lastline=54, 
     caption={Initialisierung eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
-\lstinputlisting[language=Python,label=code:model-train, firstline=297, lastline=303, 
+\lstinputlisting[language=Python,label=code:model-train, firstline=299, lastline=305, 
     caption={Training und Testen eines linearen Regressionsmodells, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 
@@ -279,7 +279,7 @@ für lineare Modelle ausgewählt.
 
 Der folgende Codeausschnitt \ref{code:shap} zeigt die Initialisierung des SHAP-Explainers und die Berechnung der SHAP-Werte:
 
-\lstinputlisting[language=Python,label=code:shap, firstline=309, lastline=310, 
+\lstinputlisting[language=Python,label=code:shap, firstline=311, lastline=312, 
     caption={Berechnung von SHAP-Werten für das lineare Regressionsmodell, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 
 Das Explainer-Objekt enthält neben den SHAP-Werten (.values), 
@@ -299,6 +299,6 @@ verschiedenen Merkmale im Kontext des linearen Regressionsmodells bieten.
 
 Die Grafiken wurden mithilfe der \textsf{shap}-Bibliothek wie folgt erzeugt:
 
-\lstinputlisting[language=Python,label=code:img, firstline=92, lastline=129, 
+\lstinputlisting[language=Python,label=code:img, firstline=94, lastline=131, 
     caption={Erzeugen der SHAP Plots, \ref{linreg}.}, captionpos=top]{../scripts/linreg.py}
 

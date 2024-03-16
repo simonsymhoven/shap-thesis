@@ -13,6 +13,7 @@ import numpy as np
 from sklearn.inspection import permutation_importance
 
 matplotlib.use('Agg')
+plt.rcParams.update({'font.size': 15})
 
 def load_data() -> pd.DataFrame:
     """
@@ -87,6 +88,7 @@ def plot_corr(df: pd.DataFrame) -> None:
     """
     plt.figure(figsize=(12, 6))
     sns.heatmap(df.corr(), annot=True, cmap="YlGnBu", fmt=".2f")
+    plt.tight_layout()
     plt.savefig('images/corr.png', dpi=300)
 
 def plot_shap(shap_values: shap.Explanation, model: LinearRegression, X: pd.DataFrame, idx: int) -> None:
